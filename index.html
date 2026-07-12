@@ -307,8 +307,8 @@
   .ob-next:active{transform:scale(.98);}
   .ob-back{padding:16px 20px;background:var(--surface2);border:1px solid var(--line);border-radius:14px;font-size:15px;font-weight:600;color:var(--muted);}
 
-  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);}
-  .tab{flex:1;padding:9px 0 8px;display:flex;flex-direction:column;align-items:center;gap:3px;color:#8b978f;font-size:10.5px;font-weight:600;transition:color .15s;}
+  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;background:var(--surface);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding-bottom:max(6px,calc(env(safe-area-inset-bottom) - 12px));box-shadow:0 -4px 16px rgba(18,63,51,.05);}
+  .tab{flex:1;padding:8px 0 4px;display:flex;flex-direction:column;align-items:center;gap:3px;color:#8b978f;font-size:10.5px;font-weight:600;transition:color .15s;}
   .tab svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
   .tab.on{color:var(--acc);}
   .tab:active{transform:scale(.94);}
@@ -399,8 +399,8 @@
   .fl-del{width:26px;height:26px;border-radius:50%;border:none;background:var(--surface2);color:var(--muted);font-size:12px;flex-shrink:0;}
   .food-sheet{width:min(460px,94vw);}
   .fm-head{font-size:17px;font-weight:800;padding:18px 20px 8px;color:var(--ink);}
-  .fm-tabs{display:flex;gap:6px;padding:4px 16px 12px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface);z-index:2;}
-  .fm-tab{flex:1;padding:9px 4px;border:1px solid var(--line);background:var(--surface2);color:var(--muted);font-size:12.5px;font-weight:650;border-radius:10px;}
+  .fm-tabs{display:flex;flex-wrap:wrap;gap:6px;padding:4px 16px 12px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface);z-index:2;}
+  .fm-tab{flex:1 1 calc(50% - 3px);padding:9px 4px;border:1px solid var(--line);background:var(--surface2);color:var(--muted);font-size:12.5px;font-weight:650;border-radius:10px;}
   .fm-tab.on{background:var(--acc-d);color:#fff;border-color:var(--acc-d);}
   .fm-bd{padding:14px 20px 18px;}
   .fm-hint{font-size:13px;color:var(--muted);margin-bottom:10px;line-height:1.45;}
@@ -421,6 +421,31 @@
   .fm-reader{width:100%;min-height:200px;border-radius:12px;overflow:hidden;background:#000;margin-bottom:10px;position:relative;}
   .fm-reader video{width:100%!important;height:auto!important;display:block;border-radius:12px;}
   .fm-reader img{display:none!important;}
+  .rcats{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px;}
+  .rcat{font-size:12px;font-weight:600;padding:6px 10px;border-radius:999px;background:var(--surface2);border:1px solid var(--line);color:var(--muted);}
+  .rcat.on{background:var(--acc-d);color:#fff;border-color:var(--acc-d);}
+  .rlist{display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto;-webkit-overflow-scrolling:touch;margin-bottom:10px;padding-right:2px;}
+  .ritem{display:flex;justify-content:space-between;align-items:center;padding:11px 13px;border-radius:12px;background:var(--surface2);border:1px solid var(--line);font-size:14px;font-weight:600;color:var(--ink);text-align:left;}
+  .ritem:active{background:var(--acc-soft);}
+  .ritem-add{font-size:20px;font-weight:700;color:var(--acc-d);line-height:1;flex:none;margin-left:8px;}
+  .rcustom-btn{width:100%;padding:10px;border-radius:11px;background:transparent;border:1px dashed var(--acc);color:var(--acc-d);font-size:13px;font-weight:600;margin-bottom:10px;}
+  .rcustom-form{background:var(--surface2);border:1px solid var(--line);border-radius:13px;padding:12px;margin-bottom:12px;display:flex;flex-direction:column;gap:8px;}
+  .rplate{background:var(--acc-soft);border:1px solid rgba(31,111,92,.2);border-radius:15px;padding:13px;margin-top:6px;}
+  .rplate-h{font-size:13px;font-weight:800;color:var(--acc-d);margin-bottom:10px;letter-spacing:.4px;}
+  .rrow{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:11px 12px;margin-bottom:9px;}
+  .rrow-top{display:flex;justify-content:space-between;align-items:center;gap:8px;}
+  .rrow-nm{font-size:14px;font-weight:700;color:var(--ink);}
+  .rrow-x{font-size:15px;color:var(--muted);background:var(--surface2);border-radius:8px;padding:2px 9px;flex:none;}
+  .rrow-mac{font-size:12px;color:var(--muted);margin:4px 0 8px;}
+  .rchips{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;align-items:center;}
+  .rchip{font-size:11.5px;font-weight:600;padding:5px 9px;border-radius:999px;background:var(--surface2);border:1px solid var(--line);color:var(--muted);}
+  .rchip em{font-style:normal;opacity:.65;font-weight:500;}
+  .rchip.on{background:var(--acc);color:#fff;border-color:var(--acc);}
+  .rchip.on em{opacity:.85;}
+  .rstep{font-size:11.5px;font-weight:700;padding:5px 8px;border-radius:999px;background:var(--surface);border:1px solid var(--acc);color:var(--acc-d);}
+  .rmeth{margin-top:7px;}
+  .rmeth-l{font-size:11px;color:var(--muted);font-weight:600;margin-right:2px;}
+  .rtotal{font-size:14px;font-weight:700;color:var(--ink);text-align:center;margin:8px 0 12px;}
   .fm-lib{margin-bottom:14px;}
   .fm-chips{display:flex;flex-wrap:wrap;gap:6px;}
   .fm-chip{display:inline-flex;align-items:center;background:var(--surface2);border:1px solid var(--line);border-radius:999px;overflow:hidden;}
@@ -1195,6 +1220,116 @@ function nextInGroup(oid){ var grp=ING[oid]&&ING[oid].grp,arr=SWAPGRP[grp]; if(!
 function swappable(oid){ var grp=ING[oid]&&ING[oid].grp,arr=SWAPGRP[grp]; return !!(arr&&arr.length>1); }
 function mealTotals(meal,factor){ var kc=0,p=0,c=0,f=0; for(var j=0;j<meal.i.length;j++){ var rid=resolveIng(meal.i[j][0]),g2=roundStep(meal.i[j][1]*ingF(rid,factor),ING[rid].step),m=ingMac(rid,g2); kc+=m.kc;p+=m.p;c+=m.c;f+=m.f; } return {kc:Math.round(kc),p:Math.round(p),c:Math.round(c),f:Math.round(f)}; }
 function mealFoodLine(meal,factor){ var parts=[]; for(var j=0;j<meal.i.length;j++){ var rid=resolveIng(meal.i[j][0]),g2=roundStep(meal.i[j][1]*ingF(rid,factor),ING[rid].step); parts.push(dispAmt(rid,g2)+" "+ingName(rid)); } return parts.join(" + "); }
+function _rProtein(o){ var A=o.A,nm=o.nm,g=o.g;
+  switch(o.id){
+    case "csirke": case "pulyka": var tp=g>=200?"5–6":(g>=150?"4–5":"3–4"); return "A "+nm+" ("+A+"): klopfold egyenletes vastagságúra, sózd, borsozd (jó rá: pirospaprika, fokhagymapor). Forró serpenyőben 1 tk olajon vagy száraz grillserpenyőn süsd "+tp+" perc/oldal, míg a húslé kitisztul.";
+    case "comb": return "A csirkecombot ("+A+") fűszerezd (só, bors, paprika), és közepes lángon süsd 6–8 perc/oldal, míg megpirul és teljesen átsül.";
+    case "marha": case "borju": return "A "+nm+" ("+A+"): sózd, borsozd. Forró serpenyőben magas hőn süsd 2–3 perc/oldal (csíkokra vágva 4–5 perc, kevergetve). Szeletelés előtt pihentesd 2–3 percig.";
+    case "darabmarha": return "A darált marhát ("+A+") forró serpenyőben zsír nélkül pirítsd morzsásra 6–8 perc alatt, közben törd szét; sózd, fűszerezd (kömény, paprika, fokhagyma).";
+    case "sertes": return "A karajt ("+A+") klopfold, sózd, borsozd; forró serpenyőben 1 tk olajon 3–4 perc/oldal süsd át.";
+    case "hal": return "A halfilét ("+A+") itasd szárazra, sózd, csepegtess rá citromot. Serpenyőben 1 tk olajon 3–4 perc/oldal, vagy sütőben 200 °C-on 12–15 perc.";
+    case "lazac": return "A lazacot ("+A+") sózd, borsozd; bőrös felével lefelé serpenyőben 4–5 perc, majd fordítva 2–3 perc (sütőben 200 °C, 12–15 perc).";
+    case "tofu": return "A tofut ("+A+") itasd szárazra, kockázd fel, és forró serpenyőben (kevés olaj vagy szójaszósz) süsd aranybarnára minden oldalán, kb. 8–10 perc.";
+    case "tonhal": return "A tonhalat ("+A+") csepegtesd le és villával lazítsd fel — nem kell főzni.";
+    default: return "A "+nm+" ("+A+"): készítsd el / süsd át ízlés szerint, míg átsül.";
+  }
+}
+function _rStarch(o){ var A=o.A;
+  switch(o.id){
+    case "rizs": return "A rizst ("+A+") öblítsd át, tedd fel ~"+Math.round(o.g*2)+" ml (1:2) sós vízzel, forrald fel, majd fedő alatt gyöngyözve főzd 12–14 percig, míg elszívja a vizet; pihentesd 5 percet.";
+    case "teszta": return "A tésztát ("+A+") bő, sós, forró vízben főzd al dentére a csomag szerint (kb. 8–11 perc), majd szűrd le.";
+    case "quinoa": return "A quinoát ("+A+") öblítsd át, és ~2× vízben fedve főzd 12–15 percig, míg kipattannak a kis csírák; pihentesd 5 percet.";
+    case "hajdina": return "A hajdinát ("+A+") öblítsd le, és ~2× sós vízben fedve főzd 12–15 percig.";
+    case "bulgur": return "A bulgurt ("+A+") öntsd fel ~2× forró, sós vízzel, fedd le, és állni hagyd 12–15 percig, míg megszívja.";
+    case "kuszkusz": return "A kuszkuszt ("+A+") öntsd fel ugyanannyi forró vízzel/alaplével, fedd le 5 percre, majd villával lazítsd fel.";
+    default: return "A "+o.nm+"-t ("+A+") főzd meg a csomagoláson jelzett módon.";
+  }
+}
+function _rPotato(o){ var A=o.A;
+  if(o.id==="edesburgonya") return "Az édesburgonyát ("+A+") kockázd/hasábozd, és kevés olajjal-fűszerrel airfryerben 200 °C-on 15–18 perc, vagy sütőben 210 °C-on 22–28 perc alatt süsd készre.";
+  return "A burgonyát ("+A+") mosd meg, vágd hasábra/kockára. Airfryer: 1 tk olívaolaj + só/fűszer (paprika, fokhagyma, rozmaring), 200 °C, 18–22 perc, félidőben rázd meg. Sütő: 210 °C, 25–30 perc. Héjában főzve: sós vízben 18–22 perc. (Olaj nélkül a legkevesebb kalória.)";
+}
+function _rVegCook(o){ var A=o.A,nm=o.nm;
+  switch(o.id){
+    case "brokkoli": return "A brokkolit ("+A+") párold/gőzöld 5–6 percig, hogy roppanós maradjon; sózd.";
+    case "cukkini": return "A cukkinit ("+A+") szeleteld, és grill-/serpenyőben 2–3 perc/oldal süsd.";
+    case "sargarepa": return "A sárgarépát ("+A+") karikázd, és párold 6–8 percig (vagy süsd a burgonyával együtt).";
+    case "wok": return "A wok zöldséget ("+A+") forró wokban/serpenyőben magas hőn, kevés olajon 4–6 perc alatt kevergetve pirítsd.";
+    case "spenot": return "A spenótot ("+A+") forró serpenyőn 1–2 perc alatt fonnyaszd össze; sózd.";
+    case "kukorica": return "A kukoricát ("+A+") csepegtesd le és melegítsd át 2–3 perc.";
+    default: return "A "+nm+" ("+A+"): párold/gőzöld 5–7 percig (vagy serpenyőn 1 tk olajon 4–6 perc); sózd, borsozd.";
+  }
+}
+function recipeSteps(meal,factor){
+  var B={protein:[],starchBoil:[],potato:[],vegcook:[],sauce:[],vegraw:[],bread:[],oats:[],dairy:[],milk:[],fruit:[],nuts:[],nutbutter:[],fat:[],sweet:[],egg:[],other:[]},j;
+  for(j=0;j<meal.i.length;j++){ var rid=resolveIng(meal.i[j][0]); if(!ING[rid]) continue; var g=roundStep(meal.i[j][1]*ingF(rid,factor),ING[rid].step),o={id:rid,g:g,nm:ingName(rid),A:dispAmt(rid,g),role:ingRole(rid)};
+    switch(rid){
+      case "csirke":case "pulyka":case "comb":case "marha":case "borju":case "darabmarha":case "sertes":case "hal":case "lazac":case "tofu":case "tonhal": B.protein.push(o);break;
+      case "tojas": B.egg.push(o);break;
+      case "rizs":case "teszta":case "quinoa":case "hajdina":case "bulgur":case "kuszkusz": B.starchBoil.push(o);break;
+      case "burgonya":case "edesburgonya": B.potato.push(o);break;
+      case "brokkoli":case "zoldseg":case "cukkini":case "sargarepa":case "wok":case "spenot":case "kukorica": B.vegcook.push(o);break;
+      case "passata": B.sauce.push(o);break;
+      case "salata":case "paradicsom":case "paprika":case "uborka": B.vegraw.push(o);break;
+      case "kenyer":case "rozskenyer":case "tortilla": B.bread.push(o);break;
+      case "zab": B.oats.push(o);break;
+      case "skyr":case "gorog":case "turo":case "cottage":case "feherje": B.dairy.push(o);break;
+      case "tej":case "kefir": B.milk.push(o);break;
+      case "banan":case "alma":case "korte":case "narancs":case "szolo":case "gyum":case "bogyos": B.fruit.push(o);break;
+      case "mandula":case "dio":case "tokmag":case "kesu":case "foldimogyoro":case "napraforgo": B.nuts.push(o);break;
+      case "mogyorovaj":case "mandulavaj": B.nutbutter.push(o);break;
+      case "olaj":case "avokado": B.fat.push(o);break;
+      case "mez":case "juharszirup": B.sweet.push(o);break;
+      default: B.other.push(o);
+    }
+  }
+  function names(arr){ return arr.map(function(x){return x.A+" "+x.nm;}).join(", "); }
+  var s=[], hasCook=!!(B.protein.length||B.egg.length||B.starchBoil.length||B.potato.length||B.vegcook.length||B.sauce.length), isBowl=!hasCook&&!!(B.dairy.length||B.oats.length);
+  // OATS (cook with milk if present)
+  if(B.oats.length){ var oo=B.oats[0], mk=B.milk.length?B.milk[0]:null;
+    if(mk){ s.push("A zabpelyhet ("+oo.A+") a "+mk.nm+"rel ("+mk.A+") forrald fel, és 3–5 percig kevergetve főzd (vagy hidegen, éjszakára beáztatva – overnight oats). Ízesítsd fahéjjal."); mk._used=true; }
+    else s.push("A zabpelyhet ("+oo.A+") ~2,5× vízzel/tejjel forrald fel, és 3–5 percig kevergetve főzd; ízesítsd fahéjjal.");
+  }
+  // DAIRY bowl mix
+  var dairyMix=B.dairy.slice();
+  if(B.milk.length){ B.milk.forEach(function(m){ if(!m._used && !B.potato.length && !B.oats.length){ dairyMix.push(m); m._used=true; } }); }
+  if(dairyMix.length){ var extra=""; if(isBowl&&B.sweet.length){ extra=" + "+names(B.sweet); B.sweet.forEach(function(x){x._used=true;}); }
+    s.push("Keverd simára: "+names(dairyMix)+extra+". Ízesítsd fahéjjal/vaníliával."+(B.oats.length?" Forgasd össze a megfőtt zabbal.":"")); }
+  // STARCH
+  B.starchBoil.forEach(function(o){ s.push(_rStarch(o)); });
+  // POTATO
+  B.potato.forEach(function(o){ var mash=(B.milk.length&&!isBowl)?" Tipp: krémes pürének összetörheted kevés tejjel.":""; s.push(_rPotato(o)+mash); });
+  if(B.milk.length&&B.potato.length){ B.milk.forEach(function(m){ m._used=true; }); }
+  // PROTEIN
+  B.protein.forEach(function(o){ s.push(_rProtein(o)); });
+  // EGG
+  B.egg.forEach(function(o){ s.push("A tojást ("+o.A+") készítsd tükörtojásnak/rántottának 1 tk olajon 2–3 perc alatt, vagy főzd (lágy ~6, kemény ~9–10 perc)."); });
+  // SAUCE
+  B.sauce.forEach(function(o){ s.push("A paradicsomszószt ("+o.A+") forrald össze a hússal/tésztával, fűszerezd (oregánó, bazsalikom, fokhagyma) 3–4 perc alatt."); });
+  // VEG cook
+  B.vegcook.forEach(function(o){ s.push(_rVegCook(o)); });
+  // VEG raw
+  if(B.vegraw.length) s.push("A friss zöldségeket ("+names(B.vegraw)+") mosd meg, tépd/szeleteld falatnyira, és keverd salátává (1 csepp olívaolaj + citrom/ecet, kevés só).");
+  // BREAD
+  B.bread.forEach(function(o){ s.push(o.id==="tortilla"?("A tortillát ("+o.A+") melegítsd át 30 mp/oldal, majd töltsd meg."):("Pirítsd meg: "+o.A+" "+o.nm+".")); });
+  // FAT
+  B.fat.forEach(function(o){ s.push(o.id==="olaj"?("Csepegtess rá "+o.A+" olívaolajat (salátára/tálaláshoz)."):("Az avokádót ("+o.A+") szeleteld/pépesítsd, csepegtess rá citromot, sózd.")); });
+  // NUTBUTTER
+  B.nutbutter.forEach(function(o){ s.push("Keverj bele / kend rá: "+o.A+" "+o.nm+"."); });
+  // FRUIT
+  if(B.fruit.length) s.push((isBowl?"A tetejére: ":"Körethez/desszertnek: ")+names(B.fruit)+" (mosd meg / szeleteld).");
+  // NUTS
+  if(B.nuts.length) s.push("A tetejére, durvára vágva: "+names(B.nuts)+".");
+  // SWEET leftover
+  if(B.sweet.length){ var sw=B.sweet.filter(function(x){return !x._used;}); if(sw.length) s.push("Csorgass rá "+names(sw)+"-t."); }
+  // OTHER
+  B.other.forEach(function(o){ s.push("Add hozzá: "+o.A+" "+o.nm+" (ízlés szerint)."); });
+  // PLATING
+  if(hasCook&&s.length>1) s.push("Tálald össze, és jó étvágyat! 😋");
+  if(!s.length) s.push("Készítsd el ízlés szerint, és jó étvágyat! 😋");
+  return s;
+}
+
 function dayBaseKc(dow){ var a=mealsFor(dow),s=0; for(var i=0;i<a.length;i++){ var it=a[i].i; for(var j=0;j<it.length;j++) s+=ingMac(resolveIng(it[j][0]),it[j][1]).kc; } return s; }
 function scaledDayKc(dow,factor){ var a=mealsFor(dow),s=0; for(var i=0;i<a.length;i++){ var it=a[i].i; for(var j=0;j<it.length;j++){ var rid=resolveIng(it[j][0]),g=roundStep(it[j][1]*factor,ING[rid].step); s+=ingMac(rid,g).kc; } } return s; }
 function dayFactor(dow){
@@ -2027,6 +2162,310 @@ function foodResultForm(){ var r=foodModal.result||{name:"",kcal:"",p:"",c:"",f:
     +'<div><label class="fm-l">Zsír (g)</label><input id="fm-f" class="fm-in" type="number" inputmode="decimal" value="'+(r.f||"")+'"></div></div>'
     +'<label class="fm-save"><input id="fm-savelib" type="checkbox"> Mentés a saját listámba (később 1 kattintással)</label>'
     +'<button class="fm-add" data-act="food-add">Hozzáadás a naplóhoz</button></div>'; }
+var RMETH={
+  fried:[{lbl:"olajban sült",fadd:0},{lbl:"airfryer",fadd:-4},{lbl:"bő olajban",fadd:5},{lbl:"zsírban",fadd:4}],
+  potato:[{lbl:"olajban sült",fadd:0},{lbl:"airfryer",fadd:-3},{lbl:"bő olajban",fadd:7},{lbl:"zsírban",fadd:5}],
+  grill:[{lbl:"grill/sütő",fadd:0},{lbl:"kevés olajon",fadd:2},{lbl:"olajban/vajon",fadd:4}]
+};
+var RCATS=[{id:"hus",lbl:"🍖 Hús"},{id:"koret",lbl:"🍟 Köret"},{id:"teszta",lbl:"🍝 Tészta/Pizza"},{id:"leves",lbl:"🍲 Leves"},{id:"gyors",lbl:"🍔 Gyors"},{id:"mcd",lbl:"Ⓜ️ McDonald's"},{id:"kfc",lbl:"🍗 KFC"},{id:"bk",lbl:"👑 Burger King"},{id:"subway",lbl:"🥪 Subway"},{id:"pizzahut",lbl:"🍕 Pizza Hut"},{id:"utcai",lbl:"🌭 Utcai/hazai"},{id:"reggeli",lbl:"🍳 Reggeli"},{id:"edes",lbl:"🍰 Édesség"},{id:"snack",lbl:"🍿 Snack"},{id:"ital",lbl:"🥤 Ital"},{id:"szosz",lbl:"🥄 Szósz"}];
+function _rp(a,b,c){ var o=[{lbl:"kicsi",g:a},{lbl:"közepes",g:b}]; if(c)o.push({lbl:"nagy",g:c}); return o; }
+var RFOOD={
+  // ---- HÚS / FEHÉRJE ----
+  rantott_sertes:{name:"Rántott sertéshús",cat:"hus",per100:{kcal:260,p:17,c:14,f:15},portions:[{lbl:"1 kis szelet",g:90},{lbl:"1 közepes",g:130},{lbl:"1 nagy",g:180}],methods:RMETH.fried},
+  rantott_csirke:{name:"Rántott csirkemell",cat:"hus",per100:{kcal:240,p:18,c:13,f:12},portions:[{lbl:"1 kis szelet",g:90},{lbl:"1 közepes",g:130},{lbl:"1 nagy",g:180}],methods:RMETH.fried},
+  sult_csirkemell:{name:"Grillezett csirkemell",cat:"hus",per100:{kcal:165,p:31,c:0,f:4},portions:_rp(100,150,200),methods:RMETH.grill},
+  sult_csirkecomb:{name:"Sült csirkecomb",cat:"hus",per100:{kcal:210,p:26,c:0,f:12},portions:[{lbl:"1 db",g:120},{lbl:"2 db",g:240}],methods:RMETH.grill},
+  crispy_csirke:{name:"Crispy csirkecsíkok",cat:"hus",per100:{kcal:290,p:20,c:18,f:16},portions:[{lbl:"3 db",g:120},{lbl:"5 db",g:200}],methods:RMETH.fried},
+  nuggets:{name:"Csirke nuggets",cat:"hus",per100:{kcal:300,p:15,c:18,f:19},portions:[{lbl:"6 db",g:100},{lbl:"9 db",g:150}],methods:RMETH.fried},
+  pulyka:{name:"Grillezett pulykamell",cat:"hus",per100:{kcal:160,p:30,c:0,f:4},portions:_rp(100,150,200),methods:RMETH.grill},
+  gyros_hus:{name:"Gyros/döner hús",cat:"hus",per100:{kcal:215,p:20,c:3,f:14},portions:_rp(120,180,250)},
+  fasirt:{name:"Fasírt / húspogácsa",cat:"hus",per100:{kcal:250,p:17,c:8,f:17},portions:[{lbl:"1 db",g:80},{lbl:"2 db",g:160}],methods:RMETH.fried},
+  marhasteak:{name:"Marhasteak (hátszín)",cat:"hus",per100:{kcal:220,p:26,c:0,f:13},portions:_rp(120,180,250),methods:RMETH.grill},
+  sult_hal:{name:"Grillezett halfilé",cat:"hus",per100:{kcal:150,p:22,c:0,f:7},portions:_rp(100,150,200),methods:RMETH.grill},
+  rantott_hal:{name:"Rántott hal",cat:"hus",per100:{kcal:230,p:16,c:14,f:12},portions:[{lbl:"1 szelet",g:120},{lbl:"nagy",g:180}],methods:RMETH.fried},
+  sult_karaj:{name:"Sült sertéskaraj",cat:"hus",per100:{kcal:240,p:25,c:0,f:15},portions:_rp(100,150,200),methods:RMETH.grill},
+  kolbasz:{name:"Sült kolbász",cat:"hus",per100:{kcal:300,p:15,c:2,f:26},portions:[{lbl:"1 db",g:100},{lbl:"2 db",g:200}]},
+  virsli:{name:"Virsli",cat:"hus",per100:{kcal:270,p:12,c:2,f:24},portions:[{lbl:"1 db",g:50},{lbl:"2 db",g:100},{lbl:"3 db",g:150}]},
+  bacon:{name:"Bacon (sült)",cat:"hus",per100:{kcal:500,p:12,c:1,f:50},portions:[{lbl:"2 csík",g:30},{lbl:"4 csík",g:60}]},
+  sonka:{name:"Sonka",cat:"hus",per100:{kcal:145,p:20,c:1,f:7},portions:[{lbl:"2 szelet",g:50},{lbl:"4 szelet",g:100}]},
+  rantott_sajt:{name:"Rántott sajt",cat:"hus",per100:{kcal:320,p:18,c:16,f:20},portions:[{lbl:"1 szelet",g:100},{lbl:"2 szelet",g:200}],methods:RMETH.fried},
+  // ---- KÖRET ----
+  hasab:{name:"Hasábburgonya",cat:"koret",per100:{kcal:175,p:3,c:28,f:6},portions:_rp(100,150,250),methods:RMETH.potato},
+  sult_burgonya:{name:"Sült burgonya (héjában)",cat:"koret",per100:{kcal:130,p:3,c:25,f:2},portions:_rp(150,250,350),methods:RMETH.potato},
+  puree:{name:"Burgonyapüré",cat:"koret",per100:{kcal:110,p:2,c:15,f:4},portions:_rp(150,250)},
+  edes_hasab:{name:"Édesburgonya hasáb",cat:"koret",per100:{kcal:165,p:2,c:30,f:4},portions:_rp(100,150,250),methods:RMETH.potato},
+  rizs_koret:{name:"Párolt rizs",cat:"koret",per100:{kcal:130,p:2.5,c:28,f:0.3},portions:_rp(100,150,250)},
+  sult_rizs:{name:"Sült rizs (wokban)",cat:"koret",per100:{kcal:165,p:4,c:28,f:4},portions:_rp(150,250)},
+  teszta_koret:{name:"Főtt tészta (köret)",cat:"koret",per100:{kcal:155,p:6,c:30,f:1},portions:_rp(150,250)},
+  rizibizi:{name:"Rizi-bizi",cat:"koret",per100:{kcal:135,p:3,c:26,f:2},portions:_rp(150,250)},
+  parolt_zoldseg:{name:"Párolt zöldség",cat:"koret",per100:{kcal:45,p:2,c:8,f:0.5},portions:_rp(100,150,200)},
+  grillzoldseg:{name:"Grillzöldség",cat:"koret",per100:{kcal:80,p:2,c:9,f:4},portions:_rp(100,150,200),methods:RMETH.grill},
+  salata_vegyes:{name:"Vegyes saláta (öntet nélkül)",cat:"koret",per100:{kcal:25,p:1,c:4,f:0.3},portions:_rp(100,150,200)},
+  coleslaw:{name:"Coleslaw (majonézes)",cat:"koret",per100:{kcal:150,p:1,c:9,f:12},portions:_rp(80,150)},
+  hagymakarika:{name:"Hagymakarika (rántott)",cat:"koret",per100:{kcal:330,p:4,c:35,f:19},portions:[{lbl:"5 db",g:90},{lbl:"8 db",g:140}],methods:RMETH.fried},
+  // ---- TÉSZTA / PIZZA ----
+  spagetti_bolognai:{name:"Spagetti bolognai",cat:"teszta",per100:{kcal:160,p:8,c:20,f:5},portions:_rp(250,350,450)},
+  carbonara:{name:"Carbonara",cat:"teszta",per100:{kcal:200,p:8,c:22,f:9},portions:_rp(250,350,450)},
+  lasagne:{name:"Lasagne",cat:"teszta",per100:{kcal:170,p:9,c:14,f:9},portions:_rp(250,350)},
+  pizza_margherita:{name:"Pizza margherita",cat:"teszta",per100:{kcal:250,p:10,c:30,f:9},portions:[{lbl:"1 szelet",g:100},{lbl:"2 szelet",g:200},{lbl:"fél pizza",g:300}]},
+  pizza_sonkas:{name:"Sonkás-gombás pizza",cat:"teszta",per100:{kcal:265,p:12,c:28,f:11},portions:[{lbl:"1 szelet",g:110},{lbl:"2 szelet",g:220},{lbl:"fél pizza",g:330}]},
+  pizza_szalamis:{name:"Szalámis pizza",cat:"teszta",per100:{kcal:285,p:12,c:28,f:14},portions:[{lbl:"1 szelet",g:110},{lbl:"2 szelet",g:220},{lbl:"fél pizza",g:330}]},
+  // ---- GYORS (általános) ----
+  hamburger:{name:"Hamburger (marha)",cat:"gyors",per100:{kcal:250,p:13,c:20,f:13},portions:[{lbl:"1 db",g:150},{lbl:"dupla húsos",g:250}]},
+  cheeseburger:{name:"Sajtburger",cat:"gyors",per100:{kcal:270,p:14,c:20,f:15},portions:[{lbl:"1 db",g:160},{lbl:"dupla",g:280}]},
+  hotdog:{name:"Hot dog",cat:"gyors",per100:{kcal:250,p:9,c:22,f:14},portions:[{lbl:"1 db",g:100},{lbl:"nagy",g:150}]},
+  gyros_pita:{name:"Gyros pita/tál",cat:"gyors",per100:{kcal:215,p:11,c:22,f:9},portions:[{lbl:"1 pita",g:300},{lbl:"nagy",g:400}]},
+  wrap_csirke:{name:"Csirkés wrap/tortilla",cat:"gyors",per100:{kcal:210,p:12,c:20,f:9},portions:[{lbl:"1 db",g:220},{lbl:"nagy",g:300}]},
+  szendvics:{name:"Sonkás-sajtos szendvics",cat:"gyors",per100:{kcal:260,p:12,c:28,f:11},portions:[{lbl:"1 db",g:150},{lbl:"nagy",g:230}]},
+  // ---- REGGELI ----
+  rantotta:{name:"Rántotta",cat:"reggeli",per100:{kcal:155,p:11,c:1,f:12},portions:[{lbl:"2 tojás",g:120},{lbl:"3 tojás",g:180}]},
+  tukortojas:{name:"Tükörtojás",cat:"reggeli",per100:{kcal:160,p:11,c:1,f:12},portions:[{lbl:"1 db",g:55},{lbl:"2 db",g:110}]},
+  croissant:{name:"Croissant",cat:"reggeli",per100:{kcal:400,p:8,c:45,f:22},portions:[{lbl:"1 db",g:60}]},
+  kifli:{name:"Kifli/zsemle",cat:"reggeli",per100:{kcal:280,p:9,c:54,f:3},portions:[{lbl:"1 db",g:50},{lbl:"2 db",g:100}]},
+  palacsinta:{name:"Palacsinta (töltött)",cat:"reggeli",per100:{kcal:220,p:6,c:32,f:8},portions:[{lbl:"1 db",g:80},{lbl:"2 db",g:160},{lbl:"3 db",g:240}]},
+  // ---- ÉDESSÉG ----
+  palacsinta_nutella:{name:"Palacsinta (Nutellás)",cat:"edes",per100:{kcal:300,p:6,c:38,f:14},portions:[{lbl:"1 db",g:90},{lbl:"2 db",g:180}]},
+  fank:{name:"Fánk",cat:"edes",per100:{kcal:400,p:6,c:45,f:22},portions:[{lbl:"1 db",g:70}]},
+  suti:{name:"Sütemény szelet (krémes)",cat:"edes",per100:{kcal:350,p:5,c:40,f:19},portions:[{lbl:"1 szelet",g:100}]},
+  fagyi:{name:"Fagylalt gombóc",cat:"edes",per100:{kcal:200,p:4,c:25,f:9},portions:[{lbl:"1 gombóc",g:60},{lbl:"2 gombóc",g:120},{lbl:"3 gombóc",g:180}]},
+  tiramisu:{name:"Tiramisu",cat:"edes",per100:{kcal:280,p:5,c:30,f:15},portions:[{lbl:"1 adag",g:120}]},
+  csoki:{name:"Tejcsokoládé",cat:"edes",per100:{kcal:540,p:7,c:58,f:31},portions:[{lbl:"1 kocka",g:10},{lbl:"fél tábla",g:50},{lbl:"tábla",g:100}]},
+  // ---- ITAL ----
+  cola:{name:"Cola (cukros)",cat:"ital",per100:{kcal:42,p:0,c:10.6,f:0},portions:[{lbl:"pohár",g:250},{lbl:"kicsi",g:330},{lbl:"közepes",g:500},{lbl:"nagy",g:700}]},
+  cola_zero:{name:"Cola Zero",cat:"ital",per100:{kcal:0.3,p:0,c:0,f:0},portions:[{lbl:"kicsi",g:330},{lbl:"nagy",g:500}]},
+  udito:{name:"Üdítő / limonádé",cat:"ital",per100:{kcal:40,p:0,c:10,f:0},portions:[{lbl:"pohár",g:250},{lbl:"kicsi",g:330},{lbl:"nagy",g:500}]},
+  gyumolcsle:{name:"Gyümölcslé (100%)",cat:"ital",per100:{kcal:46,p:0.5,c:11,f:0.1},portions:[{lbl:"pohár",g:200},{lbl:"nagy",g:330}]},
+  sor:{name:"Sör",cat:"ital",per100:{kcal:43,p:0.5,c:3.6,f:0},portions:[{lbl:"pohár (3dl)",g:300},{lbl:"korsó (5dl)",g:500}]},
+  bor:{name:"Bor",cat:"ital",per100:{kcal:83,p:0.1,c:2.6,f:0},portions:[{lbl:"pohár (1,5dl)",g:150},{lbl:"2 dl",g:200}]},
+  kave_tej:{name:"Tejeskávé/cappuccino",cat:"ital",per100:{kcal:40,p:2,c:4,f:2},portions:[{lbl:"1 csésze",g:150},{lbl:"nagy",g:250}]},
+  // ---- SZÓSZ / ÖNTET ----
+  majonez:{name:"Majonéz",cat:"szosz",per100:{kcal:680,p:1,c:2,f:74},portions:[{lbl:"1 ek",g:15},{lbl:"2 ek",g:30}]},
+  ketchup:{name:"Ketchup",cat:"szosz",per100:{kcal:100,p:1,c:24,f:0.1},portions:[{lbl:"1 ek",g:15},{lbl:"2 ek",g:30}]},
+  tartar:{name:"Tartármártás",cat:"szosz",per100:{kcal:350,p:1,c:6,f:36},portions:[{lbl:"1 adag",g:30}]},
+  dressing:{name:"Salátaöntet (olajos)",cat:"szosz",per100:{kcal:400,p:1,c:6,f:40},portions:[{lbl:"1 adag",g:30}]},
+  fokhagymas:{name:"Fokhagymás/majonézes öntet",cat:"szosz",per100:{kcal:400,p:1,c:5,f:42},portions:[{lbl:"1 adag",g:30}]}
+};
+var _CHAINS={
+  // ===== McDonald's =====
+  mcd_bigmac:{name:"Big Mac",cat:"mcd",fixed:true,g:220,kcal:503,p:25,c:44,f:25},
+  mcd_quarter:{name:"Negyedfontos sajtburger",cat:"mcd",fixed:true,g:200,kcal:520,p:30,c:42,f:26},
+  mcd_dquarter:{name:"Dupla negyedfontos",cat:"mcd",fixed:true,g:280,kcal:750,p:48,c:43,f:43},
+  mcd_royal:{name:"McRoyal Deluxe",cat:"mcd",fixed:true,g:230,kcal:510,p:28,c:42,f:26},
+  mcd_cheese:{name:"Cheeseburger",cat:"mcd",fixed:true,g:115,kcal:300,p:15,c:32,f:13},
+  mcd_dcheese:{name:"Dupla sajtburger",cat:"mcd",fixed:true,g:165,kcal:445,p:25,c:34,f:24},
+  mcd_ham:{name:"Hamburger",cat:"mcd",fixed:true,g:100,kcal:250,p:12,c:31,f:9},
+  mcd_mcchicken:{name:"McChicken",cat:"mcd",fixed:true,g:175,kcal:400,p:14,c:40,f:20},
+  mcd_crispy:{name:"McCrispy",cat:"mcd",fixed:true,g:210,kcal:470,p:26,c:46,f:21},
+  mcd_fish:{name:"Filet-O-Fish",cat:"mcd",fixed:true,g:140,kcal:380,p:16,c:38,f:18},
+  mcd_nuggets:{name:"Chicken McNuggets",cat:"mcd",fixed:true,g:100,kcal:259,p:15,c:16,f:16,units:[{lbl:"6 db",mult:1},{lbl:"9 db",mult:1.5},{lbl:"20 db",mult:3.34}]},
+  mcd_fries:{name:"Hasábburgonya",cat:"mcd",fixed:true,g:117,kcal:330,p:4,c:42,f:16,units:[{lbl:"kicsi",mult:0.7},{lbl:"közepes",mult:1},{lbl:"nagy",mult:1.33}]},
+  mcd_mcflurry:{name:"McFlurry",cat:"mcd",fixed:true,g:200,kcal:340,p:8,c:54,f:11},
+  mcd_sundae:{name:"Fagylalt kehely (Sundae)",cat:"mcd",fixed:true,g:150,kcal:200,p:5,c:32,f:6},
+  mcd_pie:{name:"Almás pite",cat:"mcd",fixed:true,g:80,kcal:240,p:2,c:33,f:11},
+  mcd_m_bigmac:{name:"Big Mac menü (közepes)",cat:"mcd",fixed:true,g:0,kcal:1043,p:29,c:139,f:41},
+  mcd_m_royal:{name:"McRoyal menü (közepes)",cat:"mcd",fixed:true,g:0,kcal:1050,p:32,c:137,f:42},
+  mcd_m_crispy:{name:"McCrispy menü (közepes)",cat:"mcd",fixed:true,g:0,kcal:1010,p:30,c:141,f:37},
+  mcd_m_nuggets9:{name:"9 McNuggets menü (közepes)",cat:"mcd",fixed:true,g:0,kcal:929,p:27,c:119,f:40},
+  // ===== KFC =====
+  kfc_comb:{name:"Csirkecomb (Original, 1 db)",cat:"kfc",fixed:true,g:130,kcal:290,p:19,c:8,f:19},
+  kfc_mell:{name:"Csirkemell (Original, 1 db)",cat:"kfc",fixed:true,g:160,kcal:330,p:30,c:9,f:19},
+  kfc_wings:{name:"Hot Wings",cat:"kfc",fixed:true,g:270,kcal:470,p:28,c:22,f:30,units:[{lbl:"3 db",mult:0.5},{lbl:"6 db",mult:1},{lbl:"10 db",mult:1.67}]},
+  kfc_tenders:{name:"Csirkecsíkok (Tenders)",cat:"kfc",fixed:true,g:120,kcal:270,p:23,c:13,f:14,units:[{lbl:"3 db",mult:1},{lbl:"5 db",mult:1.67}]},
+  kfc_zinger:{name:"Zinger burger",cat:"kfc",fixed:true,g:200,kcal:450,p:26,c:44,f:20},
+  kfc_twister:{name:"Twister tekercs",cat:"kfc",fixed:true,g:250,kcal:480,p:24,c:45,f:22},
+  kfc_popcorn:{name:"Popcorn Chicken",cat:"kfc",fixed:true,g:110,kcal:285,p:16,c:22,f:15,units:[{lbl:"kicsi",mult:0.7},{lbl:"közepes",mult:1},{lbl:"nagy",mult:1.5}]},
+  kfc_fries:{name:"Hasábburgonya",cat:"kfc",fixed:true,g:110,kcal:310,p:4,c:40,f:14,units:[{lbl:"kicsi",mult:0.7},{lbl:"közepes",mult:1},{lbl:"nagy",mult:1.3}]},
+  kfc_coleslaw:{name:"Coleslaw",cat:"kfc",fixed:true,g:120,kcal:150,p:1,c:12,f:11},
+  kfc_m_zinger:{name:"Zinger menü (közepes)",cat:"kfc",fixed:true,g:0,kcal:970,p:30,c:137,f:34},
+  kfc_m_twister:{name:"Twister menü (közepes)",cat:"kfc",fixed:true,g:0,kcal:1000,p:28,c:138,f:36},
+  kfc_m_wings:{name:"Hot Wings menü (6 db)",cat:"kfc",fixed:true,g:0,kcal:990,p:32,c:115,f:44},
+  // ===== Burger King =====
+  bk_whopper:{name:"Whopper",cat:"bk",fixed:true,g:270,kcal:660,p:28,c:49,f:40},
+  bk_dwhopper:{name:"Dupla Whopper",cat:"bk",fixed:true,g:350,kcal:900,p:48,c:50,f:58},
+  bk_whopperjr:{name:"Whopper Jr.",cat:"bk",fixed:true,g:150,kcal:310,p:17,c:27,f:17},
+  bk_cheese:{name:"Cheeseburger",cat:"bk",fixed:true,g:130,kcal:300,p:15,c:28,f:14},
+  bk_dcheese:{name:"Dupla sajtburger",cat:"bk",fixed:true,g:180,kcal:400,p:22,c:27,f:21},
+  bk_ham:{name:"Hamburger",cat:"bk",fixed:true,g:110,kcal:250,p:13,c:28,f:9},
+  bk_bigking:{name:"Big King",cat:"bk",fixed:true,g:250,kcal:630,p:32,c:47,f:38},
+  bk_chickenroyale:{name:"Chicken Royale",cat:"bk",fixed:true,g:220,kcal:460,p:18,c:49,f:21},
+  bk_crispy:{name:"Crispy Chicken",cat:"bk",fixed:true,g:200,kcal:430,p:19,c:45,f:20},
+  bk_nuggets:{name:"Chicken Nuggets",cat:"bk",fixed:true,g:100,kcal:270,p:13,c:16,f:16,units:[{lbl:"6 db",mult:1},{lbl:"9 db",mult:1.5}]},
+  bk_fries:{name:"Hasábburgonya",cat:"bk",fixed:true,g:117,kcal:330,p:4,c:42,f:15,units:[{lbl:"kicsi",mult:0.7},{lbl:"közepes",mult:1},{lbl:"nagy",mult:1.3}]},
+  bk_onion:{name:"Hagymakarika",cat:"bk",fixed:true,g:100,kcal:400,p:5,c:45,f:22,units:[{lbl:"közepes",mult:1},{lbl:"nagy",mult:1.4}]},
+  bk_m_whopper:{name:"Whopper menü (közepes)",cat:"bk",fixed:true,g:0,kcal:1200,p:32,c:139,f:55},
+  bk_m_bigking:{name:"Big King menü (közepes)",cat:"bk",fixed:true,g:0,kcal:1170,p:36,c:137,f:53},
+  // ===== Subway (15 cm / 30 cm) =====
+  sub_ham:{name:"Sonka sub",cat:"subway",fixed:true,g:220,kcal:280,p:18,c:44,f:5,units:[{lbl:"15 cm",mult:1},{lbl:"30 cm",mult:2}]},
+  sub_turkey:{name:"Pulyka sub",cat:"subway",fixed:true,g:220,kcal:280,p:18,c:45,f:4.5,units:[{lbl:"15 cm",mult:1},{lbl:"30 cm",mult:2}]},
+  sub_chicken:{name:"Csirkemell sub",cat:"subway",fixed:true,g:230,kcal:320,p:26,c:45,f:6,units:[{lbl:"15 cm",mult:1},{lbl:"30 cm",mult:2}]},
+  sub_bmt:{name:"Italian BMT sub",cat:"subway",fixed:true,g:240,kcal:400,p:19,c:44,f:16,units:[{lbl:"15 cm",mult:1},{lbl:"30 cm",mult:2}]},
+  sub_steak:{name:"Steak & Cheese sub",cat:"subway",fixed:true,g:250,kcal:380,p:25,c:45,f:12,units:[{lbl:"15 cm",mult:1},{lbl:"30 cm",mult:2}]},
+  sub_tuna:{name:"Tonhal sub",cat:"subway",fixed:true,g:240,kcal:480,p:20,c:44,f:25,units:[{lbl:"15 cm",mult:1},{lbl:"30 cm",mult:2}]},
+  sub_veggie:{name:"Veggie Delite sub",cat:"subway",fixed:true,g:210,kcal:230,p:9,c:44,f:3,units:[{lbl:"15 cm",mult:1},{lbl:"30 cm",mult:2}]},
+  sub_meatball:{name:"Húsgombócos sub",cat:"subway",fixed:true,g:260,kcal:480,p:23,c:50,f:20,units:[{lbl:"15 cm",mult:1},{lbl:"30 cm",mult:2}]},
+  // ===== Pizza Hut =====
+  ph_margherita:{name:"Margherita (szelet)",cat:"pizzahut",fixed:true,g:100,kcal:230,p:9,c:27,f:9,units:[{lbl:"1 szelet",mult:1},{lbl:"2 szelet",mult:2},{lbl:"3 szelet",mult:3}]},
+  ph_sonkas:{name:"Sonkás-gombás (szelet)",cat:"pizzahut",fixed:true,g:110,kcal:250,p:11,c:27,f:11,units:[{lbl:"1 szelet",mult:1},{lbl:"2 szelet",mult:2},{lbl:"3 szelet",mult:3}]},
+  ph_pepperoni:{name:"Pepperoni (szelet)",cat:"pizzahut",fixed:true,g:110,kcal:280,p:12,c:27,f:14,units:[{lbl:"1 szelet",mult:1},{lbl:"2 szelet",mult:2},{lbl:"3 szelet",mult:3}]},
+  ph_bbq:{name:"BBQ csirkés (szelet)",cat:"pizzahut",fixed:true,g:120,kcal:260,p:13,c:29,f:10,units:[{lbl:"1 szelet",mult:1},{lbl:"2 szelet",mult:2},{lbl:"3 szelet",mult:3}]},
+  ph_wings:{name:"Fűszeres szárny",cat:"pizzahut",fixed:true,g:120,kcal:320,p:22,c:6,f:24,units:[{lbl:"4 db",mult:1},{lbl:"8 db",mult:2}]},
+  ph_garlic:{name:"Fokhagymás kenyér",cat:"pizzahut",fixed:true,g:80,kcal:220,p:5,c:28,f:9,units:[{lbl:"2 db",mult:1},{lbl:"4 db",mult:2}]},
+  // ===== Utcai / hazai =====
+  ut_langos_ts:{name:"Lángos (tejfölös-sajtos)",cat:"utcai",fixed:true,g:250,kcal:550,p:14,c:60,f:28},
+  ut_langos:{name:"Lángos (fokhagymás/sima)",cat:"utcai",fixed:true,g:200,kcal:400,p:8,c:55,f:16},
+  ut_gyros_tal:{name:"Gyros tál (nagy)",cat:"utcai",fixed:true,g:450,kcal:700,p:35,c:45,f:40},
+  ut_gyros_pita:{name:"Gyros pita",cat:"utcai",fixed:true,g:300,kcal:640,p:28,c:55,f:33},
+  ut_hurka:{name:"Sült hurka (1 adag)",cat:"utcai",fixed:true,g:150,kcal:400,p:15,c:8,f:35},
+  ut_kolbasz:{name:"Sült kolbász (utcai)",cat:"utcai",fixed:true,g:120,kcal:380,p:16,c:3,f:34},
+  ut_kurtos:{name:"Kürtőskalács",cat:"utcai",fixed:true,g:120,kcal:430,p:8,c:70,f:13},
+  ut_gofri:{name:"Gofri (tejszínhabos)",cat:"utcai",fixed:true,g:150,kcal:400,p:6,c:50,f:19},
+  ut_palacsinta:{name:"Palacsinta (utcai, 2 db)",cat:"utcai",fixed:true,g:180,kcal:440,p:12,c:64,f:16},
+  ut_sultkrumpli:{name:"Sültkrumpli tálban (utcai)",cat:"utcai",fixed:true,g:250,kcal:500,p:6,c:60,f:26}
+};
+for(var _chk in _CHAINS) RFOOD[_chk]=_CHAINS[_chk];
+var _MORE={
+  // ===== KFC – teljes box/menü kínálat =====
+  kfc_grande_box:{name:"Grande Box",cat:"kfc",fixed:true,g:0,kcal:1200,p:45,c:125,f:52},
+  kfc_dgrande_box:{name:"Dupla Grande Box",cat:"kfc",fixed:true,g:0,kcal:1750,p:70,c:150,f:85},
+  kfc_zinger_box:{name:"Zinger Box",cat:"kfc",fixed:true,g:0,kcal:1150,p:42,c:120,f:48},
+  kfc_boneless_box:{name:"Boneless Box",cat:"kfc",fixed:true,g:0,kcal:1050,p:45,c:95,f:50},
+  kfc_twister_box:{name:"Twister Box",cat:"kfc",fixed:true,g:0,kcal:1180,p:40,c:125,f:50},
+  kfc_boxmaster:{name:"Boxmaster (tekercs)",cat:"kfc",fixed:true,g:270,kcal:620,p:30,c:50,f:33},
+  kfc_colonel:{name:"Colonel Burger",cat:"kfc",fixed:true,g:210,kcal:500,p:26,c:48,f:22},
+  kfc_longer:{name:"Longer csirkeburger",cat:"kfc",fixed:true,g:220,kcal:500,p:24,c:50,f:22},
+  kfc_sriracha_zinger:{name:"Sriracha Zinger",cat:"kfc",fixed:true,g:220,kcal:520,p:27,c:46,f:26},
+  kfc_snack_box:{name:"Snack Box (Tenders + hasáb)",cat:"kfc",fixed:true,g:0,kcal:560,p:25,c:48,f:28},
+  kfc_bucket:{name:"Bucket (csirke, darabra)",cat:"kfc",fixed:true,g:130,kcal:290,p:22,c:8,f:19,units:[{lbl:"6 darab",mult:6},{lbl:"9 darab",mult:9},{lbl:"14 darab",mult:14}]},
+  kfc_popcorn_box:{name:"Popcorn Chicken Box (nagy)",cat:"kfc",fixed:true,g:170,kcal:430,p:24,c:33,f:23},
+  kfc_hotwings_box:{name:"Hot Wings Box (10 db + hasáb)",cat:"kfc",fixed:true,g:0,kcal:1095,p:51,c:77,f:64},
+  kfc_puree_gravy:{name:"Burgonyapüré (gravy)",cat:"kfc",fixed:true,g:150,kcal:140,p:3,c:20,f:5},
+  kfc_riser:{name:"Big Riser (reggeli burger)",cat:"kfc",fixed:true,g:180,kcal:450,p:22,c:38,f:24},
+  // ===== McDonald's – signature + menük =====
+  mcd_bigtasty:{name:"Big Tasty",cat:"mcd",fixed:true,g:350,kcal:840,p:40,c:50,f:54},
+  mcd_bigtasty_bacon:{name:"Big Tasty Bacon",cat:"mcd",fixed:true,g:370,kcal:860,p:43,c:50,f:55},
+  mcd_bigtasty_menu:{name:"Big Tasty menü (közepes)",cat:"mcd",fixed:true,g:0,kcal:1380,p:44,c:145,f:70},
+  mcd_mcwrap:{name:"McWrap (csirke)",cat:"mcd",fixed:true,g:250,kcal:500,p:26,c:45,f:22},
+  mcd_mcdouble:{name:"McDouble",cat:"mcd",fixed:true,g:150,kcal:400,p:22,c:33,f:19},
+  mcd_grandchicken:{name:"Grand Chicken Special",cat:"mcd",fixed:true,g:230,kcal:560,p:28,c:48,f:28},
+  mcd_triplecheese:{name:"Tripla sajtburger",cat:"mcd",fixed:true,g:215,kcal:520,p:30,c:34,f:29},
+  mcd_happymeal:{name:"Happy Meal (6 nugget + kis hasáb + lé)",cat:"mcd",fixed:true,g:0,kcal:500,p:18,c:55,f:22},
+  mcd_sharebox:{name:"Chicken Sharebox (nagy)",cat:"mcd",fixed:true,g:0,kcal:1400,p:70,c:90,f:85},
+  mcd_mcplant:{name:"McPlant",cat:"mcd",fixed:true,g:210,kcal:430,p:17,c:44,f:20},
+  // ===== Burger King – signature + menük =====
+  bk_steakhouse:{name:"Steakhouse burger",cat:"bk",fixed:true,g:280,kcal:750,p:34,c:48,f:45},
+  bk_baconking:{name:"Bacon King",cat:"bk",fixed:true,g:380,kcal:1150,p:57,c:49,f:79},
+  bk_longchicken:{name:"Long Chicken",cat:"bk",fixed:true,g:220,kcal:460,p:17,c:49,f:22},
+  bk_chillicheese:{name:"Chilli Cheese burger",cat:"bk",fixed:true,g:210,kcal:500,p:20,c:42,f:27},
+  bk_chillicheese_nuggets:{name:"Chilli Cheese Nuggets",cat:"bk",fixed:true,g:120,kcal:350,p:9,c:28,f:22,units:[{lbl:"6 db",mult:1},{lbl:"9 db",mult:1.5}]},
+  bk_plantwhopper:{name:"Plant-based Whopper",cat:"bk",fixed:true,g:270,kcal:620,p:22,c:50,f:36},
+  bk_kingbox:{name:"King Box",cat:"bk",fixed:true,g:0,kcal:1100,p:40,c:110,f:50},
+  bk_m_crispy:{name:"Crispy Chicken menü (közepes)",cat:"bk",fixed:true,g:0,kcal:970,p:23,c:135,f:35},
+  // ===== HÚS (általános, +több) =====
+  rantott_pulyka:{name:"Rántott pulykamell",cat:"hus",per100:{kcal:240,p:19,c:13,f:12},portions:[{lbl:"1 kis szelet",g:90},{lbl:"1 közepes",g:130},{lbl:"1 nagy",g:180}],methods:RMETH.fried},
+  cordonbleu:{name:"Cordon bleu",cat:"hus",per100:{kcal:280,p:18,c:12,f:18},portions:[{lbl:"1 szelet",g:150},{lbl:"nagy",g:200}],methods:RMETH.fried},
+  csirkemaj:{name:"Csirkemáj (pörkölt)",cat:"hus",per100:{kcal:175,p:22,c:4,f:8},portions:_rp(120,180)},
+  csirkepaprikas:{name:"Csirkepaprikás (szaft)",cat:"hus",per100:{kcal:150,p:16,c:3,f:8},portions:_rp(150,250)},
+  marhaporkolt:{name:"Marhapörkölt",cat:"hus",per100:{kcal:190,p:18,c:3,f:12},portions:_rp(150,250)},
+  chiliconcarne:{name:"Chili con carne",cat:"hus",per100:{kcal:130,p:9,c:12,f:5},portions:_rp(200,300)},
+  ribs:{name:"Sertésborda (BBQ ribs)",cat:"hus",per100:{kcal:290,p:22,c:8,f:19},portions:[{lbl:"fél adag",g:200},{lbl:"egész",g:350}]},
+  csulok:{name:"Sült csülök",cat:"hus",per100:{kcal:290,p:23,c:1,f:22},portions:_rp(200,300)},
+  kacsacomb:{name:"Sült kacsacomb",cat:"hus",per100:{kcal:280,p:19,c:0,f:22},portions:[{lbl:"1 db",g:200}]},
+  pisztrang:{name:"Sült pisztráng",cat:"hus",per100:{kcal:150,p:20,c:0,f:8},portions:_rp(150,250),methods:RMETH.grill},
+  tonhalsteak:{name:"Tonhalsteak",cat:"hus",per100:{kcal:130,p:24,c:0,f:4},portions:_rp(120,180),methods:RMETH.grill},
+  husgolyo:{name:"Húsgombóc (paradicsomos)",cat:"hus",per100:{kcal:180,p:12,c:8,f:11},portions:_rp(150,250)},
+  gyros_marha:{name:"Marha gyros hús",cat:"hus",per100:{kcal:230,p:21,c:3,f:15},portions:_rp(120,180,250)},
+  // ===== KÖRET (+több) =====
+  nokedli:{name:"Nokedli/galuska",cat:"koret",per100:{kcal:160,p:5,c:30,f:2},portions:_rp(100,200)},
+  tarhonya:{name:"Tarhonya",cat:"koret",per100:{kcal:165,p:5,c:30,f:3},portions:_rp(100,200)},
+  rantott_gomba:{name:"Rántott gomba",cat:"koret",per100:{kcal:220,p:6,c:20,f:13},portions:_rp(100,150),methods:RMETH.fried},
+  sult_gomba:{name:"Sült gomba",cat:"koret",per100:{kcal:70,p:3,c:5,f:4},portions:_rp(100,150),methods:RMETH.grill},
+  grillsajt:{name:"Grillsajt",cat:"koret",per100:{kcal:330,p:25,c:2,f:25},portions:_rp(100,150)},
+  hummusz:{name:"Hummusz",cat:"koret",per100:{kcal:230,p:8,c:14,f:16},portions:[{lbl:"kis adag",g:50},{lbl:"adag",g:100}]},
+  tzatziki:{name:"Tzatziki (joghurtos)",cat:"koret",per100:{kcal:90,p:3,c:4,f:6},portions:[{lbl:"kis adag",g:50},{lbl:"adag",g:100}]},
+  petrezselymes:{name:"Petrezselymes burgonya",cat:"koret",per100:{kcal:100,p:2,c:18,f:2},portions:_rp(150,250)},
+  padlizsan:{name:"Grillezett padlizsán",cat:"koret",per100:{kcal:60,p:1,c:6,f:3},portions:_rp(100,150),methods:RMETH.grill},
+  // ===== TÉSZTA (+több) =====
+  penne_arrabiata:{name:"Penne arrabiata",cat:"teszta",per100:{kcal:150,p:5,c:24,f:4},portions:_rp(250,350)},
+  teszta_pesto:{name:"Tészta pestóval",cat:"teszta",per100:{kcal:200,p:6,c:24,f:9},portions:_rp(250,350)},
+  macandcheese:{name:"Mac & cheese",cat:"teszta",per100:{kcal:190,p:8,c:22,f:8},portions:_rp(200,300)},
+  gnocchi:{name:"Gnocchi (sajtos)",cat:"teszta",per100:{kcal:180,p:6,c:26,f:6},portions:_rp(200,300)},
+  rakott_teszta:{name:"Rakott tészta",cat:"teszta",per100:{kcal:175,p:9,c:16,f:8},portions:_rp(250,350)},
+  // ===== LEVES =====
+  husleves:{name:"Húsleves (csigatésztával)",cat:"leves",per100:{kcal:40,p:3,c:4,f:1},portions:[{lbl:"tányér",g:350},{lbl:"nagy",g:450}]},
+  gulyasleves:{name:"Gulyásleves",cat:"leves",per100:{kcal:65,p:5,c:6,f:2.5},portions:[{lbl:"tányér",g:350},{lbl:"nagy",g:450}]},
+  bableves:{name:"Bableves/babgulyás",cat:"leves",per100:{kcal:90,p:5,c:9,f:4},portions:[{lbl:"tányér",g:350},{lbl:"nagy",g:450}]},
+  gombakrem:{name:"Gombakrémleves",cat:"leves",per100:{kcal:70,p:2,c:6,f:4},portions:[{lbl:"tányér",g:300},{lbl:"nagy",g:400}]},
+  paradicsomleves:{name:"Paradicsomleves",cat:"leves",per100:{kcal:55,p:1.5,c:9,f:1.5},portions:[{lbl:"tányér",g:300},{lbl:"nagy",g:400}]},
+  brokkolikrem:{name:"Brokkolikrémleves",cat:"leves",per100:{kcal:60,p:3,c:6,f:3},portions:[{lbl:"tányér",g:300},{lbl:"nagy",g:400}]},
+  halaszle:{name:"Halászlé",cat:"leves",per100:{kcal:55,p:8,c:2,f:2},portions:[{lbl:"tányér",g:350},{lbl:"nagy",g:450}]},
+  frankfurti:{name:"Frankfurti leves",cat:"leves",per100:{kcal:85,p:3,c:6,f:5},portions:[{lbl:"tányér",g:350},{lbl:"nagy",g:450}]},
+  // ===== REGGELI (+több) =====
+  omlett:{name:"Omlett (sonkás-sajtos)",cat:"reggeli",per100:{kcal:180,p:13,c:2,f:13},portions:[{lbl:"2 tojás",g:150},{lbl:"3 tojás",g:220}]},
+  bundaskenyer:{name:"Bundáskenyér",cat:"reggeli",per100:{kcal:250,p:9,c:28,f:11},portions:[{lbl:"1 szelet",g:90},{lbl:"2 szelet",g:180}]},
+  muzli_tej:{name:"Müzli tejjel",cat:"reggeli",per100:{kcal:110,p:4,c:18,f:3},portions:[{lbl:"kis tál",g:200},{lbl:"nagy tál",g:300}]},
+  granola_joghurt:{name:"Granola joghurttal",cat:"reggeli",per100:{kcal:130,p:6,c:16,f:5},portions:[{lbl:"kis tál",g:200},{lbl:"nagy tál",g:300}]},
+  avokados_piritos:{name:"Avokádós pirítós",cat:"reggeli",per100:{kcal:210,p:6,c:22,f:11},portions:[{lbl:"1 szelet",g:120},{lbl:"2 szelet",g:200}]},
+  turos_batyu:{name:"Túrós batyu",cat:"reggeli",per100:{kcal:300,p:8,c:38,f:13},portions:[{lbl:"1 db",g:90}]},
+  // ===== ÉDESSÉG (+több) =====
+  turorudi:{name:"Túró Rudi",cat:"edes",per100:{kcal:320,p:9,c:38,f:14},portions:[{lbl:"1 db",g:30},{lbl:"2 db",g:60}]},
+  retes:{name:"Rétes (almás/túrós)",cat:"edes",per100:{kcal:250,p:5,c:32,f:11},portions:[{lbl:"1 szelet",g:120}]},
+  dobostorta:{name:"Dobostorta",cat:"edes",per100:{kcal:380,p:6,c:45,f:20},portions:[{lbl:"1 szelet",g:100}]},
+  brownie:{name:"Brownie",cat:"edes",per100:{kcal:430,p:6,c:50,f:23},portions:[{lbl:"1 szelet",g:80}]},
+  muffin:{name:"Muffin (csokis)",cat:"edes",per100:{kcal:380,p:5,c:50,f:18},portions:[{lbl:"1 db",g:90}]},
+  csokis_keksz:{name:"Csokis keksz",cat:"edes",per100:{kcal:480,p:6,c:64,f:22},portions:[{lbl:"2 db",g:30},{lbl:"4 db",g:60}]},
+  // ===== SNACK =====
+  chips:{name:"Chips (burgonyaszirom)",cat:"snack",per100:{kcal:530,p:6,c:50,f:34},portions:[{lbl:"kis marék",g:30},{lbl:"tálka",g:60},{lbl:"zacskó",g:100}]},
+  popcorn_snack:{name:"Popcorn (vajas)",cat:"snack",per100:{kcal:480,p:8,c:58,f:24},portions:[{lbl:"kis",g:30},{lbl:"nagy",g:80}]},
+  sos_mogyoro:{name:"Sós mogyoró",cat:"snack",per100:{kcal:600,p:25,c:16,f:50},portions:[{lbl:"marék",g:30},{lbl:"nagy marék",g:60}]},
+  ropi:{name:"Ropi/sósrúd",cat:"snack",per100:{kcal:400,p:10,c:72,f:8},portions:[{lbl:"kis",g:30},{lbl:"nagy",g:60}]},
+  kraker:{name:"Kréker/sós keksz",cat:"snack",per100:{kcal:450,p:9,c:62,f:18},portions:[{lbl:"pár db",g:30},{lbl:"több",g:60}]},
+  // ===== ITAL (+több) =====
+  latte:{name:"Latte/tejeskávé",cat:"ital",per100:{kcal:60,p:3,c:6,f:3},portions:[{lbl:"közepes",g:250},{lbl:"nagy",g:350}]},
+  jeges_kave:{name:"Jeges kávé (cukros)",cat:"ital",per100:{kcal:55,p:2,c:8,f:2},portions:[{lbl:"közepes",g:300},{lbl:"nagy",g:400}]},
+  forro_csoki:{name:"Forró csokoládé",cat:"ital",per100:{kcal:90,p:3,c:13,f:3},portions:[{lbl:"közepes",g:250},{lbl:"nagy",g:350}]},
+  energiaital:{name:"Energiaital (cukros)",cat:"ital",per100:{kcal:45,p:0,c:11,f:0},portions:[{lbl:"kicsi",g:250},{lbl:"nagy",g:500}]},
+  protein_shake:{name:"Protein shake",cat:"ital",per100:{kcal:55,p:9,c:3,f:1},portions:[{lbl:"pohár",g:300},{lbl:"nagy",g:500}]},
+  turmix_banan:{name:"Gyümölcsturmix (banános)",cat:"ital",per100:{kcal:80,p:2,c:16,f:1},portions:[{lbl:"pohár",g:300},{lbl:"nagy",g:500}]},
+  tea_cukros:{name:"Tea (cukorral)",cat:"ital",per100:{kcal:30,p:0,c:7.5,f:0},portions:[{lbl:"csésze",g:250},{lbl:"nagy",g:400}]}
+};
+for(var _mok in _MORE) RFOOD[_mok]=_MORE[_mok];
+
+
+function rFoodMacros(pi){
+  if(pi.custom){ var _ck=pi.custom.kcal; if(!_ck) _ck=(pi.custom.p||0)*4+(pi.custom.c||0)*4+(pi.custom.f||0)*9; return {name:pi.custom.name,g:pi.custom.g||0,kcal:Math.round(_ck),p:Math.round(pi.custom.p||0),c:Math.round(pi.custom.c||0),f:Math.round(pi.custom.f||0)}; }
+  var fd=RFOOD[pi.fid]; if(!fd) return {name:"?",g:0,kcal:0,p:0,c:0,f:0};
+  if(fd.fixed){ var mult=1,ul=""; if(fd.units&&fd.units.length){ var u=fd.units[pi.unitIdx||0]||fd.units[0]; mult=u.mult; ul=" ("+u.lbl+")"; } return {name:fd.name+ul,g:fd.g?Math.round(fd.g*mult):0,kcal:Math.round((fd.kcal||0)*mult),p:Math.round((fd.p||0)*mult),c:Math.round((fd.c||0)*mult),f:Math.round((fd.f||0)*mult)}; }
+  var g=(pi.customG!=null)?pi.customG:((fd.portions[pi.portionIdx||0]||fd.portions[0]).g),fadd=0,ml="";
+  if(fd.methods&&fd.methods.length){ var mm=fd.methods[pi.methodIdx||0]||fd.methods[0]; fadd=mm.fadd||0; ml=" ("+mm.lbl+")"; }
+  var k=g/100,f=Math.max(0,(fd.per100.f+fadd))*k,p=fd.per100.p*k,c=fd.per100.c*k,kcal=Math.max(0,(fd.per100.kcal+fadd*9))*k;
+  return {name:fd.name+ml,g:Math.round(g),kcal:Math.round(kcal),p:Math.round(p),c:Math.round(c),f:Math.round(f)};
+}
+function renderRestaurant(){
+  if(!foodModal.plate) foodModal.plate=[];
+  var cat=foodModal.rcat||"hus",h='';
+  h+='<div class="fm-hint">Étteremben ettél? Rakd össze a fogást — koppints egy ételre, állítsd az adagot és az elkészítést. Több tétel is mehet egy tányérra.</div>';
+  h+='<div class="rcats">'; for(var ci=0;ci<RCATS.length;ci++){ var c=RCATS[ci]; h+='<button class="rcat'+(c.id===cat?" on":"")+'" data-act="rest-cat" data-cat="'+c.id+'">'+c.lbl+'</button>'; } h+='</div>';
+  if(cat==="mcd"||cat==="kfc"||cat==="bk"||cat==="subway"||cat==="pizzahut"||cat==="utcai") h+='<div class="fm-note">ℹ️ A gyorséttermi/utcai értékek közelítő becslések — a méret és összetétel eltérhet.</div>';
+  h+='<div class="rlist">'; for(var id in RFOOD){ var fd=RFOOD[id]; if(fd.cat!==cat) continue; h+='<button class="ritem" data-act="rest-add" data-fid="'+id+'"><span>'+esc(fd.name)+'</span><span class="ritem-add">+</span></button>'; } h+='</div>';
+  h+='<button class="rcustom-btn" data-act="rest-custom">✏️ Egyéni étel (ha nincs a listában)</button>';
+  if(foodModal.rcustom){ h+='<div class="rcustom-form"><div class="fm-grid2"><input id="rc-name" class="fm-in" type="text" placeholder="név"><input id="rc-g" class="fm-in" type="number" inputmode="numeric" placeholder="gramm (info)"></div><div class="fm-grid2"><input id="rc-kcal" class="fm-in" type="number" inputmode="numeric" placeholder="kcal (ha tudod)"><input id="rc-p" class="fm-in" type="number" inputmode="numeric" placeholder="fehérje g"></div><div class="fm-grid2"><input id="rc-c" class="fm-in" type="number" inputmode="numeric" placeholder="szénhidrát g"><input id="rc-f" class="fm-in" type="number" inputmode="numeric" placeholder="zsír g"></div><div class="fm-note">Ha a kcal-t üresen hagyod, a makrókból számolom.</div><button class="fm-add small" data-act="rest-custom-add">Hozzáadás a tányérhoz</button></div>'; }
+  var tk=0,tp=0,tc=0,tf=0;
+  if(foodModal.plate.length){ h+='<div class="rplate"><div class="rplate-h">🍽 A tányérod</div>';
+    for(var si=0;si<foodModal.plate.length;si++){ var it=foodModal.plate[si],mac=rFoodMacros(it); tk+=mac.kcal;tp+=mac.p;tc+=mac.c;tf+=mac.f;
+      h+='<div class="rrow"><div class="rrow-top"><span class="rrow-nm">'+esc(mac.name)+'</span><button class="rrow-x" data-act="rest-remove" data-slot="'+si+'" aria-label="Törlés">✕</button></div><div class="rrow-mac">'+mac.g+' g · <b>'+mac.kcal+' kcal</b> · F'+mac.p+' Sz'+mac.c+' Zs'+mac.f+'</div>';
+      if(!it.custom){ var fd=RFOOD[it.fid];
+        if(fd.fixed){ if(fd.units&&fd.units.length){ h+='<div class="rchips">'; for(var ui=0;ui<fd.units.length;ui++){ var onU=((it.unitIdx||0)===ui); h+='<button class="rchip'+(onU?" on":"")+'" data-act="rest-unit" data-slot="'+si+'" data-ui="'+ui+'">'+esc(fd.units[ui].lbl)+'</button>'; } h+='</div>'; } }
+        else { h+='<div class="rchips">'; for(var qi=0;qi<fd.portions.length;qi++){ var por=fd.portions[qi],onP=(it.customG==null&&(it.portionIdx||0)===qi); h+='<button class="rchip'+(onP?" on":"")+'" data-act="rest-portion" data-slot="'+si+'" data-pi="'+qi+'">'+esc(por.lbl)+' <em>'+por.g+'g</em></button>'; }
+        h+='<button class="rstep" data-act="rest-gram" data-slot="'+si+'" data-delta="-10">−10g</button><button class="rstep" data-act="rest-gram" data-slot="'+si+'" data-delta="10">+10g</button></div>';
+        if(fd.methods&&fd.methods.length){ h+='<div class="rchips rmeth"><span class="rmeth-l">elkészítés:</span>'; for(var mi=0;mi<fd.methods.length;mi++){ var onM=((it.methodIdx||0)===mi); h+='<button class="rchip'+(onM?" on":"")+'" data-act="rest-method" data-slot="'+si+'" data-mi="'+mi+'">'+esc(fd.methods[mi].lbl)+'</button>'; } h+='</div>'; } }
+      }
+      h+='</div>';
+    }
+    h+='<div class="rtotal">Összesen: <b>'+Math.round(tk)+' kcal</b> · F'+Math.round(tp)+' · Sz'+Math.round(tc)+' · Zs'+Math.round(tf)+'</div><button class="fm-add" data-act="rest-log">➕ Hozzáadás a naplóhoz</button></div>';
+  } else h+='<div class="fm-note">Még üres a tányér — válassz fentről egy vagy több ételt.</div>';
+  return h;
+}
+
 function renderFoodModal(){ if(!foodModal) return ""; var m=foodModal.mode||"manual";
   var tabB=function(id,lbl){ return '<button class="fm-tab '+(m===id?"on":"")+'" data-act="food-mode" data-mode="'+id+'">'+lbl+'</button>'; };
   var body="";
@@ -2045,9 +2484,10 @@ function renderFoodModal(){ if(!foodModal) return ""; var m=foodModal.mode||"man
       +'<button class="fm-add" data-act="food-photo-pick">📸 Fotó kiválasztása</button><input id="fm-file" type="file" accept="image/*" capture="environment" style="display:none">'
       +'<div class="fm-keywrap"><label class="fm-l">Anthropic API-kulcs '+(aiKey()?'<b class="fm-ok">✓ mentve</b>':'')+'</label><div class="fm-grid2"><input id="fm-key" class="fm-in" type="password" placeholder="sk-ant-..." value=""><button class="fm-add small" data-act="food-key-save">Mentés</button></div><div class="fm-note">A kulcs csak a saját eszközödön tárolódik, és a fotó közvetlenül az Anthropic API-nak megy (modell: claude-3-5-sonnet, a kódban módosítható). Enélkül a Kézi és a Vonalkód mód is működik.</div></div>'; }
   }
+  else if(m==="rest"){ body=renderRestaurant(); }
   var busy=foodModal.busy?'<div class="fm-busy">⏳ Dolgozom…</div>':"";
   var err=foodModal.err?'<div class="fm-err">'+esc(foodModal.err)+'</div>':"";
-  return '<div class="overlay"><div class="fi-sheet food-sheet"><button class="fi-x" data-act="food-close" aria-label="Bezárás">✕</button><div class="fm-head">🍎 Étel hozzáadása</div><div class="fm-tabs">'+tabB("manual","✍️ Kézi")+tabB("photo","📸 Fotó")+tabB("barcode","🔦 Vonalkód")+'</div><div class="fm-bd">'+busy+err+body+'</div></div></div>'; }
+  return '<div class="overlay"><div class="fi-sheet food-sheet"><button class="fi-x" data-act="food-close" aria-label="Bezárás">✕</button><div class="fm-head">🍎 Étel hozzáadása</div><div class="fm-tabs">'+tabB("manual","✍️ Kézi")+tabB("photo","📸 Fotó")+tabB("barcode","🔦 Vonalkód")+tabB("rest","🍽 Étterem")+'</div><div class="fm-bd">'+busy+err+body+'</div></div></div>'; }
 
 function viewKaja(){
   var dow=sel.getDay(), arr=mealsFor(dow), d=dd(), pl=profile._plan||computePlan(profile);
@@ -2072,8 +2512,8 @@ function viewKaja(){
     var rows='';
     for(var j=0;j<me.i.length;j++){ var oid=me.i[j][0],rid=resolveIng(oid),g2=roundStep(me.i[j][1]*ingF(rid,factor),ING[rid].step);
       rows+='<div class="ing-row"><span class="ing-amt">'+dispAmt(rid,g2)+'</span><span class="ing-nm">'+esc(ingName(rid))+'</span>'+(swappable(oid)?'<button class="ing-sw" data-act="swap-open" data-ig="'+oid+'" data-bolt="0" aria-label="Csere">↻</button>':'<span class="ing-sw ghost"></span>')+'</div>'; }
-    var steps='';
-    for(var k=0;k<me.pr.length;k++) steps+='<li>'+esc(me.pr[k])+'</li>';
+    var steps='',_rs=recipeSteps(me,factor);
+    for(var k=0;k<_rs.length;k++) steps+='<li>'+esc(_rs[k])+'</li>';
     h+='<div class="card meal '+(chk?"is-done":"")+'"><div class="meal-row"><button class="meal-check '+(chk?"on":"")+'" data-act="meal" data-m="'+i2+'">'+(chk?"✓":"")+'</button><button class="meal-main" data-act="expand" data-m="'+i2+'"><div class="meal-name">'+esc(me.m)+' <span class="meal-kcal">· '+mt.kc+' kcal</span></div><div class="meal-food">'+esc(mealFoodLine(me,factor))+'</div></button><button class="caret '+(op?"open":"")+'" data-act="expand" data-m="'+i2+'">›</button></div>'+(op?'<div class="prep"><div class="p-h">Hozzávalók</div><div class="ings">'+rows+'</div><div class="p-h" style="margin-top:15px">Elkészítés</div><ol>'+steps+'</ol></div>':'')+'</div>';
   }
   var _log=foodLog(); h+='<div class="eyebrow">Bevitt ételek (napló)</div>';
@@ -2153,6 +2593,16 @@ document.addEventListener("click",function(ev){
   if(act==="food-open"){ stopScan(); foodModal={mode:"manual",result:null,busy:false,err:"",scan:false,per100:null,grams:100}; render(); return; }
   if(act==="food-close"){ stopScan(); foodModal=null; render(); return; }
   if(act==="food-mode"){ stopScan(); foodModal.mode=el.getAttribute("data-mode"); foodModal.result=null; foodModal.err=""; foodModal.scan=false; foodModal.per100=null; render(); return; }
+  if(act==="rest-cat"){ if(foodModal){ foodModal.rcat=el.getAttribute("data-cat"); render(); } return; }
+  if(act==="rest-add"){ if(foodModal){ if(!foodModal.plate)foodModal.plate=[]; foodModal.plate.push({fid:el.getAttribute("data-fid"),portionIdx:0,methodIdx:0,unitIdx:0,customG:null}); render(); } return; }
+  if(act==="rest-unit"){ if(foodModal&&foodModal.plate){ var _ru=+el.getAttribute("data-slot"); if(foodModal.plate[_ru]){ foodModal.plate[_ru].unitIdx=+el.getAttribute("data-ui"); render(); } } return; }
+  if(act==="rest-portion"){ if(foodModal&&foodModal.plate){ var _rs=+el.getAttribute("data-slot"); if(foodModal.plate[_rs]){ foodModal.plate[_rs].portionIdx=+el.getAttribute("data-pi"); foodModal.plate[_rs].customG=null; render(); } } return; }
+  if(act==="rest-gram"){ if(foodModal&&foodModal.plate){ var _rg=+el.getAttribute("data-slot"),_rit=foodModal.plate[_rg]; if(_rit&&!_rit.custom){ var _rfd=RFOOD[_rit.fid],_rcur=(_rit.customG!=null)?_rit.customG:((_rfd.portions[_rit.portionIdx||0]||_rfd.portions[0]).g); _rit.customG=Math.max(5,_rcur+(+el.getAttribute("data-delta"))); render(); } } return; }
+  if(act==="rest-method"){ if(foodModal&&foodModal.plate){ var _rm=+el.getAttribute("data-slot"); if(foodModal.plate[_rm]){ foodModal.plate[_rm].methodIdx=+el.getAttribute("data-mi"); render(); } } return; }
+  if(act==="rest-remove"){ if(foodModal&&foodModal.plate){ foodModal.plate.splice(+el.getAttribute("data-slot"),1); render(); } return; }
+  if(act==="rest-custom"){ if(foodModal){ foodModal.rcustom=!foodModal.rcustom; render(); } return; }
+  if(act==="rest-custom-add"){ if(!foodModal) return; var _cn=fmTxt("rc-name"); if(!_cn){ foodModal.err="Adj nevet az ételnek."; render(); return; } var _cg=fmNum("rc-g"),_ck=fmNum("rc-kcal"),_cp=fmNum("rc-p"),_cc=fmNum("rc-c"),_cf=fmNum("rc-f"); if(!_ck) _ck=_cp*4+_cc*4+_cf*9; if(!foodModal.plate)foodModal.plate=[]; foodModal.plate.push({custom:{name:_cn,g:_cg,kcal:_ck,p:_cp,c:_cc,f:_cf}}); foodModal.rcustom=false; foodModal.err=""; render(); return; }
+  if(act==="rest-log"){ if(!foodModal||!foodModal.plate||!foodModal.plate.length) return; var _tk=0,_tp=0,_tc=0,_tf=0,_nms=[],_ri; for(_ri=0;_ri<foodModal.plate.length;_ri++){ var _rmc=rFoodMacros(foodModal.plate[_ri]); _tk+=_rmc.kcal;_tp+=_rmc.p;_tc+=_rmc.c;_tf+=_rmc.f; _nms.push(_rmc.name); } var _rname=_nms.length===1?_nms[0]:("Étterem: "+_nms.join(" + ")); if(_rname.length>80)_rname=_rname.slice(0,77)+"…"; addLogEntry({name:_rname,kcal:_tk,p:_tp,c:_tc,f:_tf}); stopScan(); foodModal=null; toast="Hozzáadva a naplóhoz ✓"; render(); setTimeout(function(){ toast=""; render(); },1600); return; }
   if(act==="food-add"){ if(!foodModal) return; var _nm=fmTxt("fm-name"); if(!_nm){ foodModal.err="Adj nevet az \u00e9telnek."; render(); return; } var _fe={name:_nm,kcal:fmNum("fm-kcal"),p:fmNum("fm-p"),c:fmNum("fm-c"),f:fmNum("fm-f")}; var _sv=document.getElementById("fm-savelib"); if(_sv&&_sv.checked){ var _lib=savedFoods(),_ex=-1; for(var _i=0;_i<_lib.length;_i++) if(_lib[_i].name.toLowerCase()===_nm.toLowerCase()) _ex=_i; var _rec={name:_nm,kcal:Math.round(_fe.kcal),p:Math.round(_fe.p*10)/10,c:Math.round(_fe.c*10)/10,f:Math.round(_fe.f*10)/10}; if(_ex>=0) _lib[_ex]=_rec; else _lib.push(_rec); } addLogEntry(_fe); stopScan(); foodModal=null; toast="Hozz\u00e1adva a napl\u00f3hoz \u2713"; render(); setTimeout(function(){ toast=""; render(); },1600); return; }
   if(act==="food-quick"){ var _qi=+el.getAttribute("data-i"),_ql=savedFoods(); if(_ql[_qi]){ addLogEntry(_ql[_qi]); stopScan(); foodModal=null; toast="Hozz\u00e1adva \u2713"; render(); setTimeout(function(){ toast=""; render(); },1400); } return; }
   if(act==="food-lib-del"){ var _ldi=+el.getAttribute("data-i"); savedFoods().splice(_ldi,1); saveState(); render(); return; }
