@@ -1029,6 +1029,7 @@ var ING={
  hajdina:{n:"hajdina",p:13,c:62,f:3,tags:[],cat:"szaraz",price:900,grp:"grain",step:5},
  bulgur:{n:"bulgur",p:12,c:64,f:1.5,tags:["glu"],cat:"szaraz",price:800,grp:"grain",step:5},
  marhamaj:{n:"marha máj",p:29,c:4,f:5,tags:["meat"],cat:"hus",price:1500,grp:"redmeat",step:10},
+ vaj:{n:"vaj",p:0.9,c:0.7,f:81,tags:["lac"],cat:"tej",price:800,grp:"oil",step:5},
  kuszkusz:{n:"kuszkusz",p:13,c:65,f:1.5,tags:["glu"],cat:"szaraz",price:800,grp:"grain",step:5},
  rozskenyer:{n:"rozskenyér",u:"szelet",ug:40,p:8,c:44,f:1.5,tags:["glu"],cat:"pek",price:600,grp:"bread",step:40},
  tortilla:{n:"teljes kiőrlésű tortilla",u:"db",ug:50,p:9,c:48,f:6,tags:["glu"],cat:"pek",price:900,grp:"bread",step:50},
@@ -1225,11 +1226,11 @@ function computePlan(p){
   if(target-protein*4-fat*9<240) fat=Math.max(minFat,Math.floor((target-protein*4-240)/9));
   if(target-protein*4-fat*9<240) protein=Math.max(Math.round((lbm||macroKg)*1.6),Math.floor((target-fat*9-240)/4));
   var _dtype=p.dietType||"balanced";
-  if(_dtype==="carnivore"){ protein=Math.max(protein,Math.round((lbm||macroKg)*2.4)); fat=Math.max(fat,Math.floor((target-protein*4-40)/9)); }
-  else if(_dtype==="keto"){ fat=Math.max(fat,Math.floor((target-protein*4-160)/9)); }
+  if(_dtype==="carnivore"){ protein=Math.max(protein,Math.round((lbm||macroKg)*2.8)); fat=Math.max(fat,Math.floor((target-protein*4-160)/9)); }
+  else if(_dtype==="keto"){ fat=Math.max(fat,Math.floor((target-protein*4-200)/9)); }
   else if(_dtype==="highprotein"){ protein=Math.max(protein,Math.round((lbm||macroKg)*2.6)); }
   else if(_dtype==="highcarb"){ fat=Math.max(45,Math.round(macroKg*0.6)); }
-  var _cfloor=(_dtype==="carnivore")?5:((_dtype==="keto")?25:60);
+  var _cfloor=(_dtype==="carnivore")?40:((_dtype==="keto")?45:60);
   var carb=Math.max(_cfloor,Math.round((target-protein*4-fat*9)/4));
   target=protein*4+fat*9+carb*4;
   var uncertainty=Math.round(T*0.08/10)*10;
@@ -1258,7 +1259,7 @@ function applyDietMap(id,diet,dtype){ var g=ING[id]; if(!g) return id; var grp=g
   if(diet.indexOf("tojas")>=0&&has(g,"egg")) return "turo";
   if(diet.indexOf("dio")>=0&&has(g,"nut")) return "tokmag";
   if(dtype==="vegetarian"&&(has(g,"meat")||has(g,"fish"))) return "tofu";
-  if(dtype==="carnivore"){ if(id==="tofu") return "csirke"; if(grp==="grain"||grp==="bread"||grp==="carbveg") return (diet.indexOf("tojas")>=0)?"turo":"tojas"; if(grp==="fruit"||grp==="veg"||grp==="sweet"||grp==="nuts"||grp==="nutbutter"||grp==="fat"||grp==="sauce") return "gorog"; return id; }
+  if(dtype==="carnivore"){ if(id==="tofu") return "csirke"; var _ef=(diet.indexOf("tojas")>=0); if(grp==="nuts"||grp==="nutbutter"||grp==="fat") return "vaj"; if(grp==="grain"||grp==="bread"||grp==="carbveg"||grp==="milk") return _ef?"csirke":"tojas"; if(grp==="fruit"||grp==="sweet"||grp==="veg"||grp==="sauce") return "gorog"; return id; }
   if(dtype==="keto"){ if(grp==="grain"||grp==="bread"||grp==="carbveg") return "brokkoli"; if(grp==="fruit"&&id!=="bogyos") return "bogyos"; if(grp==="sweet") return "bogyos"; if(grp==="milk") return "gorog"; return id; }
   return id; }
 function resolveIng(id){ var pf=profile||{},sw=pf.swaps||{}; if(sw[id]&&ING[sw[id]]) id=sw[id]; return applyDietMap(id,pf.diet||[],pf.dietType); }
@@ -1271,7 +1272,8 @@ function roundStep(grams,step){ step=step||5; return Math.max(step,Math.round(gr
 function nextInGroup(oid){ var grp=ING[oid]&&ING[oid].grp,arr=SWAPGRP[grp]; if(!arr||arr.length<2) return oid; var cur=(profile.swaps&&profile.swaps[oid])?profile.swaps[oid]:oid,ix=arr.indexOf(cur); if(ix<0) ix=0; return arr[(ix+1)%arr.length]; }
 function swappable(oid){ var grp=ING[oid]&&ING[oid].grp,arr=SWAPGRP[grp]; return !!(arr&&arr.length>1); }
 function mealTotals(meal,factor){ var kc=0,p=0,c=0,f=0; for(var j=0;j<meal.i.length;j++){ var rid=resolveIng(meal.i[j][0]),g2=roundStep(meal.i[j][1]*ingF(rid,factor),ING[rid].step),m=ingMac(rid,g2); kc+=m.kc;p+=m.p;c+=m.c;f+=m.f; } return {kc:Math.round(kc),p:Math.round(p),c:Math.round(c),f:Math.round(f)}; }
-function mealFoodLine(meal,factor){ var parts=[]; for(var j=0;j<meal.i.length;j++){ var rid=resolveIng(meal.i[j][0]),g2=roundStep(meal.i[j][1]*ingF(rid,factor),ING[rid].step); parts.push(dispAmt(rid,g2)+" "+ingName(rid)); } return parts.join(" + "); }
+function mealResolvedItems(meal,factor){ var map={},order=[],j; for(j=0;j<meal.i.length;j++){ var oid=meal.i[j][0],rid=resolveIng(oid),g=roundStep(meal.i[j][1]*ingF(rid,factor),ING[rid].step); if(!map[rid]){ map[rid]={rid:rid,g:0,swapOid:null}; order.push(rid); } map[rid].g+=g; if(map[rid].swapOid==null&&swappable(oid)) map[rid].swapOid=oid; } return order.map(function(k){ return map[k]; }); }
+function mealFoodLine(meal,factor){ return mealResolvedItems(meal,factor).map(function(it){ return dispAmt(it.rid,it.g)+" "+ingName(it.rid); }).join(" + "); }
 function _rProtein(o){ var A=o.A,nm=o.nm,g=o.g;
   switch(o.id){
     case "csirke": case "pulyka": var tp=g>=200?"5–6":(g>=150?"4–5":"3–4"); return "A "+nm+" ("+A+"): klopfold egyenletes vastagságúra, sózd, borsozd (jó rá: pirospaprika, fokhagymapor). Forró serpenyőben 1 tk olajon vagy száraz grillserpenyőn süsd "+tp+" perc/oldal, míg a húslé kitisztul.";
@@ -1769,7 +1771,7 @@ function achievePct(){ var s=achieveState(); return s.total?Math.round(s.earned/
 /* ==== TESTSÚLY & MÉRET NAPLÓ (Fázis 9) ==== */
 function bodyEntries(){ if(!state.body) state.body=[]; state.body.sort(function(a,b){ return a.d<b.d?-1:a.d>b.d?1:0; }); return state.body; }
 function bOpt(id){ var el=document.getElementById(id); if(!el) return null; var v=parseFloat((el.value||"").replace(",",".")); return isFinite(v)&&v>0?v:null; }
-function entryBF(e){ if(!e) return null; return navyBF({sex:profile.sex,cm:profile.cm,meas:{neck:e.neck,waist:e.waist,hip:e.hip}}); }
+function entryBF(e){ if(!e) return null; if(e.bf>=3&&e.bf<=60) return e.bf; return navyBF({sex:profile.sex,cm:profile.cm,meas:{neck:e.neck,waist:e.waist,hip:e.hip}}); }
 function bodyVal(e,metric){ if(metric==="kg") return e.kg; if(metric==="bf") return entryBF(e); return (e[metric]!=null?e[metric]:null); }
 function bodyUnit(metric){ return metric==="kg"?" kg":metric==="bf"?"%":" cm"; }
 function fmtD(k){ var p=(k||"").split("-"); return p.length===3?((+p[2])+"."+(+p[1])+"."):k; }
@@ -1810,8 +1812,12 @@ function renderBodyModal(){ if(!bodyModal) return ""; var es=bodyEntries(), last
   var kgv=last&&last.kg!=null?last.kg:(profile.kg||"");
   var isW=profile.sex==="no";
   var row=function(lbl,id,val){ return '<div><label class="fm-l">'+lbl+'</label><input id="'+id+'" class="fm-in" type="number" inputmode="decimal" value="'+val+'"></div>'; };
-  var body='<label class="fm-l">Testsúly (kg)</label><input id="bd-kg" class="fm-in" type="number" inputmode="decimal" value="'+kgv+'" placeholder="pl. 74.5">';
-  body+='<div class="fm-hint" style="margin-top:12px">M\u00e9retek — cm (opcion\u00e1lis; a testzsír%-hoz nyak + der\u00e9k'+(isW?" + csíp\u0151":"")+' kell)</div>';
+  var dv=(bodyModal.date)||iso(new Date());
+  var bfv=(bodyModal.bf!=null&&bodyModal.bf!=="")?bodyModal.bf:((last&&last.bf!=null)?last.bf:(profile.bf!=null?profile.bf:""));
+  var body='<label class="fm-l">D\u00e1tum</label><input id="bd-date" class="fm-in" type="date" value="'+dv+'">';
+  body+='<label class="fm-l" style="margin-top:12px">Testsúly (kg)</label><input id="bd-kg" class="fm-in" type="number" inputmode="decimal" value="'+kgv+'" placeholder="pl. 74.5">';
+  body+='<label class="fm-l" style="margin-top:12px">Testzsír % — opcion\u00e1lis (ha ismered, pl. m\u00e9rlegr\u0151l)</label><input id="bd-bf" class="fm-in" type="number" inputmode="decimal" value="'+bfv+'" placeholder="pl. 18">';
+  body+='<div class="fm-hint" style="margin-top:12px">Ha fent megadod a testzsír%-ot, azt haszn\u00e1lom. Vagy t\u00f6ltsd ki a m\u00e9reteket lent, \u00e9s megbecs\u00fcl\u00f6m (ehhez nyak + der\u00e9k'+(isW?" + csíp\u0151":"")+' kell).</div>';
   body+='<div class="fm-grid">'+row("Nyak","bd-neck",pf("neck"))+row("Der\u00e9k","bd-waist",pf("waist"))+row("Csíp\u0151","bd-hip",pf("hip"))+row("V\u00e1ll","bd-shoulders",pf("shoulders"))+row("Mellkas","bd-chest",pf("chest"))+row("Felkar","bd-arm",pf("arm"))+row("Comb","bd-thigh",pf("thigh"))+'</div>';
   body+='<label class="fm-save"><input id="bd-updateplan" type="checkbox" checked> Friss\u00edtsd a tervem erre a súlyra/m\u00e9retre (a napi c\u00e9l ehhez igazodik)</label>';
   body+='<button class="fm-add" data-act="body-save">M\u00e9r\u00e9s ment\u00e9se</button>';
@@ -2794,7 +2800,7 @@ var DTYPES=[
  {id:"iron",e:"🩸",n:"Vashiánypótló",desc:"vasban gazdag hangsúly + C-vitamin a felszívódásért"}
 ];
 var DTYPE_BY={}; (function(){ for(var i=0;i<DTYPES.length;i++) DTYPE_BY[DTYPES[i].id]=DTYPES[i]; })();
-function dietCarbFloor(){ var t=(profile&&profile.dietType)||"balanced"; return t==="carnivore"?5:(t==="keto"?25:60); }
+function dietCarbFloor(){ var t=(profile&&profile.dietType)||"balanced"; return t==="carnivore"?40:(t==="keto"?45:60); }
 function dietCard(){ var d=(profile.diet||[]),chips;
   if(!d.length) chips='<span class="diet-chip diet-none">Nincs allergia / kizárás</span>';
   else chips=d.map(function(x){ var m=DIET_BY[x]; return '<span class="diet-chip">'+(m?m.e+' ':'')+dietLabel(x)+'</span>'; }).join("");
@@ -2888,9 +2894,9 @@ function viewKaja(){
   if((profile.dietType)==="carnivore") h+='<div class="portion-note carn-note">🥩 <b>Belsőség:</b> hetente 1-2× iktass be marha májat (~100-150 g) – kiugróan gazdag B12-ben, A-vitaminban, vasban és rézben (a listára is felkerül). Ne vidd túlzásba (magas A-vitamin), és a C-vitaminra külön figyelj.</div>';
   h+='</div>'; h+=dietTypeBar()+dtypeGuide()+waterCard(dow)+suppCard(dow)+dietCard()+vitaminCard(); h+='<div class="eyebrow">Étkezések</div>';
   for(var i2=0;i2<arr.length;i2++){ var me=arr[i2],chk=!!d.m[i2],op=(openMeal===i2),mt=mealTotals(me,factor);
-    var rows='';
-    for(var j=0;j<me.i.length;j++){ var oid=me.i[j][0],rid=resolveIng(oid),g2=roundStep(me.i[j][1]*ingF(rid,factor),ING[rid].step);
-      rows+='<div class="ing-row"><span class="ing-amt">'+dispAmt(rid,g2)+'</span><span class="ing-nm">'+esc(ingName(rid))+'</span>'+(swappable(oid)?'<button class="ing-sw" data-act="swap-open" data-ig="'+oid+'" data-bolt="0" aria-label="Csere">↻</button>':'<span class="ing-sw ghost"></span>')+'</div>'; }
+    var rows='',_mri=mealResolvedItems(me,factor);
+    for(var j=0;j<_mri.length;j++){ var _it=_mri[j];
+      rows+='<div class="ing-row"><span class="ing-amt">'+dispAmt(_it.rid,_it.g)+'</span><span class="ing-nm">'+esc(ingName(_it.rid))+'</span>'+(_it.swapOid?'<button class="ing-sw" data-act="swap-open" data-ig="'+_it.swapOid+'" data-bolt="0" aria-label="Csere">↻</button>':'<span class="ing-sw ghost"></span>')+'</div>'; }
     var steps='',_rs=recipeSteps(me,factor);
     for(var k=0;k<_rs.length;k++) steps+='<li>'+esc(_rs[k])+'</li>';
     h+='<div class="card meal '+(chk?"is-done":"")+'"><div class="meal-row"><button class="meal-check '+(chk?"on":"")+'" data-act="meal" data-m="'+i2+'">'+(chk?"✓":"")+'</button><button class="meal-main" data-act="expand" data-m="'+i2+'"><div class="meal-name">'+esc(me.m)+' <span class="meal-kcal">· '+mt.kc+' kcal</span></div><div class="meal-food">'+esc(mealFoodLine(me,factor))+'</div></button><button class="caret '+(op?"open":"")+'" data-act="expand" data-m="'+i2+'">›</button></div>'+(op?'<div class="prep"><div class="p-h">Hozzávalók</div><div class="ings">'+rows+'</div><div class="p-h" style="margin-top:15px">Elkészítés</div><ol>'+steps+'</ol></div>':'')+'</div>';
@@ -2970,7 +2976,7 @@ document.addEventListener("click",function(ev){
   if(act==="body-close"){ bodyModal=null; render(); return; }
   if(act==="body-metric"){ bodyMetric=el.getAttribute("data-m"); render(); return; }
   if(act==="body-del"){ var _bi=+el.getAttribute("data-i"); if(state.body&&state.body[_bi]){ state.body.splice(_bi,1); saveState(); } render(); return; }
-  if(act==="body-save"){ if(!bodyModal) return; var _kg=bOpt("bd-kg"); if(!_kg){ bodyModal.err="Adj meg egy \u00e9rv\u00e9nyes testsúlyt (kg)."; render(); return; } var _e={d:iso(new Date()),kg:_kg,neck:bOpt("bd-neck"),waist:bOpt("bd-waist"),hip:bOpt("bd-hip"),shoulders:bOpt("bd-shoulders"),chest:bOpt("bd-chest"),arm:bOpt("bd-arm"),thigh:bOpt("bd-thigh")}; var _arr=bodyEntries(),_ix=-1; for(var _i=0;_i<_arr.length;_i++) if(_arr[_i].d===_e.d) _ix=_i; if(_ix>=0) _arr[_ix]=_e; else _arr.push(_e); _arr.sort(function(a,b){return a.d<b.d?-1:a.d>b.d?1:0;}); var _up=document.getElementById("bd-updateplan"); if(_up&&_up.checked){ profile.kg=_kg; var _pm=profile.meas||{}; ["neck","waist","hip","shoulders","chest","arm","thigh"].forEach(function(k){ if(_e[k]!=null) _pm[k]=_e[k]; }); profile.meas=_pm; profile._plan=computePlan(profile); saveProfile(); } saveState(); bodyModal=null; toast="M\u00e9r\u00e9s r\u00f6gzítve \u2713"; render(); setTimeout(function(){ toast=""; render(); },1600); return; }
+  if(act==="body-save"){ if(!bodyModal) return; var _kg=bOpt("bd-kg"),_dtel=document.getElementById("bd-date"),_dk=(_dtel&&_dtel.value)?_dtel.value:iso(new Date()),_bf=bOpt("bd-bf"); if(!_kg){ bodyModal.err="Adj meg egy \u00e9rv\u00e9nyes testsúlyt (kg)."; bodyModal.date=_dk; bodyModal.bf=_bf; render(); return; } if(_bf!=null&&!(_bf>=3&&_bf<=60)){ bodyModal.err="A testzsír % 3 \u00e9s 60 k\u00f6z\u00f6tti legyen (vagy hagyd \u00fcresen)."; bodyModal.date=_dk; render(); return; } var _e={d:_dk,kg:_kg,neck:bOpt("bd-neck"),waist:bOpt("bd-waist"),hip:bOpt("bd-hip"),shoulders:bOpt("bd-shoulders"),chest:bOpt("bd-chest"),arm:bOpt("bd-arm"),thigh:bOpt("bd-thigh")}; if(_bf!=null)_e.bf=_bf; var _arr=bodyEntries(),_ix=-1; for(var _i=0;_i<_arr.length;_i++) if(_arr[_i].d===_e.d) _ix=_i; if(_ix>=0) _arr[_ix]=_e; else _arr.push(_e); _arr.sort(function(a,b){return a.d<b.d?-1:a.d>b.d?1:0;}); var _up=document.getElementById("bd-updateplan"); if(_up&&_up.checked){ profile.kg=_kg; if(_bf!=null)profile.bf=_bf; var _pm=profile.meas||{}; ["neck","waist","hip","shoulders","chest","arm","thigh"].forEach(function(k){ if(_e[k]!=null) _pm[k]=_e[k]; }); profile.meas=_pm; profile._plan=computePlan(profile); saveProfile(); } saveState(); bodyModal=null; toast="M\u00e9r\u00e9s r\u00f6gzítve \u2713"; render(); setTimeout(function(){ toast=""; render(); },1600); return; }
   if(act==="food-open"){ stopScan(); foodModal={mode:"manual",result:null,busy:false,err:"",scan:false,per100:null,grams:100,logDate:iso(sel)}; render(); return; }
   if(act==="food-close"){ stopScan(); foodModal=null; render(); return; }
   if(act==="food-mode"){ stopScan(); foodModal.mode=el.getAttribute("data-mode"); foodModal.result=null; foodModal.err=""; foodModal.scan=false; foodModal.per100=null; render(); return; }
