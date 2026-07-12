@@ -25,7 +25,8 @@
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);height:100%;overflow:hidden;overscroll-behavior:none;}
   body{-webkit-text-size-adjust:100%;touch-action:manipulation;}
-  #root{height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;}
+  #root{height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;scrollbar-width:none;}
+  #root::-webkit-scrollbar{display:none;}
   button{font-family:inherit;color:inherit;cursor:pointer;border:none;background:none;padding:0;-webkit-appearance:none;appearance:none;}
   input{font-family:inherit;-webkit-appearance:none;appearance:none;}
   ol,ul{margin:0;padding:0;}
@@ -243,6 +244,36 @@
   .prog-lbl{font-size:14px;font-weight:600;}
   .prog-num{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;}
   .bar{height:9px;background:var(--surface2);border-radius:20px;overflow:hidden;border:1px solid var(--line);}
+  .wc-bar{margin:2px 0 12px;height:10px;}
+  .wc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;}
+  .wc-title{font-size:14px;font-weight:700;color:var(--ink);}
+  .wc-val{font-size:13.5px;color:var(--muted);} .wc-val b{color:var(--acc-d);font-size:15px;}
+  .wc-btns{display:flex;gap:7px;}
+  .wc-b{flex:1;padding:11px 0;border:1.5px solid var(--line);border-radius:12px;background:var(--surface2);color:var(--acc-d);font-size:13px;font-weight:700;transition:transform .12s;}
+  .wc-b:active{transform:scale(.94);} .wc-minus{flex:0 0 auto;padding:11px 16px;color:var(--muted);}
+  .wc-note{font-size:12px;line-height:1.5;color:var(--muted);margin-top:10px;}
+  .supp-eyebrow{display:flex;align-items:center;justify-content:space-between;}
+  .supp-manage{border:1px solid var(--line);background:var(--surface);color:var(--acc-d);font-size:12px;font-weight:700;padding:5px 12px;border-radius:20px;text-transform:none;letter-spacing:0;}
+  .supp-card{padding:8px;} .supp-empty{margin:0;}
+  .supp-row{width:100%;display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:11px 12px;margin-bottom:7px;text-align:left;transition:background .15s;}
+  .supp-row:last-child{margin-bottom:0;} .supp-row.on{border-color:var(--acc);background:var(--surface2);}
+  .supp-box{flex:none;width:24px;height:24px;border-radius:7px;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--acc);font-size:14px;font-weight:800;}
+  .supp-row.on .supp-box{background:var(--acc);color:#fff;border-color:var(--acc);}
+  .supp-main{display:flex;flex-direction:column;gap:2px;} .supp-nm{font-size:14px;font-weight:600;color:var(--ink);} .supp-note{font-size:11.5px;color:var(--muted);}
+  .diet-card{padding:10px;display:flex;flex-wrap:wrap;gap:7px;}
+  .diet-chip{font-size:12.5px;font-weight:700;color:var(--acc-d);background:var(--surface2);border:1px solid var(--line);padding:6px 11px;border-radius:20px;}
+  .diet-none{color:var(--muted);font-weight:600;}
+  .sw-grouplbl{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:10px 2px 6px;}
+  .sw-grouplbl:first-child{margin-top:0;}
+  .vit-card{padding:14px;}
+  .vit-intro{font-size:12.5px;line-height:1.5;color:var(--muted);margin-bottom:8px;}
+  .vit-row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13px;}
+  .vit-row:last-of-type{border-bottom:none;}
+  .vit-k{font-weight:700;color:var(--ink);} .vit-v{color:var(--muted);text-align:right;}
+  .vit-flag{font-size:12px;line-height:1.5;color:var(--ink);background:var(--surface2);border:1px solid var(--line);border-radius:11px;padding:9px 11px;margin-top:9px;}
+  .vit-note{font-size:11.5px;line-height:1.5;color:var(--muted);margin-top:11px;}
+  .ob-sub2{font-size:12.5px;font-weight:700;color:var(--muted);margin:14px 0 8px;}
+  .ob-sub2:first-of-type{margin-top:4px;}
   .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--acc-lite));border-radius:20px;transition:width .3s ease;}
   .cat-h{font-size:12px;letter-spacing:1.3px;text-transform:uppercase;font-weight:700;color:var(--acc);margin:20px 4px 9px;}
   .shop-row{width:100%;display:flex;align-items:center;gap:13px;background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:13px 14px;margin-bottom:8px;text-align:left;transition:background .15s;}
@@ -307,7 +338,7 @@
   .ob-next:active{transform:scale(.98);}
   .ob-back{padding:16px 20px;background:var(--surface2);border:1px solid var(--line);border-radius:14px;font-size:15px;font-weight:600;color:var(--muted);}
 
-  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;background:var(--surface);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding-bottom:max(6px,calc(env(safe-area-inset-bottom) - 12px));box-shadow:0 -4px 16px rgba(18,63,51,.05);}
+  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;background:#fff;border-top:1px solid var(--line);padding-bottom:max(6px,calc(env(safe-area-inset-bottom) - 12px));box-shadow:0 -4px 16px rgba(18,63,51,.05);}
   .tab{flex:1;padding:8px 0 4px;display:flex;flex-direction:column;align-items:center;gap:3px;color:#8b978f;font-size:10.5px;font-weight:600;transition:color .15s;}
   .tab svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
   .tab.on{color:var(--acc);}
@@ -400,6 +431,9 @@
   .food-sheet{width:min(460px,94vw);}
   .fm-head{font-size:17px;font-weight:800;padding:18px 20px 8px;color:var(--ink);}
   .fm-tabs{display:flex;flex-wrap:wrap;gap:6px;padding:4px 16px 12px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface);z-index:2;}
+  .fm-date-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--surface2);}
+  .fm-date-row label{font-size:12.5px;font-weight:700;color:var(--muted);}
+  .fm-date{border:1px solid var(--line);border-radius:10px;padding:7px 10px;font-size:14px;font-family:inherit;color:var(--ink);background:var(--surface);}
   .fm-tab{flex:1 1 calc(50% - 3px);padding:9px 4px;border:1px solid var(--line);background:var(--surface2);color:var(--muted);font-size:12.5px;font-weight:650;border-radius:10px;}
   .fm-tab.on{background:var(--acc-d);color:#fff;border-color:var(--acc-d);}
   .fm-bd{padding:14px 20px 18px;}
@@ -1182,7 +1216,11 @@ function computePlan(p){
   var minFat=Math.max(40,Math.round(macroKg*0.6));
   if(target-protein*4-fat*9<240) fat=Math.max(minFat,Math.floor((target-protein*4-240)/9));
   if(target-protein*4-fat*9<240) protein=Math.max(Math.round((lbm||macroKg)*1.6),Math.floor((target-fat*9-240)/4));
-  var carb=Math.max(60,Math.round((target-protein*4-fat*9)/4));
+  var _dt=(p.diet||[]);
+  if(_dt.indexOf("carnivore")>=0){ fat=Math.max(fat,Math.floor((target-protein*4-40)/9)); }
+  else if(_dt.indexOf("keto")>=0){ fat=Math.max(fat,Math.floor((target-protein*4-160)/9)); }
+  var _cfloor=(_dt.indexOf("carnivore")>=0)?5:((_dt.indexOf("keto")>=0)?25:60);
+  var carb=Math.max(_cfloor,Math.round((target-protein*4-fat*9)/4));
   target=protein*4+fat*9+carb*4;
   var uncertainty=Math.round(T*0.08/10)*10;
   return {tdee:Math.round(T/10)*10,tdeeLow:Math.round((T-uncertainty)/10)*10,tdeeHigh:Math.round((T+uncertainty)/10)*10,bmr:Math.round(B),bmrMethod:bmrMethod(p),target:target,protein:protein,fat:fat,carb:carb,feasible:feasible,verdict:verdict,weeklyRate:weeklyRate,etaWeeks:etaWeeks};
@@ -1197,7 +1235,7 @@ function ingMac(id,grams){ var g=ING[id]||{p:0,c:0,f:0},r=grams/100,p=g.p*r,c=g.
 function ingRole(id){ var g=ING[id]||{p:0,c:0,f:0},P=g.p*4,C=g.c*4,F=g.f*9; if(P>=C&&P>=F) return 0; if(F>=C&&F>=P) return 2; return 1; }
 function det3(m){ return m[0][0]*(m[1][1]*m[2][2]-m[1][2]*m[2][1])-m[0][1]*(m[1][0]*m[2][2]-m[1][2]*m[2][0])+m[0][2]*(m[1][0]*m[2][1]-m[1][1]*m[2][0]); }
 function solve3(A,b){ var d=det3(A); if(Math.abs(d)<1e-6) return null; var x=[],cc,rr2; for(cc=0;cc<3;cc++){ var M=[A[0].slice(),A[1].slice(),A[2].slice()]; for(rr2=0;rr2<3;rr2++) M[rr2][cc]=b[rr2]; x[cc]=det3(M)/d; } return x; }
-function dayMacroTargets(dow){ var pl=(profile&&profile._plan)||computePlan(profile||{}),dT=dayTarget(dow),pT=pl.protein,fT=pl.fat,cT=Math.max(60,Math.round((dT-pT*4-fT*9)/4)); return {p:pT,c:cT,f:fT,kc:dT}; }
+function dayMacroTargets(dow){ var pl=(profile&&profile._plan)||computePlan(profile||{}),dT=dayTarget(dow),pT=pl.protein,fT=pl.fat,cT=Math.max(dietCarbFloor(),Math.round((dT-pT*4-fT*9)/4)); return {p:pT,c:cT,f:fT,kc:dT}; }
 function dayRoleFactors(dow){ var a=mealsFor(dow),tg=dayMacroTargets(dow),A=[[0,0,0],[0,0,0],[0,0,0]],i,j;
   for(i=0;i<a.length;i++){ var it=a[i].i; for(j=0;j<it.length;j++){ var rid=resolveIng(it[j][0]),base=it[j][1],rr=ingRole(rid),g=ING[rid]||{p:0,c:0,f:0},k=base/100; A[0][rr]+=g.p*k; A[1][rr]+=g.c*k; A[2][rr]+=g.f*k; } }
   var uni=dayFactor(dow),s=solve3(A,[tg.p,tg.c,tg.f]);
@@ -1205,12 +1243,16 @@ function dayRoleFactors(dow){ var a=mealsFor(dow),tg=dayMacroTargets(dow),A=[[0,
   for(i=0;i<3;i++){ if(!isFinite(s[i])) return {P:uni,C:uni,F:uni}; s[i]=Math.max(0.15,Math.min(4,s[i])); }
   return {P:s[0],C:s[1],F:s[2]}; }
 function ingF(rid,rf){ if(rf==null) return 1; if(typeof rf==="number") return rf; var r=ingRole(rid); return r===0?rf.P:(r===2?rf.F:rf.C); }
-function resolveIng(id){ var pf=profile||{},sw=pf.swaps||{},diet=pf.diet||[]; if(sw[id]&&ING[sw[id]]) id=sw[id];
-  if(diet.indexOf("veget")>=0&&(has(ING[id],"meat")||has(ING[id],"fish"))) id="tofu";
-  if(diet.indexOf("hal")>=0&&has(ING[id],"fish")) id="csirke";
-  if(diet.indexOf("tojas")>=0&&has(ING[id],"egg")) id="turo";
-  if(diet.indexOf("dio")>=0&&has(ING[id],"nut")) id="tokmag"; return id; }
-function dietResolve(id){ var diet=(profile&&profile.diet)||[]; if(diet.indexOf("veget")>=0&&(has(ING[id],"meat")||has(ING[id],"fish"))) return "tofu"; if(diet.indexOf("hal")>=0&&has(ING[id],"fish")) return "csirke"; if(diet.indexOf("tojas")>=0&&has(ING[id],"egg")) return "turo"; if(diet.indexOf("dio")>=0&&has(ING[id],"nut")) return "tokmag"; return id; }
+function applyDietMap(id,diet){ var g=ING[id]; if(!g||!diet||!diet.length) return id; var grp=g.grp;
+  if(diet.indexOf("veget")>=0&&(has(g,"meat")||has(g,"fish"))) return "tofu";
+  if(diet.indexOf("hal")>=0&&has(g,"fish")) return "csirke";
+  if(diet.indexOf("tojas")>=0&&has(g,"egg")) return "turo";
+  if(diet.indexOf("dio")>=0&&has(g,"nut")) return "tokmag";
+  if(diet.indexOf("carnivore")>=0){ if(id==="tofu") return "csirke"; if(grp==="grain"||grp==="bread"||grp==="carbveg") return "tojas"; if(grp==="fruit"||grp==="veg"||grp==="sweet"||grp==="nuts"||grp==="nutbutter"||grp==="fat"||grp==="sauce") return "gorog"; return id; }
+  if(diet.indexOf("keto")>=0){ if(grp==="grain"||grp==="bread"||grp==="carbveg") return "brokkoli"; if(grp==="fruit"&&id!=="bogyos") return "bogyos"; if(grp==="sweet") return "bogyos"; return id; }
+  return id; }
+function resolveIng(id){ var pf=profile||{},sw=pf.swaps||{},diet=pf.diet||[]; if(sw[id]&&ING[sw[id]]) id=sw[id]; return applyDietMap(id,diet); }
+function dietResolve(id){ return applyDietMap(id,(profile&&profile.diet)||[]); }
 function ingName(id){ var g=ING[id]; if(!g) return id; var nm=g.n,diet=(profile&&profile.diet)||[];
   if(diet.indexOf("laktoz")>=0&&has(g,"lac")) nm="laktózmentes "+nm;
   if(diet.indexOf("gluten")>=0&&has(g,"glu")) nm="gluténmentes "+nm; return nm; }
@@ -1357,7 +1399,7 @@ var session=null,_tick=null,_actx=null;
 try{ var _sr=localStorage.getItem(SKEY); if(_sr){ session=JSON.parse(_sr); if(session&&(!session.startTs||Date.now()-session.startTs>21600000)) session=null; } }catch(e){ session=null; }
 function saveSession(){ try{ if(session) localStorage.setItem(SKEY,JSON.stringify(session)); else localStorage.removeItem(SKEY); }catch(e){} }
 
-var tab="terv", sel=new Date(), openMeal=-1, modal=false, toast="", exportModal="", infoEx="", swapCtx=null, foodModal=null, _scanStream=null, bodyModal=null, bodyMetric="kg", deferredPrompt=null, installDismissed=false, _swUpdate=false, shareModal=null;
+var tab="terv", sel=new Date(), openMeal=-1, modal=false, toast="", exportModal="", infoEx="", swapCtx=null, foodModal=null, _scanStream=null, bodyModal=null, bodyMetric="kg", deferredPrompt=null, installDismissed=false, _swUpdate=false, shareModal=null, suppModal=false, dietModal=false;
 var onboarding=!profile, obStep=0, obDraft={}, obErr="";
 if(profile) applyTheme(profile.sex);
 
@@ -1449,7 +1491,7 @@ function renderOnboarding(){
     body='<div class="ob-hi">Csaló- / szabadnap? <span class="ob-opt">opcionális</span></div><div class="ob-sub">Egy heti szabadnap sokat segít a kitartásban: ilyenkor a fenntartó szinted környékén ehetsz, a többi napot pedig kicsit lejjebb húzom, hogy a heti átlag stimmeljen. '+_rec+' Válaszd ki, melyik nap(ok) legyen(ek) — vagy hagyd üresen.</div><div class="daygrid">'+_chips+'</div>'+(_cd.length>=2?'<div class="ob-sub" style="margin-top:12px">Kettőnél többet nem érdemes — a maradék napokat már nehéz biztonságosan kompenzálni.</div>':'');
   } else if(_curStep==="diet"){
     body='<div class="ob-hi">Van étkezési korlátod?</div><div class="ob-sub">Jelöld, amire allergiás/érzékeny vagy, vagy amit kerülsz — a cserék a következő lépésben épülnek be. Több is választható.</div>'+
-      '<div class="ob-opts">'+dietOpt("laktoz","Laktózérzékeny","🥛")+dietOpt("gluten","Gluténérzékeny","🌾")+dietOpt("tojas","Tojásallergia","🥚")+dietOpt("hal","Halallergia","🐟")+dietOpt("dio","Diófélék allergia","🥜")+dietOpt("veget","Vegetáriánus","🥗")+'</div>';
+      '<div class="ob-sub2">Étrend-irány (opcionális, egy választható):</div><div class="ob-opts">'+dietOpt("keto","Ketogén","🥑")+dietOpt("carnivore","Carnivore (csak hús)","🥩")+dietOpt("vas","Vashiánypótló","🩸")+'</div><div class="ob-sub2">Allergia / kizárás (több is):</div><div class="ob-opts">'+dietOpt("laktoz","Laktózérzékeny","🥛")+dietOpt("gluten","Gluténérzékeny","🌾")+dietOpt("tojas","Tojásallergia","🥚")+dietOpt("hal","Halallergia","🐟")+dietOpt("dio","Diófélék allergia","🥜")+dietOpt("veget","Vegetáriánus","🥗")+'</div>';
   } else if(_curStep==="result"){
     return obResult(pct);
   }
@@ -1494,7 +1536,7 @@ function obResult(pct){
 }
 function typeLabel(t){ return {street:"Street workout",gym:"Konditerem",home:"Otthoni edzés",cardio:"Kardió",sport:"Sport",mix:"Vegyes"}[t]||t; }
 function levelLabel(l){ return {kezdo:"Kezdő",ujra:"Újrakezdő",kozep:"Középhaladó",halado:"Haladó"}[l]||l; }
-function dietLabel(d){ return {laktoz:"laktózmentes",gluten:"gluténmentes",glutation:"gluténmentes",tojas:"tojásmentes",hal:"halmentes",dio:"diómentes",veget:"vegetáriánus"}[d]||d; }
+function dietLabel(d){ return {laktoz:"laktózmentes",gluten:"gluténmentes",glutation:"gluténmentes",tojas:"tojásmentes",hal:"halmentes",dio:"diómentes",veget:"vegetáriánus",keto:"ketogén",carnivore:"carnivore",vas:"vashiánypótló"}[d]||d; }
 function activityLabel(a){ return {ulo:"többnyire ülő",konnyu:"könnyen aktív",mozgas:"sokat mozgó",fizikai:"fizikai munka"}[a]||"könnyen aktív"; }
 function tendencyLabel(t){ return {fast:"könnyen fogyó",neutral:"stabil",gain:"könnyen hízó",unknown:"nem ismert"}[t]||"nem ismert"; }
 function goalLabel(g){ return {cut:"Szálkásítás",rekomp:"Szálkás izomépítés / rekompozíció",leanbulk:"Tiszta tömegelés / lean bulk",bulk:"Tömegelés / bulk",karban:"Karbantartás",fogyas:"Szálkásítás",izom:"Tiszta tömegelés / lean bulk"}[g]||g; }
@@ -1604,7 +1646,7 @@ function restBaseline(){ return weekBudgetCalc().ncBaseline; }
 function dayTarget(dow){ return dayBudget(dow).target; }
 
 function renderSwap(){ if(!swapCtx) return ""; var id=swapCtx.id, bolt=!!swapCtx.bolt;
-  var effId=bolt?id:resolveIng(id), grp=ING[effId]?ING[effId].grp:null, base=bolt?id:dietResolve(id), cur=bolt?id:resolveIng(id);
+  var effId=resolveIng(id), grp=ING[effId]?ING[effId].grp:null, base=bolt?id:dietResolve(id), cur=resolveIng(id);
   var raw=(grp&&SWAPGRP[grp])?SWAPGRP[grp]:[effId], opts=[],i;
   for(i=0;i<raw.length;i++){ var o=raw[i]; if(ING[o]&&dietResolve(o)===o&&opts.indexOf(o)<0) opts.push(o); }
   if(opts.indexOf(cur)<0) opts.unshift(cur);
@@ -1664,13 +1706,15 @@ function render(){ _burnCache={}; if(_tick){clearInterval(_tick);_tick=null;}
     haladas:'<svg viewBox="0 0 24 24"><path d="M7 4h10v4a5 5 0 0 1-10 0zM7 5.5H4.5v.5a3 3 0 0 0 3 3M17 5.5h2.5v.5a3 3 0 0 1-3 3M12 13v3M9 20h6l-.7-4H9.7z"/></svg>'
   };
   html+='<nav class="tabs">'+tabBtn("terv","Terv",ic.terv)+tabBtn("edzes","Edzés",ic.edzes)+tabBtn("kaja","Kaja",ic.kaja)+tabBtn("bolt","Bolt",ic.bolt)+tabBtn("haladas","Haladás",ic.haladas)+'</nav>';
-  if(modal) html+='<div class="overlay"><div class="dialog"><div class="dlg-title">Új hét indítása</div><div class="dlg-text">Biztosan új hetet indítasz? Ez törli az összes pipát a bevásárlólistán.</div><div class="dlg-btns"><button class="dlg-cancel" data-act="cancelreset">Mégse</button><button class="dlg-ok" data-act="doreset">Új hét</button></div></div></div>';
+  if(modal) html+='<div class="overlay"><div class="dialog"><div class="dlg-title">Új hét indítása</div><div class="dlg-text">Biztosan új hetet indítasz? Ez törli a pipákat és visszaállítja a listát az eredeti heti tervre (a cseréiddel együtt).</div><div class="dlg-btns"><button class="dlg-cancel" data-act="cancelreset">Mégse</button><button class="dlg-ok" data-act="doreset">Új hét</button></div></div></div>';
   if(exportModal) html+='<div class="overlay"><div class="dialog"><div class="dlg-title">Bevásárlólista</div><textarea class="exp-area" readonly>'+esc(exportModal)+'</textarea><div class="dlg-btns"><button class="dlg-cancel" data-act="closeexp">Bezár</button></div></div></div>';
   if(infoEx) html+=renderExInfo();
   if(swapCtx) html+=renderSwap();
   if(foodModal) html+=renderFoodModal();
   if(bodyModal) html+=renderBodyModal();
   if(shareModal) html+=renderShareModal();
+  if(suppModal) html+=renderSuppModal();
+  if(dietModal) html+=renderDietModal();
   if(_swUpdate) html+='<button class="update-pill" data-act="pwa-reload">\ud83d\udd04 Friss\u00edt\u00e9s el\u00e9rhet\u0151 \u00b7 \u00dajrat\u00f6lt\u00e9s</button>';
   if(toast) html+='<div class="toast">'+esc(toast)+'</div>';
   document.getElementById("root").innerHTML=html;
@@ -2107,7 +2151,8 @@ function foodLog(){ var d=dd(); if(!d.log) d.log=[]; return d.log; }
 function savedFoods(){ if(!state.foods) state.foods=[]; return state.foods; }
 function fmNum(id){ var el=document.getElementById(id); if(!el) return 0; var v=parseFloat((el.value||"").replace(",",".")); return isFinite(v)&&v>0?v:0; }
 function fmTxt(id){ var el=document.getElementById(id); return el?(el.value||"").trim():""; }
-function addLogEntry(o){ if(!o||!o.name) return; foodLog().push({name:o.name,kcal:Math.round(o.kcal||0),p:Math.round((o.p||0)*10)/10,c:Math.round((o.c||0)*10)/10,f:Math.round((o.f||0)*10)/10}); saveState(); }
+function _logJump(k){ if(k){ var pp=k.split("-"); if(pp.length===3){ var dt=new Date(+pp[0],+pp[1]-1,+pp[2]); if(!isNaN(dt)) sel=dt; } } }
+function addLogEntry(o,dateKey){ if(!o||!o.name) return; var arr; if(dateKey){ if(!state.days[dateKey]) state.days[dateKey]={w:{},r:false,m:{}}; if(!state.days[dateKey].log) state.days[dateKey].log=[]; arr=state.days[dateKey].log; } else { arr=foodLog(); } arr.push({name:o.name,kcal:Math.round(o.kcal||0),p:Math.round((o.p||0)*10)/10,c:Math.round((o.c||0)*10)/10,f:Math.round((o.f||0)*10)/10}); saveState(); }
 var _html5qr=null,_qrLoadP=null;
 function loadHtml5Qr(){ if(window.Html5Qrcode) return Promise.resolve(); if(_qrLoadP) return _qrLoadP; _qrLoadP=new Promise(function(res,rej){ var s=document.createElement("script"); s.src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"; s.async=true; s.onload=function(){res();}; s.onerror=function(){_qrLoadP=null;rej(new Error("load"));}; document.head.appendChild(s); }); return _qrLoadP; }
 function stopScan(){ try{ if(_html5qr){ var q=_html5qr; _html5qr=null; if(q.isScanning){ q.stop().then(function(){ try{q.clear();}catch(e){} }).catch(function(){ try{q.clear();}catch(e){} }); } else { try{q.clear();}catch(e){} } } }catch(e){ _html5qr=null; } try{ if(_scanStream){ _scanStream.getTracks().forEach(function(t){t.stop();}); } }catch(e){} _scanStream=null; }
@@ -2167,7 +2212,7 @@ var RMETH={
   potato:[{lbl:"olajban sült",fadd:0},{lbl:"airfryer",fadd:-3},{lbl:"bő olajban",fadd:7},{lbl:"zsírban",fadd:5}],
   grill:[{lbl:"grill/sütő",fadd:0},{lbl:"kevés olajon",fadd:2},{lbl:"olajban/vajon",fadd:4}]
 };
-var RCATS=[{id:"hus",lbl:"🍖 Hús"},{id:"koret",lbl:"🍟 Köret"},{id:"teszta",lbl:"🍝 Tészta/Pizza"},{id:"leves",lbl:"🍲 Leves"},{id:"gyors",lbl:"🍔 Gyors"},{id:"mcd",lbl:"Ⓜ️ McDonald's"},{id:"kfc",lbl:"🍗 KFC"},{id:"bk",lbl:"👑 Burger King"},{id:"subway",lbl:"🥪 Subway"},{id:"pizzahut",lbl:"🍕 Pizza Hut"},{id:"utcai",lbl:"🌭 Utcai/hazai"},{id:"reggeli",lbl:"🍳 Reggeli"},{id:"edes",lbl:"🍰 Édesség"},{id:"snack",lbl:"🍿 Snack"},{id:"ital",lbl:"🥤 Ital"},{id:"szosz",lbl:"🥄 Szósz"}];
+var RCATS=[{id:"hus",lbl:"🍖 Hús"},{id:"koret",lbl:"🍟 Köret"},{id:"teszta",lbl:"🍝 Tészta/Pizza"},{id:"leves",lbl:"🍲 Leves"},{id:"gyors",lbl:"🍔 Gyors"},{id:"mcd",lbl:"Ⓜ️ McDonald's"},{id:"kfc",lbl:"🍗 KFC"},{id:"bk",lbl:"👑 Burger King"},{id:"subway",lbl:"🥪 Subway"},{id:"pizzahut",lbl:"🍕 Pizza Hut"},{id:"pizzaking",lbl:"👑 Pizza King"},{id:"donpepe",lbl:"🍕 Don Pepe"},{id:"dominos",lbl:"🁢 Domino's"},{id:"utcai",lbl:"🌭 Utcai/hazai"},{id:"reggeli",lbl:"🍳 Reggeli"},{id:"edes",lbl:"🍰 Édesség"},{id:"snack",lbl:"🍿 Snack"},{id:"ital",lbl:"🥤 Ital"},{id:"szosz",lbl:"🥄 Szósz"}];
 function _rp(a,b,c){ var o=[{lbl:"kicsi",g:a},{lbl:"közepes",g:b}]; if(c)o.push({lbl:"nagy",g:c}); return o; }
 var RFOOD={
   // ---- HÚS / FEHÉRJE ----
@@ -2429,6 +2474,196 @@ var _MORE={
   tea_cukros:{name:"Tea (cukorral)",cat:"ital",per100:{kcal:30,p:0,c:7.5,f:0},portions:[{lbl:"csésze",g:250},{lbl:"nagy",g:400}]}
 };
 for(var _mok in _MORE) RFOOD[_mok]=_MORE[_mok];
+var _MORE2={
+  // ===== Subway bővítés =====
+  sub_blt:{name:"BLT sub",cat:"subway",fixed:true,g:220,kcal:360,p:16,c:45,f:13,units:[{lbl:"15 cm",mult:1},{lbl:"30 cm",mult:2}]},
+  sub_teriyaki:{name:"Chicken Teriyaki sub",cat:"subway",fixed:true,g:240,kcal:360,p:25,c:50,f:6,units:[{lbl:"15 cm",mult:1},{lbl:"30 cm",mult:2}]},
+  sub_spicy:{name:"Spicy Italian sub",cat:"subway",fixed:true,g:240,kcal:480,p:20,c:44,f:25,units:[{lbl:"15 cm",mult:1},{lbl:"30 cm",mult:2}]},
+  sub_pizzasub:{name:"Pizza sub",cat:"subway",fixed:true,g:240,kcal:460,p:22,c:46,f:22,units:[{lbl:"15 cm",mult:1},{lbl:"30 cm",mult:2}]},
+  sub_baconranch:{name:"Chicken Bacon Ranch sub",cat:"subway",fixed:true,g:250,kcal:480,p:30,c:45,f:20,units:[{lbl:"15 cm",mult:1},{lbl:"30 cm",mult:2}]},
+  sub_melt:{name:"Subway Melt sub",cat:"subway",fixed:true,g:240,kcal:420,p:25,c:45,f:16,units:[{lbl:"15 cm",mult:1},{lbl:"30 cm",mult:2}]},
+  sub_veggiepatty:{name:"Veggie Patty sub",cat:"subway",fixed:true,g:230,kcal:390,p:17,c:50,f:13,units:[{lbl:"15 cm",mult:1},{lbl:"30 cm",mult:2}]},
+  sub_cookie:{name:"Subway keksz",cat:"subway",fixed:true,g:45,kcal:200,p:2,c:30,f:9,units:[{lbl:"1 db",mult:1},{lbl:"3 db",mult:3}]},
+  sub_hashbrown:{name:"Hasbrown (Subway)",cat:"subway",fixed:true,g:90,kcal:150,p:2,c:16,f:9},
+  sub_wrap:{name:"Wrap (csirke, Subway)",cat:"subway",fixed:true,g:250,kcal:500,p:28,c:48,f:22},
+  // ===== Pizza Hut bővítés =====
+  ph_hawaii:{name:"Hawaii (szelet)",cat:"pizzahut",fixed:true,g:110,kcal:240,p:11,c:28,f:9,units:[{lbl:"1 szelet",mult:1},{lbl:"2 szelet",mult:2},{lbl:"3 szelet",mult:3}]},
+  ph_vegetariana:{name:"Vegetáriánus (szelet)",cat:"pizzahut",fixed:true,g:110,kcal:220,p:9,c:28,f:8,units:[{lbl:"1 szelet",mult:1},{lbl:"2 szelet",mult:2},{lbl:"3 szelet",mult:3}]},
+  ph_meatfeast:{name:"Meat Feast (szelet)",cat:"pizzahut",fixed:true,g:120,kcal:300,p:15,c:27,f:15,units:[{lbl:"1 szelet",mult:1},{lbl:"2 szelet",mult:2},{lbl:"3 szelet",mult:3}]},
+  ph_chickensupreme:{name:"Chicken Supreme (szelet)",cat:"pizzahut",fixed:true,g:120,kcal:260,p:14,c:28,f:10,units:[{lbl:"1 szelet",mult:1},{lbl:"2 szelet",mult:2},{lbl:"3 szelet",mult:3}]},
+  ph_fourcheese:{name:"Négysajtos (szelet)",cat:"pizzahut",fixed:true,g:110,kcal:290,p:13,c:27,f:14,units:[{lbl:"1 szelet",mult:1},{lbl:"2 szelet",mult:2},{lbl:"3 szelet",mult:3}]},
+  ph_cheesebites:{name:"Sajtos falatok (Cheese Bites)",cat:"pizzahut",fixed:true,g:120,kcal:360,p:14,c:32,f:20,units:[{lbl:"6 db",mult:1},{lbl:"10 db",mult:1.67}]},
+  ph_wedges:{name:"Fűszeres burgonya (wedges)",cat:"pizzahut",fixed:true,g:150,kcal:320,p:5,c:40,f:15},
+  ph_cinnamon:{name:"Fahéjas rudak (Cinnamon Sticks)",cat:"pizzahut",fixed:true,g:120,kcal:300,p:5,c:48,f:10},
+  // ===== Pizza King =====
+  pk_margherita:{name:"Margherita (szelet)",cat:"pizzaking",fixed:true,g:110,kcal:230,p:9,c:27,f:9,units:[{lbl:"1 szelet",mult:1},{lbl:"2 szelet",mult:2},{lbl:"4 szelet (fél)",mult:4},{lbl:"8 szelet (egész)",mult:8}]},
+  pk_sonkas:{name:"Sonkás (szelet)",cat:"pizzaking",fixed:true,g:120,kcal:255,p:12,c:27,f:11,units:[{lbl:"1 szelet",mult:1},{lbl:"2 szelet",mult:2},{lbl:"4 szelet (fél)",mult:4},{lbl:"8 szelet (egész)",mult:8}]},
+  pk_special:{name:"Pizza King special (szelet)",cat:"pizzaking",fixed:true,g:130,kcal:290,p:13,c:28,f:14,units:[{lbl:"1 szelet",mult:1},{lbl:"2 szelet",mult:2},{lbl:"4 szelet (fél)",mult:4},{lbl:"8 szelet (egész)",mult:8}]},
+  pk_gyros_pizza:{name:"Gyros pizza (szelet)",cat:"pizzaking",fixed:true,g:130,kcal:280,p:14,c:28,f:13,units:[{lbl:"1 szelet",mult:1},{lbl:"2 szelet",mult:2},{lbl:"4 szelet (fél)",mult:4},{lbl:"8 szelet (egész)",mult:8}]},
+  pk_gyros_tal:{name:"Gyros tál (Pizza King)",cat:"pizzaking",fixed:true,g:450,kcal:700,p:35,c:45,f:40},
+  pk_gyros_pita:{name:"Gyros pita (Pizza King)",cat:"pizzaking",fixed:true,g:300,kcal:640,p:28,c:55,f:33},
+  pk_hamburger:{name:"Hamburger (Pizza King)",cat:"pizzaking",fixed:true,g:250,kcal:550,p:25,c:45,f:28},
+  pk_rantott_sajt:{name:"Rántott sajt + hasáb",cat:"pizzaking",fixed:true,g:0,kcal:700,p:25,c:60,f:40},
+  pk_csirkecsik:{name:"Csirkecsíkok + hasáb",cat:"pizzaking",fixed:true,g:0,kcal:650,p:30,c:55,f:32},
+  // ===== Don Pepe =====
+  dp_margherita:{name:"Margherita (szelet)",cat:"donpepe",fixed:true,g:110,kcal:235,p:9,c:28,f:9,units:[{lbl:"1 szelet",mult:1},{lbl:"2 szelet",mult:2},{lbl:"4 szelet (fél)",mult:4},{lbl:"8 szelet (egész)",mult:8}]},
+  dp_sonkas_gombas:{name:"Sonkás-gombás (szelet)",cat:"donpepe",fixed:true,g:120,kcal:255,p:11,c:28,f:11,units:[{lbl:"1 szelet",mult:1},{lbl:"2 szelet",mult:2},{lbl:"4 szelet (fél)",mult:4},{lbl:"8 szelet (egész)",mult:8}]},
+  dp_special:{name:"Don Pepe special (szelet)",cat:"donpepe",fixed:true,g:130,kcal:295,p:13,c:28,f:15,units:[{lbl:"1 szelet",mult:1},{lbl:"2 szelet",mult:2},{lbl:"4 szelet (fél)",mult:4},{lbl:"8 szelet (egész)",mult:8}]},
+  dp_capricciosa:{name:"Capricciosa (szelet)",cat:"donpepe",fixed:true,g:125,kcal:265,p:12,c:28,f:12,units:[{lbl:"1 szelet",mult:1},{lbl:"2 szelet",mult:2},{lbl:"4 szelet (fél)",mult:4},{lbl:"8 szelet (egész)",mult:8}]},
+  dp_spagetti:{name:"Spagetti bolognai (Don Pepe)",cat:"donpepe",fixed:true,g:400,kcal:650,p:26,c:80,f:22},
+  dp_carbonara:{name:"Carbonara (Don Pepe)",cat:"donpepe",fixed:true,g:400,kcal:800,p:28,c:85,f:38},
+  dp_hamburger:{name:"Hamburger (Don Pepe)",cat:"donpepe",fixed:true,g:250,kcal:600,p:27,c:46,f:32},
+  dp_gyros_tal:{name:"Gyros tál (Don Pepe)",cat:"donpepe",fixed:true,g:450,kcal:720,p:36,c:46,f:41},
+  // ===== Domino's =====
+  dm_margherita:{name:"Margherita (szelet)",cat:"dominos",fixed:true,g:105,kcal:220,p:9,c:26,f:8,units:[{lbl:"1 szelet",mult:1},{lbl:"2 szelet",mult:2},{lbl:"4 szelet (fél)",mult:4},{lbl:"6 szelet",mult:6}]},
+  dm_pepperoni:{name:"Pepperoni (szelet)",cat:"dominos",fixed:true,g:110,kcal:270,p:12,c:26,f:13,units:[{lbl:"1 szelet",mult:1},{lbl:"2 szelet",mult:2},{lbl:"4 szelet (fél)",mult:4},{lbl:"6 szelet",mult:6}]},
+  dm_texas:{name:"Texas BBQ (szelet)",cat:"dominos",fixed:true,g:115,kcal:260,p:13,c:27,f:11,units:[{lbl:"1 szelet",mult:1},{lbl:"2 szelet",mult:2},{lbl:"4 szelet (fél)",mult:4},{lbl:"6 szelet",mult:6}]},
+  dm_hawaii:{name:"Hawaii (szelet)",cat:"dominos",fixed:true,g:110,kcal:235,p:11,c:28,f:8,units:[{lbl:"1 szelet",mult:1},{lbl:"2 szelet",mult:2},{lbl:"4 szelet (fél)",mult:4},{lbl:"6 szelet",mult:6}]},
+  dm_americana:{name:"Americana (szelet)",cat:"dominos",fixed:true,g:115,kcal:280,p:13,c:26,f:14,units:[{lbl:"1 szelet",mult:1},{lbl:"2 szelet",mult:2},{lbl:"4 szelet (fél)",mult:4},{lbl:"6 szelet",mult:6}]},
+  dm_garlic:{name:"Fokhagymás kenyér (Domino's)",cat:"dominos",fixed:true,g:100,kcal:250,p:6,c:30,f:11,units:[{lbl:"4 db",mult:1},{lbl:"8 db",mult:2}]},
+  dm_wings:{name:"Csirkeszárny (Domino's)",cat:"dominos",fixed:true,g:120,kcal:300,p:22,c:6,f:22,units:[{lbl:"4 db",mult:1},{lbl:"8 db",mult:2}]},
+  dm_lava:{name:"Chocolate Lava sütemény",cat:"dominos",fixed:true,g:110,kcal:350,p:4,c:45,f:17},
+  dm_wedges:{name:"Burgonya wedges (Domino's)",cat:"dominos",fixed:true,g:150,kcal:320,p:5,c:40,f:15},
+  // ===== HÚS – magyaros (+több) =====
+  toltott_kaposzta:{name:"Töltött káposzta",cat:"hus",per100:{kcal:130,p:9,c:8,f:7},portions:_rp(250,350)},
+  toltott_paprika:{name:"Töltött paprika",cat:"hus",per100:{kcal:110,p:7,c:9,f:5},portions:_rp(250,350)},
+  rakott_krumpli:{name:"Rakott krumpli",cat:"hus",per100:{kcal:170,p:8,c:14,f:9},portions:_rp(250,350)},
+  paprikas_krumpli:{name:"Paprikás krumpli (kolbásszal)",cat:"hus",per100:{kcal:120,p:5,c:15,f:5},portions:_rp(250,350)},
+  lecso:{name:"Lecsó (kolbásszal)",cat:"hus",per100:{kcal:100,p:5,c:6,f:6},portions:_rp(200,300)},
+  sult_oldalas:{name:"Sült oldalas",cat:"hus",per100:{kcal:290,p:20,c:2,f:22},portions:_rp(200,300)},
+  serte_porkolt:{name:"Sertéspörkölt",cat:"hus",per100:{kcal:200,p:17,c:3,f:13},portions:_rp(150,250)},
+  brassoi:{name:"Brassói aprópecsenye",cat:"hus",per100:{kcal:190,p:15,c:8,f:11},portions:_rp(200,300)},
+  rantott_csirkecomb:{name:"Rántott csirkecomb",cat:"hus",per100:{kcal:250,p:18,c:12,f:15},portions:[{lbl:"1 db",g:150},{lbl:"2 db",g:300}],methods:RMETH.fried},
+  sajtos_csirkemell:{name:"Sajtos-tejszínes csirkemell",cat:"hus",per100:{kcal:190,p:20,c:3,f:11},portions:_rp(150,250)},
+  // ===== KÖRET (+több) =====
+  kaposztasalata:{name:"Káposztasaláta (ecetes)",cat:"koret",per100:{kcal:40,p:1,c:7,f:1},portions:_rp(100,200)},
+  uborkasalata:{name:"Uborkasaláta (tejfölös)",cat:"koret",per100:{kcal:60,p:2,c:5,f:3},portions:_rp(100,200)},
+  francia_salata:{name:"Francia saláta",cat:"koret",per100:{kcal:150,p:2,c:10,f:11},portions:[{lbl:"kis adag",g:100},{lbl:"adag",g:150}]},
+  rizotto:{name:"Rizottó (gombás)",cat:"koret",per100:{kcal:150,p:4,c:22,f:5},portions:_rp(200,300)},
+  polenta:{name:"Polenta",cat:"koret",per100:{kcal:110,p:2,c:20,f:2},portions:_rp(150,250)},
+  // ===== TÉSZTA (+több) =====
+  tortellini:{name:"Töltött tészta (tortellini)",cat:"teszta",per100:{kcal:200,p:9,c:28,f:6},portions:_rp(200,300)},
+  // ===== LEVES (+több) =====
+  jokai:{name:"Jókai bableves",cat:"leves",per100:{kcal:95,p:6,c:9,f:4},portions:[{lbl:"tányér",g:350},{lbl:"nagy",g:450}]},
+  ujhazi:{name:"Újházi tyúkhúsleves",cat:"leves",per100:{kcal:45,p:4,c:4,f:1.5},portions:[{lbl:"tányér",g:350},{lbl:"nagy",g:450}]},
+  karfiolleves:{name:"Karfiolleves",cat:"leves",per100:{kcal:55,p:2,c:6,f:2.5},portions:[{lbl:"tányér",g:300},{lbl:"nagy",g:400}]},
+  borsoleves:{name:"Borsóleves",cat:"leves",per100:{kcal:70,p:4,c:9,f:2},portions:[{lbl:"tányér",g:300},{lbl:"nagy",g:400}]},
+  // ===== REGGELI (+több) =====
+  zabkasa:{name:"Zabkása (banános)",cat:"reggeli",per100:{kcal:100,p:4,c:17,f:2},portions:[{lbl:"kis tál",g:250},{lbl:"nagy tál",g:350}]},
+  // ===== ÉDESSÉG (+több) =====
+  somloi:{name:"Somlói galuska",cat:"edes",per100:{kcal:250,p:5,c:30,f:12},portions:[{lbl:"1 adag",g:150}]},
+  gundel:{name:"Gundel palacsinta",cat:"edes",per100:{kcal:260,p:7,c:28,f:13},portions:[{lbl:"2 db",g:180}]},
+  almas_pite_hazi:{name:"Almás pite (házi)",cat:"edes",per100:{kcal:240,p:3,c:34,f:10},portions:[{lbl:"1 szelet",g:120}]},
+  fagylalt_kehely:{name:"Fagylaltkehely (gyümölcsös)",cat:"edes",per100:{kcal:160,p:3,c:24,f:6},portions:[{lbl:"1 kehely",g:150}]},
+  // ===== SNACK (+több) =====
+  jegkrem:{name:"Jégkrém (pálcikás)",cat:"snack",fixed:true,g:80,kcal:200,p:3,c:24,f:10},
+  muesli_szelet:{name:"Müzliszelet",cat:"snack",fixed:true,g:40,kcal:150,p:3,c:24,f:5},
+  rizsszelet:{name:"Puffasztott rizs szelet",cat:"snack",fixed:true,g:25,kcal:90,p:2,c:16,f:2},
+  studentfutter:{name:"Studentfutter (magmix)",cat:"snack",per100:{kcal:480,p:13,c:40,f:30},portions:[{lbl:"marék",g:30},{lbl:"nagy marék",g:60}]},
+  // ===== ITAL (+több) =====
+  ice_tea:{name:"Ice tea (cukros)",cat:"ital",per100:{kcal:30,p:0,c:7.5,f:0},portions:[{lbl:"kicsi",g:330},{lbl:"nagy",g:500}]},
+  smoothie_zold:{name:"Zöld smoothie",cat:"ital",per100:{kcal:50,p:1,c:10,f:0.5},portions:[{lbl:"pohár",g:300},{lbl:"nagy",g:500}]},
+  kakao:{name:"Kakaó (tejjel)",cat:"ital",per100:{kcal:80,p:3,c:12,f:2},portions:[{lbl:"csésze",g:250},{lbl:"nagy",g:400}]},
+  frocs:{name:"Fröccs",cat:"ital",per100:{kcal:40,p:0,c:2,f:0},portions:[{lbl:"kis (2dl)",g:200},{lbl:"nagy (3dl)",g:300}]},
+  palinka:{name:"Pálinka (1 kupica)",cat:"ital",fixed:true,g:30,kcal:55,p:0,c:0,f:0},
+  // ===== SZÓSZ (+több) =====
+  bbq_szosz:{name:"BBQ szósz",cat:"szosz",per100:{kcal:170,p:1,c:40,f:0.5},portions:[{lbl:"1 adag",g:30}]},
+  mustar:{name:"Mustár",cat:"szosz",per100:{kcal:100,p:6,c:8,f:5},portions:[{lbl:"1 ek",g:15},{lbl:"2 ek",g:30}]},
+  chili_szosz:{name:"Csípős/chili szósz",cat:"szosz",per100:{kcal:100,p:2,c:20,f:1},portions:[{lbl:"1 adag",g:30}]},
+  tejfol:{name:"Tejföl (20%)",cat:"szosz",per100:{kcal:190,p:3,c:3,f:18},portions:[{lbl:"1 ek",g:20},{lbl:"2 ek",g:40}]}
+};
+for(var _m2k in _MORE2) RFOOD[_m2k]=_MORE2[_m2k];
+var _MORE3={
+  // ===== ÁZSIAI =====
+  sushi_maki:{name:"Sushi (maki tekercs)",cat:"gyors",fixed:true,g:180,kcal:200,p:6,c:36,f:3,units:[{lbl:"6 db",mult:1},{lbl:"8 db",mult:1.3},{lbl:"12 db",mult:2}]},
+  sushi_nigiri:{name:"Nigiri (halas)",cat:"gyors",fixed:true,g:35,kcal:50,p:3,c:8,f:1,units:[{lbl:"2 db",mult:2},{lbl:"4 db",mult:4},{lbl:"6 db",mult:6}]},
+  ramen:{name:"Ramen leves",cat:"leves",per100:{kcal:60,p:4,c:7,f:2},portions:[{lbl:"tál",g:450},{lbl:"nagy",g:600}]},
+  pho:{name:"Pho leves",cat:"leves",per100:{kcal:45,p:4,c:5,f:1},portions:[{lbl:"tál",g:450},{lbl:"nagy",g:600}]},
+  padthai:{name:"Pad thai",cat:"teszta",per100:{kcal:160,p:7,c:22,f:5},portions:_rp(300,400)},
+  teriyaki_tal:{name:"Csirke teriyaki tál (rizzsel)",cat:"hus",per100:{kcal:150,p:12,c:18,f:4},portions:_rp(300,400)},
+  edamame:{name:"Edamame",cat:"koret",per100:{kcal:120,p:11,c:9,f:5},portions:[{lbl:"kis adag",g:100},{lbl:"adag",g:150}]},
+  tavaszi_tekercs:{name:"Tavaszi tekercs",cat:"koret",fixed:true,g:60,kcal:100,p:3,c:12,f:4,units:[{lbl:"1 db",mult:1},{lbl:"2 db",mult:2},{lbl:"4 db",mult:4}]},
+  bao:{name:"Bao bun (töltött)",cat:"gyors",fixed:true,g:110,kcal:220,p:9,c:28,f:8,units:[{lbl:"1 db",mult:1},{lbl:"2 db",mult:2}]},
+  kinai_csirke:{name:"Kínai bundás csirke (édes-savanyú)",cat:"hus",per100:{kcal:210,p:12,c:20,f:9},portions:_rp(200,300)},
+  wok_marha:{name:"Wok marha zöldségekkel",cat:"hus",per100:{kcal:140,p:13,c:8,f:6},portions:_rp(250,350)},
+  curry_csirke:{name:"Csirke curry (kókusztejes)",cat:"hus",per100:{kcal:150,p:12,c:8,f:8},portions:_rp(250,350)},
+  dhal:{name:"Dhal (lencse curry)",cat:"koret",per100:{kcal:120,p:6,c:16,f:4},portions:_rp(200,300)},
+  naan:{name:"Naan kenyér",cat:"koret",fixed:true,g:90,kcal:260,p:8,c:45,f:6,units:[{lbl:"1 db",mult:1},{lbl:"2 db",mult:2}]},
+  // ===== MEXIKÓI =====
+  burrito:{name:"Burrito (csirkés)",cat:"gyors",fixed:true,g:320,kcal:600,p:28,c:70,f:22},
+  taco:{name:"Taco",cat:"gyors",fixed:true,g:110,kcal:200,p:10,c:18,f:10,units:[{lbl:"1 db",mult:1},{lbl:"2 db",mult:2},{lbl:"3 db",mult:3}]},
+  quesadilla:{name:"Quesadilla",cat:"gyors",fixed:true,g:250,kcal:500,p:22,c:40,f:26},
+  nachos_sajtos:{name:"Nachos sajttal",cat:"snack",per100:{kcal:350,p:9,c:38,f:18},portions:[{lbl:"kis adag",g:100},{lbl:"nagy adag",g:200}]},
+  fajitas:{name:"Fajitas (csirke)",cat:"hus",per100:{kcal:160,p:13,c:12,f:7},portions:_rp(250,350)},
+  guacamole:{name:"Guacamole",cat:"szosz",per100:{kcal:160,p:2,c:9,f:13},portions:[{lbl:"kis adag",g:50},{lbl:"adag",g:100}]},
+  // ===== GÖRÖG / MEDITERRÁN =====
+  gorog_salata:{name:"Görög saláta",cat:"koret",per100:{kcal:90,p:3,c:6,f:6},portions:[{lbl:"kis adag",g:150},{lbl:"adag",g:250}]},
+  souvlaki:{name:"Souvlaki (csirke nyárs)",cat:"hus",per100:{kcal:180,p:20,c:2,f:10},portions:[{lbl:"1 nyárs",g:120},{lbl:"2 nyárs",g:240}],methods:RMETH.grill},
+  falafel:{name:"Falafel",cat:"koret",fixed:true,g:120,kcal:330,p:12,c:30,f:18,units:[{lbl:"4 db",mult:1},{lbl:"6 db",mult:1.5}]},
+  musaka:{name:"Muszaka",cat:"hus",per100:{kcal:150,p:9,c:9,f:9},portions:_rp(250,350)},
+  // ===== OLASZ =====
+  lasagne_it:{name:"Lasagne",cat:"teszta",per100:{kcal:160,p:9,c:14,f:8},portions:_rp(250,350)},
+  caprese:{name:"Caprese saláta",cat:"koret",per100:{kcal:150,p:8,c:4,f:12},portions:[{lbl:"kis adag",g:150},{lbl:"adag",g:200}]},
+  bruschetta:{name:"Bruschetta",cat:"reggeli",fixed:true,g:120,kcal:220,p:6,c:26,f:10,units:[{lbl:"2 szelet",mult:1},{lbl:"4 szelet",mult:2}]},
+  tiramisu:{name:"Tiramisu",cat:"edes",per100:{kcal:280,p:5,c:28,f:16},portions:[{lbl:"1 adag",g:120}]},
+  panini:{name:"Panini (sonkás-sajtos)",cat:"gyors",fixed:true,g:220,kcal:450,p:22,c:40,f:22},
+  // ===== HÚS / HAL (+több) =====
+  rantott_hal:{name:"Rántott hal (filé)",cat:"hus",per100:{kcal:200,p:16,c:12,f:10},portions:_rp(120,180),methods:RMETH.fried},
+  lazac_grill:{name:"Grillezett lazac",cat:"hus",per100:{kcal:200,p:22,c:0,f:12},portions:_rp(120,180),methods:RMETH.grill},
+  garnela:{name:"Garnélarák (grill)",cat:"hus",per100:{kcal:100,p:20,c:1,f:2},portions:_rp(100,150),methods:RMETH.grill},
+  borjuporkolt:{name:"Borjúpörkölt",cat:"hus",per100:{kcal:180,p:18,c:3,f:11},portions:_rp(150,250)},
+  barany:{name:"Báránycomb (sült)",cat:"hus",per100:{kcal:240,p:24,c:0,f:16},portions:_rp(150,250)},
+  pulyka_grill:{name:"Grillezett pulykamell",cat:"hus",per100:{kcal:130,p:24,c:0,f:3},portions:_rp(120,180),methods:RMETH.grill},
+  virsli:{name:"Virsli",cat:"hus",fixed:true,g:100,kcal:230,p:10,c:2,f:20,units:[{lbl:"2 db",mult:1},{lbl:"4 db",mult:2}]},
+  kolbasz:{name:"Sült kolbász",cat:"hus",per100:{kcal:300,p:14,c:2,f:26},portions:[{lbl:"kis adag",g:100},{lbl:"adag",g:150}]},
+  szalonna:{name:"Sült szalonna",cat:"hus",per100:{kcal:540,p:9,c:1,f:54},portions:[{lbl:"pár szelet",g:30},{lbl:"több",g:60}]},
+  fott_sonka:{name:"Főtt sonka",cat:"hus",per100:{kcal:110,p:18,c:1,f:4},portions:[{lbl:"pár szelet",g:50},{lbl:"adag",g:100}]},
+  // ===== VEGA / VEGÁN =====
+  tofu_grill:{name:"Grillezett tofu",cat:"hus",per100:{kcal:120,p:12,c:3,f:7},portions:_rp(100,150),methods:RMETH.grill},
+  rantott_karfiol:{name:"Rántott karfiol",cat:"koret",per100:{kcal:180,p:6,c:18,f:10},portions:_rp(150,250),methods:RMETH.fried},
+  lencsefozelek:{name:"Lencsefőzelék",cat:"koret",per100:{kcal:110,p:7,c:14,f:2},portions:_rp(200,300)},
+  borsofozelek:{name:"Borsófőzelék",cat:"koret",per100:{kcal:90,p:5,c:12,f:2},portions:_rp(200,300)},
+  toltott_gomba:{name:"Töltött gomba (sajtos)",cat:"koret",per100:{kcal:120,p:6,c:6,f:8},portions:[{lbl:"kis adag",g:150},{lbl:"adag",g:250}]},
+  sult_sutotok:{name:"Sült sütőtök",cat:"koret",per100:{kcal:70,p:1,c:14,f:1},portions:_rp(150,250)},
+  zoldbab:{name:"Párolt zöldbab",cat:"koret",per100:{kcal:40,p:2,c:6,f:1},portions:_rp(100,200)},
+  // ===== KÖRET – gabonák =====
+  kuszkusz:{name:"Kuszkusz",cat:"koret",per100:{kcal:160,p:5,c:33,f:1},portions:_rp(100,200)},
+  quinoa:{name:"Quinoa",cat:"koret",per100:{kcal:150,p:5,c:25,f:3},portions:_rp(100,200)},
+  bulgur:{name:"Bulgur",cat:"koret",per100:{kcal:150,p:5,c:30,f:1},portions:_rp(100,200)},
+  // ===== REGGELI (+több) =====
+  rantotta_szalonnas:{name:"Rántotta szalonnával",cat:"reggeli",per100:{kcal:200,p:13,c:1,f:16},portions:[{lbl:"2 tojás",g:160},{lbl:"3 tojás",g:230}]},
+  tukortojas:{name:"Tükörtojás",cat:"reggeli",fixed:true,g:110,kcal:180,p:13,c:1,f:14,units:[{lbl:"2 db",mult:1},{lbl:"3 db",mult:1.5}]},
+  kifli:{name:"Kifli",cat:"reggeli",fixed:true,g:50,kcal:130,p:4,c:22,f:3,units:[{lbl:"1 db",mult:1},{lbl:"2 db",mult:2}]},
+  zsemle:{name:"Zsemle",cat:"reggeli",fixed:true,g:50,kcal:140,p:5,c:27,f:2,units:[{lbl:"1 db",mult:1},{lbl:"2 db",mult:2}]},
+  bagel:{name:"Bagel (krémsajtos)",cat:"reggeli",fixed:true,g:130,kcal:350,p:12,c:48,f:12},
+  gorog_joghurt:{name:"Görög joghurt",cat:"reggeli",per100:{kcal:90,p:9,c:4,f:4},portions:[{lbl:"kis pohár",g:150},{lbl:"nagy",g:200}]},
+  turo:{name:"Túró (félzsíros)",cat:"reggeli",per100:{kcal:120,p:13,c:3,f:5},portions:[{lbl:"kis adag",g:100},{lbl:"adag",g:200}]},
+  trappista:{name:"Trappista sajt",cat:"reggeli",per100:{kcal:330,p:25,c:1,f:26},portions:[{lbl:"pár szelet",g:30},{lbl:"adag",g:60}]},
+  mozzarella:{name:"Mozzarella",cat:"koret",per100:{kcal:250,p:18,c:2,f:18},portions:[{lbl:"fél golyó",g:50},{lbl:"1 golyó",g:100}]},
+  // ===== ÉDESSÉG (+több) =====
+  csoki_tej:{name:"Tejcsokoládé",cat:"edes",per100:{kcal:540,p:7,c:58,f:31},portions:[{lbl:"1 kocka",g:10},{lbl:"4 kocka",g:40},{lbl:"fél tábla",g:50}]},
+  gumicukor:{name:"Gumicukor",cat:"edes",per100:{kcal:340,p:6,c:78,f:0},portions:[{lbl:"kis marék",g:30},{lbl:"marék",g:60}]},
+  fank:{name:"Fánk",cat:"edes",fixed:true,g:80,kcal:280,p:5,c:34,f:14},
+  kakaos_csiga:{name:"Kakaós csiga",cat:"edes",fixed:true,g:90,kcal:320,p:6,c:42,f:14},
+  csokis_croissant:{name:"Csokis croissant",cat:"edes",fixed:true,g:80,kcal:300,p:6,c:33,f:16},
+  palacsinta_nutellas:{name:"Palacsinta (nutellás)",cat:"edes",fixed:true,g:160,kcal:400,p:8,c:50,f:18,units:[{lbl:"2 db",mult:1},{lbl:"3 db",mult:1.5}]},
+  // ===== LEVES (+több) =====
+  minesztrone:{name:"Minestrone leves",cat:"leves",per100:{kcal:50,p:2,c:8,f:1.5},portions:[{lbl:"tányér",g:300},{lbl:"nagy",g:400}]},
+  csontleves:{name:"Csontleves (bone broth)",cat:"leves",per100:{kcal:20,p:3,c:1,f:0.5},portions:[{lbl:"csésze",g:300},{lbl:"nagy",g:400}]},
+  tortilla_leves:{name:"Mexikói tortilla leves",cat:"leves",per100:{kcal:60,p:4,c:6,f:2.5},portions:[{lbl:"tányér",g:350},{lbl:"nagy",g:450}]},
+  // ===== ITAL (+több) =====
+  narancsle:{name:"Narancslé (100%)",cat:"ital",per100:{kcal:45,p:0.7,c:10,f:0.2},portions:[{lbl:"pohár",g:200},{lbl:"nagy",g:300}]},
+  almale:{name:"Almalé",cat:"ital",per100:{kcal:46,p:0,c:11,f:0},portions:[{lbl:"pohár",g:200},{lbl:"nagy",g:300}]},
+  limonade:{name:"Limonádé",cat:"ital",per100:{kcal:40,p:0,c:10,f:0},portions:[{lbl:"közepes",g:300},{lbl:"nagy",g:500}]},
+  sor:{name:"Sör (világos)",cat:"ital",per100:{kcal:43,p:0.5,c:3.6,f:0},portions:[{lbl:"pohár (3dl)",g:300},{lbl:"korsó (5dl)",g:500}]},
+  voros_bor:{name:"Vörösbor",cat:"ital",fixed:true,g:100,kcal:85,p:0,c:2,f:0,units:[{lbl:"1 dl",mult:1},{lbl:"2 dl",mult:2}]},
+  pezsgo:{name:"Pezsgő",cat:"ital",fixed:true,g:100,kcal:80,p:0,c:3,f:0,units:[{lbl:"1 pohár",mult:1},{lbl:"2 pohár",mult:2}]},
+  fekete_kave:{name:"Fekete kávé",cat:"ital",per100:{kcal:2,p:0,c:0,f:0},portions:[{lbl:"eszpresszó",g:50},{lbl:"nagy",g:200}]},
+  cappuccino:{name:"Cappuccino",cat:"ital",per100:{kcal:40,p:2,c:4,f:2},portions:[{lbl:"közepes",g:200},{lbl:"nagy",g:300}]}
+};
+for(var _m3k in _MORE3) RFOOD[_m3k]=_MORE3[_m3k];
+
+
 
 
 function rFoodMacros(pi){
@@ -2443,7 +2678,7 @@ function rFoodMacros(pi){
 function renderRestaurant(){
   if(!foodModal.plate) foodModal.plate=[];
   var cat=foodModal.rcat||"hus",h='';
-  h+='<div class="fm-hint">Étteremben ettél? Rakd össze a fogást — koppints egy ételre, állítsd az adagot és az elkészítést. Több tétel is mehet egy tányérra.</div>';
+  h+='<div class="fm-hint">Kész ételt ettél? Rakd össze a fogást — koppints egy ételre, állítsd az adagot és az elkészítést. Több tétel is mehet egy tányérra.</div>';
   h+='<div class="rcats">'; for(var ci=0;ci<RCATS.length;ci++){ var c=RCATS[ci]; h+='<button class="rcat'+(c.id===cat?" on":"")+'" data-act="rest-cat" data-cat="'+c.id+'">'+c.lbl+'</button>'; } h+='</div>';
   if(cat==="mcd"||cat==="kfc"||cat==="bk"||cat==="subway"||cat==="pizzahut"||cat==="utcai") h+='<div class="fm-note">ℹ️ A gyorséttermi/utcai értékek közelítő becslések — a méret és összetétel eltérhet.</div>';
   h+='<div class="rlist">'; for(var id in RFOOD){ var fd=RFOOD[id]; if(fd.cat!==cat) continue; h+='<button class="ritem" data-act="rest-add" data-fid="'+id+'"><span>'+esc(fd.name)+'</span><span class="ritem-add">+</span></button>'; } h+='</div>';
@@ -2487,7 +2722,85 @@ function renderFoodModal(){ if(!foodModal) return ""; var m=foodModal.mode||"man
   else if(m==="rest"){ body=renderRestaurant(); }
   var busy=foodModal.busy?'<div class="fm-busy">⏳ Dolgozom…</div>':"";
   var err=foodModal.err?'<div class="fm-err">'+esc(foodModal.err)+'</div>':"";
-  return '<div class="overlay"><div class="fi-sheet food-sheet"><button class="fi-x" data-act="food-close" aria-label="Bezárás">✕</button><div class="fm-head">🍎 Étel hozzáadása</div><div class="fm-tabs">'+tabB("manual","✍️ Kézi")+tabB("photo","📸 Fotó")+tabB("barcode","🔦 Vonalkód")+tabB("rest","🍽 Étterem")+'</div><div class="fm-bd">'+busy+err+body+'</div></div></div>'; }
+  return '<div class="overlay"><div class="fi-sheet food-sheet"><button class="fi-x" data-act="food-close" aria-label="Bezárás">✕</button><div class="fm-head">🍎 Étel hozzáadása</div><div class="fm-tabs">'+tabB("manual","✍️ Kézi")+tabB("photo","📸 Fotó")+tabB("barcode","🔦 Vonalkód")+tabB("rest","🍽 Kész ételek")+'</div><div class="fm-date-row"><label for="fm-date">📅 Melyik napra?</label><input type="date" id="fm-date" class="fm-date" value="'+escAttr(foodModal.logDate||iso(sel))+'"></div><div class="fm-bd">'+busy+err+body+'</div></div></div>'; }
+
+/* ==== VÍZ + TÁPLÁLÉKKIEGÉSZÍTŐK (Fázis 12) ==== */
+var SUPPS=[
+ {id:"kreatin",e:"💪",n:"Kreatin",note:"3–5 g/nap, bő vízzel",water:500},
+ {id:"feherje",e:"🥛",n:"Fehérjepor (whey)",note:"1 adag ~25 g fehérje"},
+ {id:"koffein",e:"⚡",n:"Koffein / pre-workout",note:"edzés előtt 20–40 perccel",water:250},
+ {id:"omega3",e:"🐟",n:"Omega-3 (halolaj)",note:"1–2 g EPA/DHA naponta"},
+ {id:"d3",e:"☀️",n:"D3-vitamin",note:"1000–2000 NE, főleg télen"},
+ {id:"magnezium",e:"🌙",n:"Magnézium",note:"300–400 mg, este"},
+ {id:"cink",e:"🔩",n:"Cink",note:"8–11 mg naponta"},
+ {id:"vas",e:"🩸",n:"Vas",note:"C-vitaminnal, étkezéshez"},
+ {id:"cvit",e:"🍊",n:"C-vitamin",note:"500–1000 mg"},
+ {id:"multivit",e:"💊",n:"Multivitamin",note:"étkezéshez"},
+ {id:"bcaa",e:"🔷",n:"BCAA / EAA",note:"edzés körül"},
+ {id:"kollagen",e:"🦴",n:"Kollagén",note:"ízületekhez, ~10 g"},
+ {id:"probiotikum",e:"🦠",n:"Probiotikum",note:"emésztéshez"}
+];
+var SUPP_BY={}; (function(){ for(var i=0;i<SUPPS.length;i++) SUPP_BY[SUPPS[i].id]=SUPPS[i]; })();
+function suppList(){ return (profile&&profile.supps)||[]; }
+function hasSupp(id){ return suppList().indexOf(id)>=0; }
+function waterBonusMl(){ var s=suppList(),b=0,i; for(i=0;i<s.length;i++){ var sp=SUPP_BY[s[i]]; if(sp&&sp.water) b+=sp.water; } return b; }
+function waterTargetFor(dow){ var kg=(profile&&profile.kg)||75, act=(profile&&profile.activity)||"konnyu";
+  var actBonus=act==="ulo"?0:(act==="konnyu"?250:(act==="mozgas"?400:600));
+  var w=workoutFor(dow), train=(w&&!w.rest)?500:0;
+  var ml=35*kg+actBonus+train+waterBonusMl(); return Math.round(ml/100)*100; }
+function waterCard(dow){ var d=dd(); if(d.water==null)d.water=0; var tgt=waterTargetFor(dow),cur=d.water,pct=Math.min(100,Math.round(cur/tgt*100));
+  var cb=["súlyod","aktivitásod"]; var w=workoutFor(dow); if(w&&!w.rest)cb.push("edzésnap +"); if(hasSupp("kreatin"))cb.push("kreatin +");
+  return '<div class="eyebrow">Vízbevitel</div><div class="card water-card"><div class="wc-top"><div class="wc-title">💧 '+(cur>=tgt?'Napi vízcél kész 💪':'Ma megittad')+'</div><div class="wc-val"><b>'+cur+'</b> / '+tgt+' ml</div></div><div class="bar wc-bar"><i style="width:'+pct+'%"></i></div><div class="wc-btns"><button class="wc-b" data-act="water-add" data-ml="200">+2 dl</button><button class="wc-b" data-act="water-add" data-ml="300">+3 dl</button><button class="wc-b" data-act="water-add" data-ml="500">+5 dl</button><button class="wc-b wc-minus" data-act="water-add" data-ml="-250">−</button></div><div class="wc-note">Ajánlott ma: ~<b>'+tgt+' ml</b> ('+cb.join(", ")+') — kb. '+Math.round(tgt/250)+' pohár.</div></div>';
+}
+function suppCard(dow){ var d=dd(); if(!d.supps)d.supps={}; var s=suppList(),rows="",i;
+  if(!s.length){ rows='<div class="note supp-empty">Nincs kiegészítő kiválasztva. Koppints a „Kezelés"-re, és add hozzá pl. a kreatint, fehérjét, D-vitamint… ✨</div>'; }
+  else { for(i=0;i<s.length;i++){ var sp=SUPP_BY[s[i]]; if(!sp)continue; var on=!!d.supps[sp.id];
+    rows+='<button class="supp-row '+(on?"on":"")+'" data-act="supp-toggle" data-id="'+sp.id+'"><span class="supp-box">'+(on?"✓":"")+'</span><span class="supp-main"><span class="supp-nm">'+sp.e+' '+esc(sp.n)+'</span><span class="supp-note">'+esc(sp.note)+(sp.water?' · +'+sp.water+' ml víz':'')+'</span></span></button>'; } }
+  return '<div class="eyebrow supp-eyebrow">Kiegészítők<button class="supp-manage" data-act="supp-manage">Kezelés</button></div><div class="card supp-card">'+rows+'</div>';
+}
+function renderSuppModal(){ if(!suppModal) return ""; var rows="",i;
+  for(i=0;i<SUPPS.length;i++){ var sp=SUPPS[i],on=hasSupp(sp.id);
+    rows+='<button class="sw-opt '+(on?"on":"")+'" data-act="supp-pick" data-id="'+sp.id+'"><div class="sw-top"><span class="sw-nm">'+sp.e+' '+esc(sp.n)+(on?' <em class="sw-def">szedem</em>':'')+'</span><span class="sw-ck">'+(on?"✓":"")+'</span></div><span class="sw-mac">'+esc(sp.note)+(sp.water?' · napi vízcél +'+sp.water+' ml':'')+'</span></button>'; }
+  return '<div class="overlay"><div class="sw-sheet"><button class="fi-x" data-act="supp-close">✕</button><div class="sw-head"><div class="sw-tt">Kiegészítők kezelése</div><div class="sw-sub">Válaszd ki, miket szedsz — a kreatin/koffein automatikusan megemeli a napi vízcélt.</div></div><div class="sw-list">'+rows+'</div><button class="fi-close" data-act="supp-close">Kész</button></div></div>';
+}
+
+/* ==== DIÉTÁK + VITAMINOK (Fázis 13) ==== */
+var DIETS=[
+ {id:"keto",e:"🥑",n:"Ketogén",note:"minimális szénhidrát, magas zsír",kind:"approach"},
+ {id:"carnivore",e:"🥩",n:"Carnivore",note:"csak állati eredetű – hús, hal, tojás, tejtermék",kind:"approach"},
+ {id:"vas",e:"🩸",n:"Vashiánypótló",note:"vasban gazdag hangsúly + C-vitamin a felszívódásért",kind:"approach"},
+ {id:"veget",e:"🥗",n:"Vegetáriánus",note:"hús és hal helyett növényi/tejes fehérje",kind:"excl"},
+ {id:"laktoz",e:"🥛",n:"Laktózmentes",note:"tejtermékek laktózmentesen",kind:"excl"},
+ {id:"gluten",e:"🌾",n:"Gluténmentes",note:"gabonák gluténmentesen",kind:"excl"},
+ {id:"tojas",e:"🥚",n:"Tojásmentes",note:"tojás helyett túró",kind:"excl"},
+ {id:"hal",e:"🐟",n:"Halmentes",note:"hal helyett csirke",kind:"excl"},
+ {id:"dio",e:"🥜",n:"Diómentes",note:"diófélék helyett tökmag",kind:"excl"}
+];
+var DIET_BY={}; (function(){ for(var i=0;i<DIETS.length;i++) DIET_BY[DIETS[i].id]=DIETS[i]; })();
+function dietCarbFloor(){ var d=(profile&&profile.diet)||[]; return d.indexOf("carnivore")>=0?5:(d.indexOf("keto")>=0?25:60); }
+function dietCard(){ var d=(profile.diet||[]),chips;
+  if(!d.length) chips='<span class="diet-chip diet-none">Alap – nincs szűrő</span>';
+  else chips=d.map(function(x){ var m=DIET_BY[x]; return '<span class="diet-chip">'+(m?m.e+' ':'')+dietLabel(x)+'</span>'; }).join("");
+  return '<div class="eyebrow supp-eyebrow">Diéta / szűrők<button class="supp-manage" data-act="diet-manage">Kezelés</button></div><div class="card diet-card">'+chips+'</div>';
+}
+function renderDietModal(){ if(!dietModal) return ""; var d=(profile.diet||[]),rows="",i;
+  function opt(sp){ var on=d.indexOf(sp.id)>=0; return '<button class="sw-opt '+(on?"on":"")+'" data-act="diet-pick" data-id="'+sp.id+'"><div class="sw-top"><span class="sw-nm">'+sp.e+' '+esc(sp.n)+(on?' <em class="sw-def">aktív</em>':'')+'</span><span class="sw-ck">'+(on?"✓":"")+'</span></div><span class="sw-mac">'+esc(sp.note)+'</span></button>'; }
+  rows+='<div class="sw-grouplbl">Étrend-irány (egy választható)</div>';
+  for(i=0;i<DIETS.length;i++) if(DIETS[i].kind==="approach") rows+=opt(DIETS[i]);
+  rows+='<div class="sw-grouplbl">Allergia / kizárás (több is)</div>';
+  for(i=0;i<DIETS.length;i++) if(DIETS[i].kind==="excl") rows+=opt(DIETS[i]);
+  return '<div class="overlay"><div class="sw-sheet"><button class="fi-x" data-act="diet-close">✕</button><div class="sw-head"><div class="sw-tt">Diéta / szűrők</div><div class="sw-sub">Az étkezések és a bevásárlólista is ehhez igazodik. A ↻ gombbal utána bármely hozzávalót cserélheted.</div></div><div class="sw-list">'+rows+'</div><button class="fi-close" data-act="diet-close">Kész</button></div></div>';
+}
+function vitaminCard(){ var d=(profile.diet||[]),flags=[];
+  if(d.indexOf("carnivore")>=0) flags.push(["⚠️ Carnivore","Figyelj a C-vitaminra és a rostra (a húsban kevés). A máj/belsőség sok C-t és folátot ad; a magnéziumra és káliumra is figyelj."]);
+  if(d.indexOf("keto")>=0) flags.push(["⚠️ Keto","Az elektrolitok kulcsfontosságúak: nátrium (só!), kálium, magnézium. Rostot zöldségből, chia-/lenmagból pótolj."]);
+  if(d.indexOf("veget")>=0) flags.push(["⚠️ Vegetáriánus","B12, vas, cink, omega-3 és néha D-vitamin szorulhat pótlásra – tojás, tejtermék, hüvelyesek, dió segít."]);
+  if(d.indexOf("vas")>=0) flags.push(["🩸 Vas-hangsúly","Vasforrás: vörös hús, máj, tojássárgája, spenot, hüvelyesek. C-vitaminnal (paprika, citrus) párosítva jobban felszívódik; a kávé/tea gátolja – étkezéstől külön idd."]);
+  var base=[["🥩 Vas + B12","vörös hús, máj, tojás"],["🍊 C-vitamin","paprika, citrus, bogyós"],["🥛 Kalcium + D","tejtermék, tojás, hal"],["🥬 Magnézium + kálium","zöldek, dió, avokádó"],["🐟 Omega-3","lazac, tonhal, dió, lenmag"]];
+  var bh=base.map(function(x){ return '<div class="vit-row"><span class="vit-k">'+x[0]+'</span><span class="vit-v">'+x[1]+'</span></div>'; }).join("");
+  var fh=flags.map(function(x){ return '<div class="vit-flag"><b>'+x[0]+'</b> '+x[1]+'</div>'; }).join("");
+  return '<div class="eyebrow">Vitaminok & ásványok</div><div class="card vit-card"><div class="vit-intro">A kiegyensúlyozott mikrotápanyag-bevitel ugyanolyan fontos, mint a makrók. Fő források:</div>'+bh+fh+'<div class="vit-note">Változatos étrenddel a legtöbb vitamin/ásvány fedezhető; hiánygyanú esetén kérj vérképet, és szükség szerint pótolj (lásd a Kiegészítőket).</div></div>';
+}
 
 function viewKaja(){
   var dow=sel.getDay(), arr=mealsFor(dow), d=dd(), pl=profile._plan||computePlan(profile);
@@ -2497,7 +2810,8 @@ function viewKaja(){
   var _measured=(d.sessKcal!=null), unlockedBonus=_measured?Math.max(0,Math.round(d.sessKcal)):_estBonus;
   var fullBonus=Math.max(todayBurn,unlockedBonus), dT=Math.round((baseline+fullBonus)/10)*10; if(dT<1)dT=baseline||1;
   var _tc=(fullBonus>0)?topCarbs(dow,factor,2):"";
-  var pT=pl.protein, fT=pl.fat, cFull=Math.max(60,Math.round((dT-pT*4-fT*9)/4)), cBase=Math.max(40,Math.round((baseline-pT*4-fT*9)/4)), cUnlocked=Math.min(cFull,cBase+Math.round(unlockedBonus/4)), kcUnlocked=baseline+unlockedBonus;
+  var _cf0=dietCarbFloor(),_cf1=Math.max(0,Math.round(_cf0*0.6));
+  var pT=pl.protein, fT=pl.fat, cFull=Math.max(_cf0,Math.round((dT-pT*4-fT*9)/4)), cBase=Math.max(_cf1,Math.round((baseline-pT*4-fT*9)/4)), cUnlocked=Math.min(cFull,cBase+Math.round(unlockedBonus/4)), kcUnlocked=baseline+unlockedBonus;
   var ck=0,kc=0,p=0,c=0,f=0;
   for(var i=0;i<arr.length;i++){ if(d.m[i]){ var tt=mealTotals(arr[i],factor); ck++; kc+=tt.kc; p+=tt.p; c+=tt.c; f+=tt.f; } } var _lg=foodLog(); for(var _li=0;_li<_lg.length;_li++){ var _le=_lg[_li]; kc+=_le.kcal||0; p+=_le.p||0; c+=_le.c||0; f+=_le.f||0; }
   var full=(ck===arr.length),kpct=Math.min(100,Math.round(kc/dT*100)),kuW=Math.round(kcUnlocked/dT*100); if(kuW>100)kuW=100; if(kuW<0)kuW=0; if(fullBonus>0&&unlockedBonus<fullBonus&&kuW>94)kuW=94; var left=Math.max(0,kcUnlocked-kc);
@@ -2507,7 +2821,7 @@ function viewKaja(){
   var flags=(profile.diet||[]);
   if(flags.length) h+='<div class="portion-note">Az étrend a szűrőidhez igazítva: '+flags.map(dietLabel).join(", ")+'. Egy hozzávalót a ↻ gombbal cserélhetsz, ha nem szereted.</div>';
   else h+='<div class="portion-note">A grammok a napi célodra méretezve. A ↻ gombbal bármelyik hozzávalót lecserélheted.</div>';
-  h+='</div>'; h+='<div class="varbar"><span class="varlbl">Étrend · '+MEALSETNAMES[curVariant()]+' ('+(curVariant()+1)+'/'+MEALSETS.length+')</span><button class="varbtn" data-act="mealvar">🔄 Teljes csere</button></div>'; h+='<div class="eyebrow">Étkezések</div>';
+  h+='</div>'; h+=waterCard(dow)+suppCard(dow)+dietCard()+vitaminCard(); h+='<div class="varbar"><span class="varlbl">Étrend · '+MEALSETNAMES[curVariant()]+' ('+(curVariant()+1)+'/'+MEALSETS.length+')</span><button class="varbtn" data-act="mealvar">🔄 Teljes csere</button></div>'; h+='<div class="eyebrow">Étkezések</div>';
   for(var i2=0;i2<arr.length;i2++){ var me=arr[i2],chk=!!d.m[i2],op=(openMeal===i2),mt=mealTotals(me,factor);
     var rows='';
     for(var j=0;j<me.i.length;j++){ var oid=me.i[j][0],rid=resolveIng(oid),g2=roundStep(me.i[j][1]*ingF(rid,factor),ING[rid].step);
@@ -2526,7 +2840,8 @@ function viewKaja(){
 var CATN={hus:"Hús & hal",tojas:"Tojás",tej:"Tejtermék",hutott:"Hűtött",zold:"Zöldség & gyümölcs",fagy:"Fagyasztott",szaraz:"Száraz áru",pek:"Pékáru",kamra:"Kamra · fűszerek"};
 var CATORDER=["hus","tojas","tej","hutott","zold","fagy","szaraz","pek","kamra"];
 var SHOPSRC={};
-function shopAgg(){ var agg={}; SHOPSRC={}; for(var dow=0;dow<7;dow++){ var factor=dayRoleFactors(dow),meals=mealsFor(dow); for(var mi=0;mi<meals.length;mi++){ var it=meals[mi].i; for(var j=0;j<it.length;j++){ var oid=it[j][0],rid=resolveIng(oid),g=roundStep(it[j][1]*ingF(rid,factor),ING[rid].step); agg[rid]=(agg[rid]||0)+g; if(!SHOPSRC[rid])SHOPSRC[rid]=[]; if(SHOPSRC[rid].indexOf(oid)<0)SHOPSRC[rid].push(oid); } } } return agg; }
+var SHOPBUY={};
+function shopAgg(){ var agg={}; SHOPSRC={}; SHOPBUY={}; for(var dow=0;dow<7;dow++){ var factor=dayRoleFactors(dow),meals=mealsFor(dow); for(var mi=0;mi<meals.length;mi++){ var it=meals[mi].i; for(var j=0;j<it.length;j++){ var oid=it[j][0],nk=dietResolve(oid),rid=resolveIng(oid),g=roundStep(it[j][1]*ingF(rid,factor),ING[rid].step); agg[nk]=(agg[nk]||0)+g; SHOPBUY[nk]=rid; if(!SHOPSRC[nk])SHOPSRC[nk]=[]; if(SHOPSRC[nk].indexOf(oid)<0)SHOPSRC[nk].push(oid); } } } return agg; }
 function shopAmt(id,grams){ var g=ING[id]; if(g.u==="db") return Math.ceil(grams/g.ug)+" db"; if(g.u==="szelet") return Math.ceil(grams/g.ug)+" szelet"; if(g.u==="ml"){ return grams>=1000?((Math.round(grams/100)/10)+" l"):(Math.round(grams)+" ml"); } return grams>=1000?((Math.round(grams/100)/10)+" kg"):(Math.round(grams)+" g"); }
 function ingCost(id,grams){ return Math.round(grams/1000*ING[id].price); }
 function shopTotal(){ var agg=shopAgg(),tt=0; for(var id in agg) tt+=ingCost(id,agg[id]); return tt; }
@@ -2542,10 +2857,10 @@ function doExport(){ var txt=buildExport();
 function viewBolt(){
   var agg=shopAgg(),cnt=shopCounts(),pct=cnt.tot?Math.round(cnt.done/cnt.tot*100):0,total=shopTotal();
   var h='<div class="card"><div class="prog-top"><div class="prog-lbl">Heti lista · '+cnt.tot+' tétel</div><div class="prog-num">'+cnt.done+'/'+cnt.tot+' megvéve</div></div><div class="bar"><i style="width:'+pct+'%"></i></div><div class="shop-total"><span>Becsült érték</span><b>~'+fmtFt(total)+' / hét</b></div><button class="btn-primary shop-export" data-act="export">Lista exportálása / megosztása</button></div>';
-  for(var ci=0;ci<CATORDER.length;ci++){ var cat=CATORDER[ci],ids=[]; for(var id in agg){ if(ING[id].cat===cat) ids.push(id); } if(!ids.length) continue;
+  for(var ci=0;ci<CATORDER.length;ci++){ var cat=CATORDER[ci],ids=[]; for(var id in agg){ var _bi=SHOPBUY[id]||id; if(ING[_bi]&&ING[_bi].cat===cat) ids.push(id); } if(!ids.length) continue;
     h+='<div class="cat-h">'+esc(CATN[cat])+'</div>';
-    for(var k=0;k<ids.length;k++){ var d=ids[k],key="b-"+d,ck=!!state.shop[key];
-      h+='<div class="shop-row-wrap"><button class="shop-row '+(ck?"is-done":"")+'" data-act="shop" data-key="'+key+'"><span class="box">'+(ck?"✓":"")+'</span><span class="shop-label">'+esc(shopAmt(d,agg[d]))+' · '+esc(ingName(d))+'</span><span class="shop-price">~'+fmtFt(ingCost(d,agg[d]))+'</span></button>'+(swappable(d)?'<button class="shop-sw" data-act="swap-open" data-ig="'+d+'" data-bolt="1" aria-label="Csere">↻</button>':'')+'</div>';
+    for(var k=0;k<ids.length;k++){ var d=ids[k],buy=SHOPBUY[d]||d,key="b-"+d,ck=!!state.shop[key];
+      h+='<div class="shop-row-wrap"><button class="shop-row '+(ck?"is-done":"")+'" data-act="shop" data-key="'+key+'"><span class="box">'+(ck?"✓":"")+'</span><span class="shop-label">'+esc(shopAmt(buy,agg[d]))+' · '+esc(ingName(buy))+'</span><span class="shop-price">~'+fmtFt(ingCost(buy,agg[d]))+'</span></button>'+(swappable(buy)?'<button class="shop-sw" data-act="swap-open" data-ig="'+d+'" data-bolt="1" aria-label="Csere">↻</button>':'')+'</div>';
     }
   }
   h+='<div class="note">A lista a heti tervedből számolva, a cseréiddel együtt. A kamrai alapok (olaj, méz, fűszerek) ritkán pótlandók, így a valós heti költség jellemzően ennél is kevesebb.'+(storageOK?'':' — Most nem tudja menteni a haladást.')+'</div>';
@@ -2553,7 +2868,7 @@ function viewBolt(){
 }
 
 /* ---------- EVENTS ---------- */
-document.addEventListener("change",function(ev){ var t=ev.target; if(!t||t.id!=="fm-file"||!foodModal) return; var file=t.files&&t.files[0]; if(!file) return; var rd=new FileReader(); rd.onload=function(){ analyzeFoodPhoto(rd.result,file.type); }; rd.onerror=function(){ if(foodModal){ foodModal.err="Nem sikerült beolvasni a képet."; render(); } }; rd.readAsDataURL(file); });
+document.addEventListener("change",function(ev){ var t=ev.target; if(!t||!foodModal) return; if(t.id==="fm-date"){ foodModal.logDate=t.value||iso(sel); return; } if(t.id!=="fm-file") return; var file=t.files&&t.files[0]; if(!file) return; var rd=new FileReader(); rd.onload=function(){ analyzeFoodPhoto(rd.result,file.type); }; rd.onerror=function(){ if(foodModal){ foodModal.err="Nem sikerült beolvasni a képet."; render(); } }; rd.readAsDataURL(file); });
 document.addEventListener("click",function(ev){
   var el=ev.target.closest("[data-act]"); if(!el) return;
   var act=el.getAttribute("data-act");
@@ -2561,7 +2876,7 @@ document.addEventListener("click",function(ev){
   if(act==="ob-pick"){ var key=el.getAttribute("data-key"),v=el.getAttribute("data-v"),prev=obDraft[key]; obDraft[key]=v; obErr=""; if(key==="sex")applyTheme(v); if(key==="freq")delete obDraft.split; if(key==="goal"&&prev!==v){obDraft.targetKg=null;obDraft.tval=null;obDraft.weeks=null;} renderOnboarding(); return; }
   if(act==="ob-mod"){ var mv=el.getAttribute("data-v"); obDraft.modSel=obDraft.modSel||[]; var mx2=obDraft.modSel.indexOf(mv); if(mx2>=0){ obDraft.modSel.splice(mx2,1); if(mv==="sport") obDraft.sports=[]; } else { obDraft.modSel.push(mv); } delete obDraft.split; obErr=""; renderOnboarding(); return; }
   if(act==="ob-splitadj"){ var am=el.getAttribute("data-m"),ad=+el.getAttribute("data-d"); obDraft.split=obDraft.split||{}; var acur=obDraft.split[am]||0,anv=Math.max(0,acur+ad),atot=fbNum(obDraft.freq),aoth=splitSum(obDraft.split)-acur; if(aoth+anv>atot) anv=Math.max(0,atot-aoth); obDraft.split[am]=anv; obErr=""; renderOnboarding(); return; }
-  if(act==="ob-diet"){ var v2=el.getAttribute("data-v"); obDraft.diet=obDraft.diet||[]; var ix=obDraft.diet.indexOf(v2); if(ix>=0) obDraft.diet.splice(ix,1); else obDraft.diet.push(v2); renderOnboarding(); return; }
+  if(act==="ob-diet"){ var v2=el.getAttribute("data-v"); obDraft.diet=obDraft.diet||[]; var ix=obDraft.diet.indexOf(v2),_m=DIET_BY[v2],_z; if(ix>=0){ obDraft.diet.splice(ix,1); } else { if(_m&&_m.kind==="approach"){ for(_z=obDraft.diet.length-1;_z>=0;_z--){ if(DIET_BY[obDraft.diet[_z]]&&DIET_BY[obDraft.diet[_z]].kind==="approach") obDraft.diet.splice(_z,1); } } if(v2==="carnivore"){ var _v3=obDraft.diet.indexOf("veget"); if(_v3>=0)obDraft.diet.splice(_v3,1); } if(v2==="veget"){ var _v4=obDraft.diet.indexOf("carnivore"); if(_v4>=0)obDraft.diet.splice(_v4,1); } obDraft.diet.push(v2); } renderOnboarding(); return; }
   if(act==="ob-sport"){ var sv=el.getAttribute("data-v"); obDraft.sports=obDraft.sports||[]; var sx=obDraft.sports.indexOf(sv); if(sx>=0) obDraft.sports.splice(sx,1); else obDraft.sports.push(sv); delete obDraft.split; renderOnboarding(); return; }
   if(act==="ob-skill"){ var kv=el.getAttribute("data-v"); obDraft.skills=obDraft.skills||[]; obDraft.skillLvl=obDraft.skillLvl||{}; var ki=obDraft.skills.indexOf(kv); if(ki>=0){ obDraft.skills.splice(ki,1); delete obDraft.skillLvl[kv]; } else { obDraft.skills.push(kv); if(obDraft.skillLvl[kv]==null) obDraft.skillLvl[kv]=0; } renderOnboarding(); return; }
   if(act==="ob-skilllvl"){ var lk=el.getAttribute("data-k"),ll=+el.getAttribute("data-l"); obDraft.skillLvl=obDraft.skillLvl||{}; obDraft.skillLvl[lk]=ll; renderOnboarding(); return; }
@@ -2590,7 +2905,7 @@ document.addEventListener("click",function(ev){
   if(act==="body-metric"){ bodyMetric=el.getAttribute("data-m"); render(); return; }
   if(act==="body-del"){ var _bi=+el.getAttribute("data-i"); if(state.body&&state.body[_bi]){ state.body.splice(_bi,1); saveState(); } render(); return; }
   if(act==="body-save"){ if(!bodyModal) return; var _kg=bOpt("bd-kg"); if(!_kg){ bodyModal.err="Adj meg egy \u00e9rv\u00e9nyes testsúlyt (kg)."; render(); return; } var _e={d:iso(new Date()),kg:_kg,neck:bOpt("bd-neck"),waist:bOpt("bd-waist"),hip:bOpt("bd-hip"),shoulders:bOpt("bd-shoulders"),chest:bOpt("bd-chest"),arm:bOpt("bd-arm"),thigh:bOpt("bd-thigh")}; var _arr=bodyEntries(),_ix=-1; for(var _i=0;_i<_arr.length;_i++) if(_arr[_i].d===_e.d) _ix=_i; if(_ix>=0) _arr[_ix]=_e; else _arr.push(_e); _arr.sort(function(a,b){return a.d<b.d?-1:a.d>b.d?1:0;}); var _up=document.getElementById("bd-updateplan"); if(_up&&_up.checked){ profile.kg=_kg; var _pm=profile.meas||{}; ["neck","waist","hip","shoulders","chest","arm","thigh"].forEach(function(k){ if(_e[k]!=null) _pm[k]=_e[k]; }); profile.meas=_pm; profile._plan=computePlan(profile); saveProfile(); } saveState(); bodyModal=null; toast="M\u00e9r\u00e9s r\u00f6gzítve \u2713"; render(); setTimeout(function(){ toast=""; render(); },1600); return; }
-  if(act==="food-open"){ stopScan(); foodModal={mode:"manual",result:null,busy:false,err:"",scan:false,per100:null,grams:100}; render(); return; }
+  if(act==="food-open"){ stopScan(); foodModal={mode:"manual",result:null,busy:false,err:"",scan:false,per100:null,grams:100,logDate:iso(sel)}; render(); return; }
   if(act==="food-close"){ stopScan(); foodModal=null; render(); return; }
   if(act==="food-mode"){ stopScan(); foodModal.mode=el.getAttribute("data-mode"); foodModal.result=null; foodModal.err=""; foodModal.scan=false; foodModal.per100=null; render(); return; }
   if(act==="rest-cat"){ if(foodModal){ foodModal.rcat=el.getAttribute("data-cat"); render(); } return; }
@@ -2602,9 +2917,9 @@ document.addEventListener("click",function(ev){
   if(act==="rest-remove"){ if(foodModal&&foodModal.plate){ foodModal.plate.splice(+el.getAttribute("data-slot"),1); render(); } return; }
   if(act==="rest-custom"){ if(foodModal){ foodModal.rcustom=!foodModal.rcustom; render(); } return; }
   if(act==="rest-custom-add"){ if(!foodModal) return; var _cn=fmTxt("rc-name"); if(!_cn){ foodModal.err="Adj nevet az ételnek."; render(); return; } var _cg=fmNum("rc-g"),_ck=fmNum("rc-kcal"),_cp=fmNum("rc-p"),_cc=fmNum("rc-c"),_cf=fmNum("rc-f"); if(!_ck) _ck=_cp*4+_cc*4+_cf*9; if(!foodModal.plate)foodModal.plate=[]; foodModal.plate.push({custom:{name:_cn,g:_cg,kcal:_ck,p:_cp,c:_cc,f:_cf}}); foodModal.rcustom=false; foodModal.err=""; render(); return; }
-  if(act==="rest-log"){ if(!foodModal||!foodModal.plate||!foodModal.plate.length) return; var _tk=0,_tp=0,_tc=0,_tf=0,_nms=[],_ri; for(_ri=0;_ri<foodModal.plate.length;_ri++){ var _rmc=rFoodMacros(foodModal.plate[_ri]); _tk+=_rmc.kcal;_tp+=_rmc.p;_tc+=_rmc.c;_tf+=_rmc.f; _nms.push(_rmc.name); } var _rname=_nms.length===1?_nms[0]:("Étterem: "+_nms.join(" + ")); if(_rname.length>80)_rname=_rname.slice(0,77)+"…"; addLogEntry({name:_rname,kcal:_tk,p:_tp,c:_tc,f:_tf}); stopScan(); foodModal=null; toast="Hozzáadva a naplóhoz ✓"; render(); setTimeout(function(){ toast=""; render(); },1600); return; }
-  if(act==="food-add"){ if(!foodModal) return; var _nm=fmTxt("fm-name"); if(!_nm){ foodModal.err="Adj nevet az \u00e9telnek."; render(); return; } var _fe={name:_nm,kcal:fmNum("fm-kcal"),p:fmNum("fm-p"),c:fmNum("fm-c"),f:fmNum("fm-f")}; var _sv=document.getElementById("fm-savelib"); if(_sv&&_sv.checked){ var _lib=savedFoods(),_ex=-1; for(var _i=0;_i<_lib.length;_i++) if(_lib[_i].name.toLowerCase()===_nm.toLowerCase()) _ex=_i; var _rec={name:_nm,kcal:Math.round(_fe.kcal),p:Math.round(_fe.p*10)/10,c:Math.round(_fe.c*10)/10,f:Math.round(_fe.f*10)/10}; if(_ex>=0) _lib[_ex]=_rec; else _lib.push(_rec); } addLogEntry(_fe); stopScan(); foodModal=null; toast="Hozz\u00e1adva a napl\u00f3hoz \u2713"; render(); setTimeout(function(){ toast=""; render(); },1600); return; }
-  if(act==="food-quick"){ var _qi=+el.getAttribute("data-i"),_ql=savedFoods(); if(_ql[_qi]){ addLogEntry(_ql[_qi]); stopScan(); foodModal=null; toast="Hozz\u00e1adva \u2713"; render(); setTimeout(function(){ toast=""; render(); },1400); } return; }
+  if(act==="rest-log"){ if(!foodModal||!foodModal.plate||!foodModal.plate.length) return; var _tk=0,_tp=0,_tc=0,_tf=0,_nms=[],_ri; for(_ri=0;_ri<foodModal.plate.length;_ri++){ var _rmc=rFoodMacros(foodModal.plate[_ri]); _tk+=_rmc.kcal;_tp+=_rmc.p;_tc+=_rmc.c;_tf+=_rmc.f; _nms.push(_rmc.name); } var _rname=_nms.length===1?_nms[0]:("Kész étel: "+_nms.join(" + ")); if(_rname.length>80)_rname=_rname.slice(0,77)+"…"; var _ld=foodModal.logDate; addLogEntry({name:_rname,kcal:_tk,p:_tp,c:_tc,f:_tf},_ld); stopScan(); foodModal=null; _logJump(_ld); toast="Hozzáadva a naplóhoz ✓"; render(); setTimeout(function(){ toast=""; render(); },1600); return; }
+  if(act==="food-add"){ if(!foodModal) return; var _nm=fmTxt("fm-name"); if(!_nm){ foodModal.err="Adj nevet az \u00e9telnek."; render(); return; } var _fe={name:_nm,kcal:fmNum("fm-kcal"),p:fmNum("fm-p"),c:fmNum("fm-c"),f:fmNum("fm-f")}; var _sv=document.getElementById("fm-savelib"); if(_sv&&_sv.checked){ var _lib=savedFoods(),_ex=-1; for(var _i=0;_i<_lib.length;_i++) if(_lib[_i].name.toLowerCase()===_nm.toLowerCase()) _ex=_i; var _rec={name:_nm,kcal:Math.round(_fe.kcal),p:Math.round(_fe.p*10)/10,c:Math.round(_fe.c*10)/10,f:Math.round(_fe.f*10)/10}; if(_ex>=0) _lib[_ex]=_rec; else _lib.push(_rec); } var _ld=foodModal.logDate; addLogEntry(_fe,_ld); stopScan(); foodModal=null; _logJump(_ld); toast="Hozz\u00e1adva a napl\u00f3hoz \u2713"; render(); setTimeout(function(){ toast=""; render(); },1600); return; }
+  if(act==="food-quick"){ var _qi=+el.getAttribute("data-i"),_ql=savedFoods(); if(_ql[_qi]){ var _ld=foodModal.logDate; addLogEntry(_ql[_qi],_ld); stopScan(); foodModal=null; _logJump(_ld); toast="Hozz\u00e1adva \u2713"; render(); setTimeout(function(){ toast=""; render(); },1400); } return; }
   if(act==="food-lib-del"){ var _ldi=+el.getAttribute("data-i"); savedFoods().splice(_ldi,1); saveState(); render(); return; }
   if(act==="food-del"){ var _fdi=+el.getAttribute("data-i"); foodLog().splice(_fdi,1); saveState(); render(); return; }
   if(act==="food-scan"){ if(!foodModal) return; foodModal.scan=true; foodModal.err=""; render(); startBarcodeScan(); return; }
@@ -2632,6 +2947,20 @@ document.addEventListener("click",function(ev){
   if(act==="meal"){ var dm=dd(),mi=+el.getAttribute("data-m"); dm.m[mi]=!dm.m[mi]; saveState(); render(); return; }
   if(act==="expand"){ var e2=+el.getAttribute("data-m"); openMeal=(openMeal===e2)?-1:e2; render(); return; }
   if(act==="swap-open"){ swapCtx={id:el.getAttribute("data-ig"),bolt:el.getAttribute("data-bolt")==="1"}; render(); return; }
+  if(act==="water-add"){ var _wd=dd(); if(_wd.water==null)_wd.water=0; var _dml=parseInt(el.getAttribute("data-ml"),10)||0; _wd.water=Math.max(0,_wd.water+_dml); saveState(); render(); return; }
+  if(act==="supp-toggle"){ var _sd=dd(); if(!_sd.supps)_sd.supps={}; var _sid=el.getAttribute("data-id"); if(_sd.supps[_sid]) delete _sd.supps[_sid]; else _sd.supps[_sid]=true; saveState(); render(); return; }
+  if(act==="supp-manage"){ suppModal=true; render(); return; }
+  if(act==="supp-close"){ suppModal=false; render(); return; }
+  if(act==="supp-pick"){ var _pid=el.getAttribute("data-id"); if(!profile.supps)profile.supps=[]; var _pi=profile.supps.indexOf(_pid); if(_pi>=0) profile.supps.splice(_pi,1); else profile.supps.push(_pid); saveProfile(); render(); return; }
+  if(act==="diet-manage"){ dietModal=true; render(); return; }
+  if(act==="diet-close"){ dietModal=false; render(); return; }
+  if(act==="diet-pick"){ var _did=el.getAttribute("data-id"); if(!profile.diet)profile.diet=[]; var arr=profile.diet,_mp=DIET_BY[_did],_ix=arr.indexOf(_did),_q;
+    if(_ix>=0){ arr.splice(_ix,1); }
+    else { if(_mp&&_mp.kind==="approach"){ for(_q=arr.length-1;_q>=0;_q--){ if(DIET_BY[arr[_q]]&&DIET_BY[arr[_q]].kind==="approach") arr.splice(_q,1); } }
+      if(_did==="carnivore"){ var _vi=arr.indexOf("veget"); if(_vi>=0) arr.splice(_vi,1); }
+      if(_did==="veget"){ var _ci=arr.indexOf("carnivore"); if(_ci>=0) arr.splice(_ci,1); }
+      arr.push(_did); }
+    profile._plan=computePlan(profile); saveProfile(); render(); return; }
   if(act==="swap-close"){ swapCtx=null; render(); return; }
   if(act==="swap-choose"){ var oo=el.getAttribute("data-o"); if(!swapCtx){ return; } if(!profile.swaps) profile.swaps={};
     if(swapCtx.bolt){ shopAgg(); var src=SHOPSRC[swapCtx.id]||[swapCtx.id],si; for(si=0;si<src.length;si++){ var O=src[si]; if(oo===dietResolve(O)) delete profile.swaps[O]; else profile.swaps[O]=oo; } }
@@ -2641,7 +2970,7 @@ document.addEventListener("click",function(ev){
   if(act==="shop"){ var k=el.getAttribute("data-key"); if(state.shop[k]) delete state.shop[k]; else state.shop[k]=true; saveState(); render(); return; }
   if(act==="askreset"){ modal=true; render(); return; }
   if(act==="cancelreset"){ modal=false; render(); return; }
-  if(act==="doreset"){ state.shop={}; saveState(); modal=false; render(); return; }
+  if(act==="doreset"){ state.shop={}; if(profile){ profile.swaps={}; saveProfile(); } saveState(); modal=false; toast="Új hét – a lista visszaállt az alapokra ✓"; render(); setTimeout(function(){ toast=""; render(); },1700); return; }
   if(act==="export"){ doExport(); return; }
   if(act==="closeexp"){ exportModal=""; render(); return; }
   if(act==="exinfo"){ infoEx=el.getAttribute("data-n"); render(); return; }
