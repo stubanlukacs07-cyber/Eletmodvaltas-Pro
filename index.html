@@ -675,6 +675,12 @@
   .cp-type{padding:10px 14px;border:1.5px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:11px;font-size:13.5px;font-weight:700;}
   .cp-type.on{border-color:var(--acc);background:var(--acc-soft);color:var(--acc-d);}
   .cp-est-num{font-size:21px;font-weight:800;color:var(--acc-d);}
+  .cp-empty-card{text-align:center;padding:28px 20px;}
+  .cp-empty-emoji{font-size:46px;margin-bottom:6px;}
+  .cp-empty-tt{font-size:19px;font-weight:800;color:var(--ink);margin-bottom:8px;}
+  .cp-empty-txt{font-size:14px;color:var(--muted);line-height:1.55;margin-bottom:18px;}
+  .cp-empty-btn{display:block;width:100%;padding:15px;border:none;border-radius:14px;background:var(--acc);color:#fff;font-size:15.5px;font-weight:800;box-shadow:0 3px 10px rgba(18,63,51,.18);}
+  .cp-empty-btn:active{transform:scale(.98);}
   .cp-tgl-bar{display:flex;gap:6px;background:var(--surface2);border:1px solid var(--line);border-radius:13px;padding:4px;margin-bottom:14px;}
   .cp-tgl{flex:1;padding:10px;border:none;background:none;border-radius:10px;font-size:13.5px;font-weight:800;color:var(--muted);}
   .cp-tgl.on{background:var(--surface);color:var(--acc-d);box-shadow:0 2px 6px rgba(18,63,51,.1);}
@@ -1102,7 +1108,7 @@ function focusScaleHTML(f){ var b="",i; for(i=1;i<=5;i++) b+='<button class="fsc
 function skillWeightHTML(skills,wts){ if(!skills||skills.length<2) return ""; var r="",i; for(i=0;i<skills.length;i++){ var k=skills[i]; if(!SKILLDEF[k]) continue; var w=Math.max(1,Math.min(3,(wts&&wts[k])||1)),wl=({1:"normál",2:"kiemelt",3:"fő fókusz"})[w]; r+='<div class="wt-row"><div class="sp-name">'+SKILLDEF[k].emoji+' '+esc(SKILLDEF[k].lbl)+'</div><button class="wt-chip" data-act="skill-weight" data-k="'+k+'">'+w+'× · '+wl+'</button></div>'; } return '<div class="ob-sub" style="margin-top:16px">Melyikre gyúrj rá jobban? Azonos szám = egyenlő elosztás.</div><div class="sp-list">'+r+'</div>'; }
 function skillFocusControl(){ if(!(profile.skills||[]).length) return ""; var f=Math.max(1,Math.min(5,profile.skillFocus||3)); return '<div class="card focus-card"><div class="focus-h">🎯 Skill-fókusz</div>'+focusScaleHTML(f)+skillWeightHTML(profile.skills,profile.skillWeights)+'</div>'; }
 function skillRow(p){ if(!p||!p.skills||!p.skills.length) return ""; var names=[]; for(var i=0;i<p.skills.length;i++){ if(SKILLDEF[p.skills[i]]) names.push(SKILLDEF[p.skills[i]].lbl); } if(!names.length) return ""; var f=Math.max(1,Math.min(5,p.skillFocus||3)); return '<div class="line-row"><span class="k">Skill-fókusz</span><span class="v">'+esc(names.join(", "))+' · '+FOCUSLBL[f]+'</span></div>'; }
-function workoutFor(dow){ if(state.customPlan&&state.customPlan.enabled&&cpTemplates().length) return customWorkoutFor(dow); var p=profile||{}; if(p.mods&&p.mods.length>1) return multiFor(dow); if(p.type==="sport") return sportFor(dow); var ty=SESS[p.type]?p.type:"street",sc=schedFor(),key=sc[dow];
+function workoutFor(dow){ if(state.customPlan&&state.customPlan.enabled) return customWorkoutFor(dow); var p=profile||{}; if(p.mods&&p.mods.length>1) return multiFor(dow); if(p.type==="sport") return sportFor(dow); var ty=SESS[p.type]?p.type:"street",sc=schedFor(),key=sc[dow];
   if(!key||key==="rest") return {rest:true,text:REST_TEXT};
   var base=SESS[ty][key]; if(!base) return {rest:true,text:REST_TEXT};
   var gdiff=diffOf(p),mxs=(p&&p.maxes)||{},_lv=levelsNoDup(base.ex,function(e){return moveTier(p,e.n,gdiff);}),ex=base.ex.map(function(e,ei){ var mdiff=_lv[ei],v=pickEx(e,mdiff),mult=(DIFF[mdiff]||DIFF[5]).mult,s2=v.s<=1?v.s:Math.min(6,Math.max(1,Math.round(v.s*mult))),note=v.note;
@@ -1917,7 +1923,7 @@ function render(){ _burnCache={}; try{applyTheme((state.settings&&state.settings
   }
   html+='</header><main class="content">';
   if(tab==="terv") html+=installCard()+viewTerv();
-  else if(tab==="edzes") html+=cpToggleBar()+viewEdzes()+cpEntry();
+  else if(tab==="edzes"){ var _cwu=workoutFor(sel.getDay()); html+=cpToggleBar()+viewEdzes()+((_cwu&&_cwu._cpUnset)?"":cpEntry()); }
   else if(tab==="kaja") html+=viewKaja();
   else if(tab==="bolt") html+=viewBolt();
   else if(tab==="haladas") html+=viewHaladas();
@@ -2246,7 +2252,7 @@ function cpEntry(){ var n=cpTemplates().length; return '<button class="cp-entry"
 var CPWD=["Vasárnap","Hétfő","Kedd","Szerda","Csütörtök","Péntek","Szombat"];
 var CPWD_ORDER=[1,2,3,4,5,6,0];
 function workFrac(w,d){ if(!w||!w.ex) return 0; var td=0,tt=0,i; for(i=0;i<w.ex.length;i++){ var st=w.ex[i].s||1; tt+=st; td+=Math.min(st,(d&&d.w&&d.w[i]?d.w[i]:0)); } return tt?td/tt:0; }
-function customWorkoutFor(dow){ var cpn=state.customPlan||{}, v=(cpn.week||{})[dow]; if(v==="rest") return {rest:true,text:REST_TEXT}; var t=v?cpFind(v):null; if(!t){ var _has=cpTemplates().length; return {rest:true,text:(_has?"Erre a napra nincs beállítva edzésnap. Görgess le a a „Saját edzésterv”  gombhoz → Heti beosztás, és rendelj ide egy napot (vagy jelöld pihenőnek).":"Még nincs saját edzésnapod. Görgess le a a „Saját edzésterv”  gombhoz, és hozz létre egyet — pár koppintás az egész."),_cpUnset:true}; } var ex=(t.ex||[]).map(function(e){ var rs=t.restCustom?(e.rest||0):(t.restDefault||0); return {n:e.name,reps:cpExReps(e),s:e.sets||1,note:"",prog:cpProg(e.cat),_rest:rs,_key:e.key}; }); return {name:t.name||"Saját edzés",tag:"Saját terv",hint:(ex.length+" gyakorlat • a te terved"),ex:ex,_custom:t}; }
+function customWorkoutFor(dow){ var cpn=state.customPlan||{}, v=(cpn.week||{})[dow]; if(v==="rest") return {rest:true,text:REST_TEXT}; var t=v?cpFind(v):null; if(!t){ var _has=cpTemplates().length; return {rest:true,text:(_has?"Erre a napra nem rendeltél edzésnapot. Nyisd meg a heti beosztást, és válassz egy edzésnapot (vagy jelöld pihenőnek).":"Itt állítod össze a saját edzéstervedet — gyakorlatok, ismétlések vagy tartás-idő és pihenők. A kalóriát a gyakorlatokból automatikusan számoljuk."),_cpUnset:true}; } var ex=(t.ex||[]).map(function(e){ var rs=t.restCustom?(e.rest||0):(t.restDefault||0); return {n:e.name,reps:cpExReps(e),s:e.sets||1,note:"",prog:cpProg(e.cat),_rest:rs,_key:e.key}; }); return {name:t.name||"Saját edzés",tag:"Saját terv",hint:(ex.length+" gyakorlat • a te terved"),ex:ex,_custom:t}; }
 function cpWeekLabel(dow){ var cpn=state.customPlan||{}, v=(cpn.week||{})[dow]; if(v==="rest") return "🌿 Pihenőnap"; var t=v?cpFind(v):null; return t?t.name:"— nincs beállítva"; }
 function cpToggleBar(){ var on=!!(state.customPlan&&state.customPlan.enabled); return '<div class="cp-tgl-bar"><button class="cp-tgl'+(on?"":" on")+'" data-act="cp-mode" data-on="0">Előírt terv</button><button class="cp-tgl'+(on?" on":"")+'" data-act="cp-mode" data-on="1">Saját terv</button></div>'; }
 function renderCPWeek(){
@@ -2553,7 +2559,7 @@ function renderExInfo(){ var d=FORMS[formKey(infoEx)]||catForm(infoEx); if(!d) r
 }
 function viewEdzes(){
   var w=workoutFor(sel.getDay()),d=dd(),sig=workoutSignature(w),eye; if(d.wsig&&d.wsig!==sig){ d.w={};d.xf={}; } d.wsig=sig; if(profile.mods&&profile.mods.length>1){ var _wk=buildWeek(profile),_sl=_wk?_wk[sel.getDay()]:null; eye=(_sl?(isBaseMod(_sl.mod)?typeLabel(_sl.mod):((SPORTDEF[_sl.mod]&&SPORTDEF[_sl.mod].lbl)||_sl.mod)):modsLabel(profile))+" · heti "+freqDays(); } else { eye=typeLabel(profile.type)+" · heti "+freqDays(); }
-  if(w.rest){ return '<div class="eyebrow">'+esc(eye)+'</div><div class="card rest-card"><div class="rest-emoji">🌿</div><div class="rest-title">Pihenőnap</div><div class="rest-text">'+esc(w.text)+'</div><button class="toggle '+(d.r?"on":"")+'" data-act="rest"><span class="tick">'+(d.r?"✓":"")+'</span>'+(d.r?"Aktív pihenő kész":"Volt egy séta / bringa")+'</button></div>'; }
+  if(w.rest){ if(w._cpUnset){ var _hasT=cpTemplates().length; return '<div class="eyebrow">Saját edzésterv</div><div class="card cp-empty-card"><div class="cp-empty-emoji">🏗️</div><div class="cp-empty-tt">'+(_hasT?"Erre a napra nincs edzés":"Készítsd el a saját edzésterved")+'</div><div class="cp-empty-txt">'+esc(w.text)+'</div>'+(_hasT?'<button class="cp-empty-btn" data-act="cp-week">📅 Heti beosztás megnyitása</button>':'<button class="cp-empty-btn" data-act="cp-new">➕ Saját edzésnap létrehozása</button>')+'</div>'; } return '<div class="eyebrow">'+esc(eye)+'</div><div class="card rest-card"><div class="rest-emoji">🌿</div><div class="rest-title">Pihenőnap</div><div class="rest-text">'+esc(w.text)+'</div><button class="toggle '+(d.r?"on":"")+'" data-act="rest"><span class="tick">'+(d.r?"✓":"")+'</span>'+(d.r?"Aktív pihenő kész":"Volt egy séta / bringa")+'</button></div>'; }
   var h='<div class="eyebrow">'+esc(eye)+'</div><div class="card sess"><div><div class="s-name">'+esc(w.name)+'</div><div class="s-tag">'+esc(w.tag)+'</div></div>'+(w.hint?'<div class="s-hint">'+esc(w.hint)+'</div>':'')+'</div>';
   h+='<button class="warmup-btn" data-act="routine-warmup"><span class="wu-ic">\ud83e\udd38</span><span class="wu-txt"><b>Bemeleg\u00edt\u00e9s</b><small>~5 perc dinamikus r\u00e1hangol\u00f3d\u00e1s</small></span></button>';
   h+='<button class="start-workout" data-act="sess-start"><span class="sw-ic">🔥</span><span class="sw-txt"><b>Edzés indítása</b><small>Időzítő + edzésbónusz feloldása</small></span></button>';
