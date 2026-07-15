@@ -126,7 +126,7 @@
   .sc-emoji{font-size:18px;flex-shrink:0;}
   .sc-lbl{line-height:1.2;}
   .ex-info{margin-top:10px;display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:20px;border:1px solid var(--acc);background:var(--acc-lite);color:var(--acc-d);font-size:12px;font-weight:700;}
-  .fi-sheet{position:relative;width:min(440px,92vw);max-height:86vh;overflow-y:auto;background:var(--surface);border-radius:20px;-webkit-overflow-scrolling:touch;}
+  .fi-sheet{position:relative;width:min(440px,92vw);max-height:calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 40px);overflow-y:auto;background:var(--surface);border-radius:20px;-webkit-overflow-scrolling:touch;}
   .fi-head{display:flex;align-items:center;gap:14px;padding:20px 20px 14px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface);z-index:1;}
   .fi-fig{width:96px;height:80px;flex-shrink:0;background:var(--acc-lite);border-radius:14px;display:flex;align-items:center;justify-content:center;padding:6px;}
   .fi-fig svg{width:100%;height:100%;}
@@ -624,9 +624,9 @@
   .set-note{font-size:11.5px;color:var(--muted);line-height:1.4;padding:9px 3px 2px;}
   .vol-row{display:flex;align-items:center;gap:12px;}
   .vol-ic{font-size:20px;flex:none;}
-  .vol-track{position:relative;flex:1;height:16px;background:var(--surface2);border:1px solid var(--line);border-radius:10px;overflow:hidden;}
-  .vol-fill{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--acc-lite),var(--acc));border-radius:10px;pointer-events:none;}
-  .vol-input{position:absolute;left:0;top:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer;-webkit-appearance:none;appearance:none;}
+    .vol-native{-webkit-appearance:none;appearance:none;flex:1;height:10px;border-radius:6px;background:var(--surface2);outline:none;padding:0;margin:0;}
+  .vol-native::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:28px;height:28px;border-radius:50%;background:var(--acc);border:3px solid #fff;box-shadow:0 2px 7px rgba(0,0,0,.3);cursor:pointer;}
+  .vol-native::-moz-range-thumb{width:28px;height:28px;border:3px solid #fff;border-radius:50%;background:var(--acc);box-shadow:0 2px 7px rgba(0,0,0,.3);cursor:pointer;}
   .vol-val{flex:none;min-width:36px;text-align:right;font-size:16px;font-weight:800;color:var(--acc);font-variant-numeric:tabular-nums;}
   .cp-entry{display:flex;align-items:center;gap:13px;width:100%;padding:15px;background:var(--surface);border:1px solid var(--line);border-radius:16px;margin-top:14px;text-align:left;box-shadow:0 2px 10px rgba(18,63,51,.04);}
   .cp-entry:active{transform:scale(.99);}
@@ -634,7 +634,7 @@
   .cp-entry-tx{flex:1;display:flex;flex-direction:column;gap:2px;}
   .cp-entry-tx b{font-size:15px;font-weight:800;color:var(--ink);}
   .cp-entry-tx small{font-size:12px;color:var(--muted);}
-  .cp-sheet{width:min(470px,94vw);max-height:90vh;}
+  .cp-sheet{width:min(470px,94vw);}
   .cp-ov2{z-index:360;}
   .cp-lbl{display:block;font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin:2px 0 7px;}
   .cp-name{width:100%;box-sizing:border-box;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;font-size:15px;font-weight:600;color:var(--ink);background:var(--surface2);font-family:inherit;}
@@ -671,6 +671,10 @@
   .cp-pick-i{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;padding:12px 14px;background:var(--surface2);border:1px solid var(--line);border-radius:11px;margin-top:7px;font-size:14px;font-weight:600;color:var(--ink);text-align:left;}
   .cp-pick-i:active{background:var(--acc-soft);}
   .cp-pick-plus{flex:none;width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+  .cp-type-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;}
+  .cp-type{padding:10px 14px;border:1.5px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:11px;font-size:13.5px;font-weight:700;}
+  .cp-type.on{border-color:var(--acc);background:var(--acc-soft);color:var(--acc-d);}
+  .cp-est-num{font-size:21px;font-weight:800;color:var(--acc-d);}
   .cp-tgl-bar{display:flex;gap:6px;background:var(--surface2);border:1px solid var(--line);border-radius:13px;padding:4px;margin-bottom:14px;}
   .cp-tgl{flex:1;padding:10px;border:none;background:none;border-radius:10px;font-size:13.5px;font-weight:800;color:var(--muted);}
   .cp-tgl.on{background:var(--surface);color:var(--acc-d);box-shadow:0 2px 6px rgba(18,63,51,.1);}
@@ -1771,9 +1775,9 @@ function exBurn(ex,p){ if(!ex) return 0; var kg=(p&&p.kg)||75,n=(ex.n||"").toLow
   if(/fut|sprint|kocog|bike|bring|teker|úszás|úszó|kardió|kardio|\bz2\b|intervall|tempó|kerékpár|evezőgép|spinning/.test(n)){ var met=/sprint|intervall|hiit/.test(n)?11:(/tempó|gyors/.test(n)?9:7); return Math.round(met*kg*exMinNum(ex.reps)/60); }
   var per; if(pk==="squat"||pk==="lunge"||pk==="hinge"||/guggol|kitörés|bolgár|holtemel|román|\brdl\b|csípőemel|farhíd|lábtolás|felállás magas|nordic/.test(n)) per=21;
   else if(pk==="pull"||pk==="dip"||pk==="push"||pk==="row"||pk==="overhead"||/húzódzk|tolódzk|fekvőtámasz|fekvenyomás|evezés|rézsútos|vállból nyomás|ferde pad|muscle up|lever|planche|flag|hspu|kézállás/.test(n)) per=14; else per=9;
-  var reps=exRepNum(ex.reps),rs=exIsHold(ex.reps)?Math.max(0.7,Math.min(1.3,reps/25)):Math.max(0.7,Math.min(1.8,reps/10));
+  var reps=exRepNum(ex.reps),rs=exIsHold(ex.reps)?Math.max(0.7,Math.min(2.0,reps/25)):Math.max(0.7,Math.min(1.8,reps/10));
   return Math.round(per*(kg/70)*rs*sets); }
-function workoutBurn(dow){ if(_burnCache[dow]!=null) return _burnCache[dow]; var w=workoutFor(dow),s=0,i; if(w&&w._custom) return _burnCache[dow]=(w._custom.kcal||0); if(w&&!w.rest&&w.ex){ for(i=0;i<w.ex.length;i++) s+=exBurn(w.ex[i],profile); } return _burnCache[dow]=s; }
+function workoutBurn(dow){ if(_burnCache[dow]!=null) return _burnCache[dow]; var w=workoutFor(dow),s=0,i; if(w&&!w.rest&&w.ex){ for(i=0;i<w.ex.length;i++) s+=exBurn(w.ex[i],profile); } return _burnCache[dow]=s; }
 function sessionBurn(w,d,elapsedMs,p){ p=p||profile||{}; var workDone=0,workFull=0,setsDone=0,doneAny=false,i;
   for(i=0;i<w.ex.length;i++){ var full=exBurn(w.ex[i],p),sfull=w.ex[i].s||1,dn=(d.w&&d.w[i]?d.w[i]:0),fr=Math.min(1,dn/sfull); if(fr>0)doneAny=true; workFull+=full; workDone+=full*fr; setsDone+=Math.min(dn,sfull); }
   var base=Math.round(workDone);
@@ -1803,7 +1807,7 @@ function fmtClock(ms){ var s=Math.max(0,Math.floor(ms/1000)),h=Math.floor(s/3600
 function exTimerSec(ex){ var r=String(ex&&ex.reps||"").toLowerCase(); var sM=r.match(/(\d+)\s*(?:mp|másodperc|sec)/); if(sM) return parseInt(sM[1],10); var mM=r.match(/(\d+)\s*perc/); if(mM) return parseInt(mM[1],10)*60; return 0; }
 function beepVol(){ try{ var v=(state&&state.settings&&typeof state.settings.volume==="number")?state.settings.volume:60; return Math.max(0,Math.min(1,v/100)); }catch(e){ return 0.6; } }
 function unlockAudio(){ try{ if(!_actx) _actx=new (window.AudioContext||window.webkitAudioContext)(); if(_actx.state==="suspended"&&_actx.resume) _actx.resume(); if(!_actx._primed){ var _b=_actx.createBuffer(1,1,22050),_s=_actx.createBufferSource(); _s.buffer=_b; _s.connect(_actx.destination); _s.start(0); _actx._primed=true; } }catch(e){} }
-function beep(){ try{ unlockAudio(); var _pk=beepVol()*0.8; if(_pk<0.001) return; var t0=_actx.currentTime,seq=[[0,880],[0.28,880],[0.56,1245]]; for(var bi=0;bi<seq.length;bi++){ var o=_actx.createOscillator(),g=_actx.createGain(); o.connect(g); g.connect(_actx.destination); o.type="square"; o.frequency.value=seq[bi][1]; var st=t0+seq[bi][0]; g.gain.setValueAtTime(0.0001,st); g.gain.exponentialRampToValueAtTime(_pk,st+0.02); g.gain.exponentialRampToValueAtTime(0.0001,st+0.24); o.start(st); o.stop(st+0.25); } }catch(e){} }
+function beep(){ try{ unlockAudio(); var _pk=beepVol()*0.8; if(_pk<0.001) return; var t0=_actx.currentTime+0.05,seq=[[0,880],[0.28,880],[0.56,1245]]; for(var bi=0;bi<seq.length;bi++){ var o=_actx.createOscillator(),g=_actx.createGain(); o.connect(g); g.connect(_actx.destination); o.type="square"; o.frequency.value=seq[bi][1]; var st=t0+seq[bi][0]; g.gain.setValueAtTime(0.0001,st); g.gain.exponentialRampToValueAtTime(_pk,st+0.02); g.gain.exponentialRampToValueAtTime(0.0001,st+0.24); o.start(st); o.stop(st+0.25); } }catch(e){} }
 function vibrate(){ try{ if(navigator.vibrate) navigator.vibrate([140,70,140,70,240]); }catch(e){} }
 function sessProgressUpdate(){ if(!session) return; var w=workoutFor(session.dow),d=dd(),done=0,i; for(i=0;i<w.ex.length;i++){ if((d.w[i]||0)>=w.ex[i].s) done++; } var c=document.getElementById("sess-prog"); if(c) c.textContent=done+"/"+w.ex.length+" gyakorlat kész"; var b=document.getElementById("sess-finish-btn"); if(b){ if(done>=w.ex.length) b.classList.add("ready"); else b.classList.remove("ready"); } }
 var ROUTINES={
@@ -1864,7 +1868,10 @@ function routineTick(){ if(!routine||routine.phase==="done"||routine.paused){ if
   var rem=Math.ceil((routine.endTs-Date.now())/1000),n=document.getElementById("rt-num");
   if(rem<=0){ beep(); vibrate(); routine.idx++; if(routine.idx>=routine.steps.length){ routine.phase="done"; if(_rtick){clearInterval(_rtick);_rtick=null;} render(); } else { routine.endTs=Date.now()+routine.steps[routine.idx].sec*1000; render(); } }
   else { if(n) n.textContent=String(rem); } }
-function sessionTick(){ if(!session||session.phase!=="active"){ if(_tick){clearInterval(_tick);_tick=null;} return; } var t=document.getElementById("sess-timer"); if(t) t.textContent=fmtClock(Date.now()-session.startTs); if(session.cd){ var rem=Math.ceil((session.cd.endTs-Date.now())/1000),n=document.getElementById("sess-cd-num"),box=document.getElementById("sess-cd"); if(rem<=0){ if(!session.cd.done){ session.cd.done=true; if(n)n.textContent="0"; if(box)box.classList.add("cd-done"); beep(); vibrate(); saveSession(); } } else { if(n)n.textContent=String(rem); } } }
+function startCd(idx,sec,isRest,setNum,isAuto){ if(!session) return; session.cd={idx:idx,total:sec,endTs:Date.now()+sec*1000,done:false,rest:!!isRest,setNum:setNum||1,auto:!!isAuto}; saveSession(); }
+function afterRest(w,idx,sn){ var e=w.ex[idx],sets=(e&&e.s)||1; if(sn<sets){ var sec=exTimerSec(e); if(sec>0){ startCd(idx,sec,false,sn+1,true); return; } } var j=idx+1; if(j<w.ex.length){ var s2=exTimerSec(w.ex[j]); if(s2>0){ startCd(j,s2,false,1,true); return; } } if(session){ session.cd=null; saveSession(); } }
+function autoAdvance(w){ if(!session||!session.cd) return; var cd=session.cd,d=dd(); if(!cd.rest){ var idx=cd.idx,sn=cd.setNum||1,e=w.ex[idx]; if(e){ if(!d.w)d.w={}; d.w[idx]=Math.max(d.w[idx]||0,sn); saveState(); var rest=e._rest||0; if(rest>0){ startCd(idx,rest,true,sn,true); return; } afterRest(w,idx,sn); } } else { afterRest(w,cd.idx,cd.setNum||1); } }
+function sessionTick(){ if(!session||session.phase!=="active"){ if(_tick){clearInterval(_tick);_tick=null;} return; } var t=document.getElementById("sess-timer"); if(t) t.textContent=fmtClock(Date.now()-session.startTs); if(session.cd){ var rem=Math.ceil((session.cd.endTs-Date.now())/1000),n=document.getElementById("sess-cd-num"),box=document.getElementById("sess-cd"); if(rem<=0){ if(!session.cd.done){ session.cd.done=true; if(n)n.textContent="0"; if(box)box.classList.add("cd-done"); beep(); vibrate(); saveSession(); var _acw=workoutFor(session.dow); if(_acw&&_acw._custom){ if(!session.cd.rest||session.cd.auto){ autoAdvance(_acw); render(); } } } } else { if(n)n.textContent=String(rem); } } }
 function renderSession(){ var dow=session.dow, w=workoutFor(dow), d=dd(); if(!w||w.rest){ session=null; saveSession(); render(); return; }
   if(session.phase==="summary"){ var mins=fmtClock(session.sumMs||0),kc=session.sumKcal||0,full=session.sumFull||kc,base=session.sumBase||kc,pace=session.sumPace||1,pl2=pace>=1.22?"🔥 Nagyon feszes tempó":pace>=1.05?"💪 Feszes tempó":pace>=0.9?"⚖️ Kiegyensúlyozott tempó":"🧘 Nyugodt tempó",corr=(base&&Math.abs(kc-base)>=15)?(' A tempód alapján az alapbecslést (~<b>'+base+' kcal</b>) <b>'+kc+' kcal</b>-ra módosítottam.'):'';
     var sh='<div class="beast beast-done"><div class="beast-bg"></div><div class="beast-wrap beast-sumwrap"><div class="beast-fire">🔥</div><div class="beast-done-h">Edzés kész!</div><div class="beast-sumrow"><div class="beast-sumbox"><div class="bsb-num">'+mins+'</div><div class="bsb-lbl">idő</div></div><div class="beast-sumbox"><div class="bsb-num">'+kc+'</div><div class="bsb-lbl">kcal égetve</div></div></div><div class="beast-prog" style="margin:16px 0 0">'+pl2+'</div><div class="beast-done-note">Szép munka! 💪 A Kaja-fülön ehhez kb. <b>'+kc+' kcal</b> extra bónusz nyílt meg mára'+(kc<full?' (a teljes tervezett edzés ~'+full+' kcal)':'')+'.'+corr+' Töltsd fel az energiát.</div><button class="beast-close" data-act="sess-close">Kész, vissza</button></div></div>';
@@ -1873,7 +1880,7 @@ function renderSession(){ var dow=session.dow, w=workoutFor(dow), d=dd(); if(!w|
   var ex=""; for(i=0;i<w.ex.length;i++){ var e=w.ex[i],dn=(d.w[i]||0)>=e.s,pips="",tgt=(e.s>1?e.s+" × ":"")+e.reps,sec=exTimerSec(e),j;
     for(j=0;j<e.s;j++) pips+='<button class="pip '+(j<(d.w[i]||0)?"on":"")+'" data-act="sess-pip" data-ex="'+i+'" data-set="'+j+'"></button>';
     ex+='<div class="beast-ex'+(dn?" bex-done":"")+'"><div class="bex-top"><div class="bex-name">'+esc(e.n)+'</div><div class="bex-tgt">'+esc(tgt)+'</div></div>'+(sec>0?'<button class="bex-timer" data-act="sess-timer" data-ex="'+i+'">⏱ '+(sec>=60?(Math.round(sec/60)+" perc"):(sec+" mp"))+' visszaszámláló</button>':'')+'<div class="pips bex-pips">'+pips+'</div>'+((w._custom&&e._rest>0&&i<w.ex.length-1)?('<button class="beast-rest" data-act="sess-rest" data-ex="'+i+'">💤 Pihenő — '+e._rest+' mp</button>'):'')+(e.note?'<div class="bex-note">'+esc(e.note)+'</div>':'')+(hasForm(e.n)?'<button class="bex-tech" data-act="exinfo" data-n="'+escAttr(e.n)+'">\ud83d\udcd6 Technika</button>':'')+'</div>'; }
-  var cdOn=!!session.cd, cdName=cdOn?(session.cd.rest?"Pihenő":(w.ex[session.cd.idx]?esc(w.ex[session.cd.idx].n):"")):"", cdNum=cdOn?Math.max(0,Math.ceil((session.cd.endTs-Date.now())/1000)):0;
+  var cdOn=!!session.cd, cdName=cdOn?(session.cd.rest?"Pihenő":(w.ex[session.cd.idx]?(esc(w.ex[session.cd.idx].n)+(((w.ex[session.cd.idx].s||1)>1)?(" · "+(session.cd.setNum||1)+"/"+(w.ex[session.cd.idx].s||1)+" szett"):"")):"")):"", cdNum=cdOn?Math.max(0,Math.ceil((session.cd.endTs-Date.now())/1000)):0;
   var html='<div class="beast"><div class="beast-bg"></div><div class="beast-wrap"><div class="beast-head"><div class="beast-name">'+esc(w.name)+'</div><button class="beast-cancel" data-act="sess-cancel">Mégsem</button></div><div class="beast-timer" id="sess-timer">'+fmtClock(Date.now()-session.startTs)+'</div><div class="beast-prog" id="sess-prog">'+done+'/'+w.ex.length+' gyakorlat kész</div><div class="beast-ex-list">'+ex+'</div><button class="beast-finish'+(done>=w.ex.length?" ready":"")+'" id="sess-finish-btn" data-act="sess-finish">⏹ Edzés befejezése</button></div><div class="beast-cd'+(cdOn&&session.cd.done?" cd-done":"")+'" id="sess-cd" style="display:'+(cdOn?"":"none")+'"><div class="beast-cd-lbl" id="sess-cd-lbl">'+cdName+'</div><div class="beast-cd-num" id="sess-cd-num">'+cdNum+'</div><button class="beast-cd-x" data-act="sess-cd-close">Bezár</button></div></div>'+(infoEx?renderExInfo():"");
   _mountHTML(html);
 }
@@ -2128,7 +2135,13 @@ var THEMES={
   plum:{name:"Levendula",sw:"#6b4c9a",vars:{"--acc":"#6b4c9a","--acc-d":"#3b2a5e","--acc-soft":"#ece4f5","--acc-lite":"#8a67bf","--g1":"#4b357a","--g2":"#352455"}},
   wine:{name:"Bordó",sw:"#a83f5b",vars:{"--acc":"#a83f5b","--acc-d":"#5f2536","--acc-soft":"#f6e2e9","--acc-lite":"#c85f7b","--g1":"#7a2c44","--g2":"#54202f"}},
   amber:{name:"Borostyán",sw:"#b9772a",vars:{"--acc":"#b9772a","--acc-d":"#6e4413","--acc-soft":"#f6ebdd","--acc-lite":"#d1913f","--g1":"#8f5a1e","--g2":"#5f3d12"}},
-  slate:{name:"Grafit",sw:"#4a5b6b",vars:{"--acc":"#4a5b6b","--acc-d":"#2a3540","--acc-soft":"#e8ecf0","--acc-lite":"#67788a","--g1":"#35424f","--g2":"#252f38"}}
+  slate:{name:"Grafit",sw:"#4a5b6b",vars:{"--acc":"#4a5b6b","--acc-d":"#2a3540","--acc-soft":"#e8ecf0","--acc-lite":"#67788a","--g1":"#35424f","--g2":"#252f38"}},
+  teal:{name:"Türkiz",sw:"#0f8b8d",vars:{"--acc":"#0f8b8d","--acc-d":"#0a5152","--acc-soft":"#dcf0f0","--acc-lite":"#2bb0b2","--g1":"#0d6e6f","--g2":"#094c4d"}},
+  rose:{name:"Rózsa",sw:"#c2557a",vars:{"--acc":"#c2557a","--acc-d":"#722f48","--acc-soft":"#f7e3ea","--acc-lite":"#d77596","--g1":"#8f3d5b","--g2":"#632a3f"}},
+  indigo:{name:"Indigó",sw:"#4f46b5",vars:{"--acc":"#4f46b5","--acc-d":"#2c2769","--acc-soft":"#e7e5f6","--acc-lite":"#6d63d1","--g1":"#38318a","--g2":"#262160"}},
+  crimson:{name:"Kármin",sw:"#c0392b",vars:{"--acc":"#c0392b","--acc-d":"#6f2019","--acc-soft":"#f7e2df","--acc-lite":"#d55a4c","--g1":"#8f2a20","--g2":"#631d16"}},
+  sky:{name:"Égkék",sw:"#2b8fd4",vars:{"--acc":"#2b8fd4","--acc-d":"#14547f","--acc-soft":"#e0eef8","--acc-lite":"#4ea8e6","--g1":"#1c6fa5","--g2":"#12507a"}},
+  coffee:{name:"Kávé",sw:"#7a5230",vars:{"--acc":"#7a5230","--acc-d":"#48301b","--acc-soft":"#efe6dc","--acc-lite":"#9c6f45","--g1":"#5f3f24","--g2":"#422b18"}}
 };
 function applyTheme(key){ var t=THEMES[key]||THEMES.forest; try{ var de=document.documentElement; for(var k in t.vars){ de.style.setProperty(k,t.vars[k]); } }catch(e){} }
 function viewBeall(){
@@ -2138,7 +2151,7 @@ function viewBeall(){
   for(var k in THEMES){ var tt=THEMES[k]; h+='<button class="theme-sw'+(k===th?" on":"")+'" data-act="theme-set" data-theme="'+k+'" style="--sw:'+tt.sw+'"><span class="theme-dot"></span><span class="theme-name">'+esc(tt.name)+'</span></button>'; }
   h+='</div><div class="set-note">A választott szín az egész appra érvényes, és mentődik.</div></div>';
   h+='<div class="eyebrow" style="margin-top:22px">Nyelv</div><div class="card settings-card"><div class="set-row" style="border:none"><span>🌐 Nyelv</span><span style="color:var(--muted);font-weight:700">Magyar</span></div><div class="set-note">Több nyelv hamarosan.</div></div>';
-  h+='<div class="eyebrow" style="margin-top:22px">Jelzések hangereje</div><div class="card"><div class="vol-row"><span class="vol-ic">🔊</span><div class="vol-track"><div class="vol-fill" id="vol-fill" style="width:'+vol+'%"></div><input type="range" min="0" max="100" value="'+vol+'" id="vol-slider" class="vol-input" aria-label="Hangerő"></div><span class="vol-val" id="vol-val">'+vol+'</span></div><button class="btn-ghost" data-act="vol-test" style="margin-top:12px">🔔 Hangerő tesztelése</button><div class="set-note">Az edzés-időzítők és jelzések ezen a hangerőn szólnak (0 = néma).</div></div>';
+  h+='<div class="eyebrow" style="margin-top:22px">Jelzések hangereje</div><div class="card"><div class="vol-row"><span class="vol-ic">🔊</span><input type="range" min="0" max="100" value="'+vol+'" id="vol-slider" class="vol-native" aria-label="Hangerő" style="background:linear-gradient(90deg,var(--acc) '+vol+'%,var(--surface2) '+vol+'%)"><span class="vol-val" id="vol-val">'+vol+'</span></div><button class="btn-ghost" data-act="vol-test" style="margin-top:14px">🔔 Hangerő tesztelése</button><div class="set-note">Az edzés-időzítők és jelzések ezen a hangerőn szólnak (0 = néma).<br><b>iPhone-on:</b> ha nem hallod, kapcsold ki az oldalsó néma kapcsolót és told fel a telefon hangerejét — a beépített hangot a telefon némítása is elnémítja.</div></div>';
   h+='<div class="eyebrow" style="margin-top:22px">Jogi tudnivalók</div><div class="card settings-card"><button class="set-row" data-act="legal-disclaimer"><span>⚕️ Egészségügyi tájékoztató</span><span class="set-arrow">›</span></button><button class="set-row" data-act="legal-privacy"><span>🔒 Adatvédelmi tájékoztató</span><span class="set-arrow">›</span></button><button class="set-row" data-act="legal-aszf"><span>📄 Felhasználási feltételek</span><span class="set-arrow">›</span></button><button class="set-row" data-act="legal-impresszum"><span>ℹ️ Impresszum</span><span class="set-arrow">›</span></button></div>';
   h+='<div class="eyebrow" style="margin-top:22px">Biztonsági mentés</div><div class="card settings-card"><button class="set-row" data-act="data-export"><span>💾 Adatok mentése</span><span class="set-arrow">›</span></button><button class="set-row" data-act="data-import"><span>📥 Adatok visszaállítása</span><span class="set-arrow">›</span></button><button class="set-row" data-act="feedback-open"><span>💬 Visszajelzés / kérdőív</span><span class="set-arrow">›</span></button></div>';
   h+='<div class="set-note" style="text-align:center;margin-top:18px">Életmódváltás Pro</div>';
@@ -2152,10 +2165,15 @@ function cpUnitLabel(u){ return u==="sec"?"mp":(u==="min"?"perc":"ism"); }
 function cpUnitFull(u){ return u==="sec"?"Másodperc":(u==="min"?"Perc":"Ismétlés"); }
 function cpLib(){ var out=[],k; for(k in FORMS){ var f=FORMS[k]; out.push({key:k,name:(f.t||k).replace(/\s*[—(].*$/,"").trim(),cat:(f.cat||"core")}); } return out; }
 function cpExReps(e){ if(e.unit==="sec") return e.amount+" mp"; if(e.unit==="min") return e.amount+" perc"; return String(e.amount); }
+function cpProg(cat){ if(cat==="vpull"||cat==="hpull") return "pull"; if(cat==="vpush"||cat==="hpush") return "push"; if(cat==="squat") return "squat"; if(cat==="lunge") return "lunge"; if(cat==="hinge") return "hinge"; return ""; }
+function cpBuildEx(e){ return {n:e.name,reps:cpExReps(e),s:e.sets||1,prog:cpProg(e.cat)}; }
+function cpEstBurn(tpl,pp){ if(!tpl||!tpl.ex) return 0; var b=0,i; for(i=0;i<tpl.ex.length;i++){ b+=exBurn(cpBuildEx(tpl.ex[i]),pp||profile); } return Math.round(b); }
+function cpDurEst(tpl){ if(!tpl||!tpl.ex) return 0; var sec=0,i; for(i=0;i<tpl.ex.length;i++){ var e=tpl.ex[i],st=e.sets||1,work=(e.unit==="sec")?e.amount:((e.unit==="min")?e.amount*60:e.amount*3.5),rst=tpl.restCustom?(e.rest||0):(tpl.restDefault||0); sec+=st*work+st*rst; } return Math.max(5,Math.round(sec/60)); }
 function cpTemplates(){ return (state.customPlan&&state.customPlan.templates)||[]; }
 function cpFind(id){ var t=cpTemplates(); for(var i=0;i<t.length;i++){ if(t[i].id===id) return t[i]; } return null; }
 
-function renderCP(){ if(!cp) return ""; if(cp.mode==="edit") return renderCPEdit(); if(cp.mode==="week") return renderCPWeek(); return renderCPList(); }
+function renderCPDelConfirm(){ var t=cpFind(cp.confirmDel); return '<div class="overlay cp-ov2"><div class="fi-sheet cp-sheet" style="width:min(400px,92vw)"><div class="fm-head">Biztosan törlöd?</div><div class="fm-bd"><div class="set-note" style="margin-top:0">A(z) „'+esc(t?t.name:"")+'” edzésnap véglegesen törlődik, és lekerül a heti beosztásról is. Ez nem vonható vissza.</div><button class="cp-del-btn" data-act="cp-del-yes">🗑️ Igen, törlöm</button><button class="btn-ghost" data-act="cp-del-no">Mégsem</button></div></div></div>'; }
+function renderCP(){ if(!cp) return ""; var h=(cp.mode==="edit")?renderCPEdit():((cp.mode==="week")?renderCPWeek():renderCPList()); if(cp.confirmDel) h+=renderCPDelConfirm(); return h; }
 
 function renderCPList(){
   var tpls=cpTemplates(), body="", i;
@@ -2189,10 +2207,10 @@ function renderCPEdit(){
   body+='<div class="cp-rest-row"><span class="cp-ctrl-l">Alap szünet a gyakorlatok közt</span><div class="cp-step"><button data-act="cp-restdef" data-d="-5">−</button><b>'+(d.restDefault||0)+' mp</b><button data-act="cp-restdef" data-d="5">+</button></div></div>';
   body+='<button class="cp-toggle'+(d.restCustom?" on":"")+'" data-act="cp-restcustom"><span class="cp-tg-box">'+(d.restCustom?"✓":"")+'</span><span>Minden szünetet külön állítok</span></button>';
   body+='<div class="set-note">0 mp = nincs szünet (folyamatosabb, kardiósabb edzés). Ha bekapcsolod a külön állítást, minden gyakorlatnál egyedi szünetet adhatsz meg.</div></div>';
-  body+='<div class="cp-sec-h">Kalória-belövés</div><div class="cp-ex">';
-  body+='<div class="cp-rest-row"><span class="cp-ctrl-l">🔥 Becsült égés</span><div class="cp-step"><button data-act="cp-kcal" data-d="-10">−</button><b>'+d.kcal+' kcal</b><button data-act="cp-kcal" data-d="10">+</button></div></div>';
-  body+='<div class="cp-rest-row"><span class="cp-ctrl-l">⏱️ Becsült edzésidő</span><div class="cp-step"><button data-act="cp-dur" data-d="-5">−</button><b>'+d.durationMin+' perc</b><button data-act="cp-dur" data-d="5">+</button></div></div>';
-  body+='<div class="set-note">Ezt vesszük alapul az égés kiszámításához: a tényleges edzésidő alapján skálázzuk (gyorsabb tempó = kicsit több), és sosem lépi túl a napi maximumot.</div></div>';
+  body+='<div class="cp-sec-h">Becsült kalória</div><div class="cp-ex cp-est"><div class="cp-est-num">🔥 ~<b>'+cpEstBurn(d,profile)+'</b> kcal</div><div class="set-note" style="padding-top:8px">Automatikusan a gyakorlatokból számolva: az <b>ismétlésszám / tartás-idő</b>, a mozgás típusa és a <b>testsúlyod</b> alapján. Edzés közben a ténylegesen elvégzett munka arányában oldódik fel.</div></div>';
+  
+  
+  
   body+='<button class="cp-save" data-act="cp-save">✓ Mentés</button>';
   body+='<button class="btn-ghost" data-act="cp-cancel">Mégsem</button>';
   if(!cp.isNew) body+='<button class="cp-del-btn" data-act="cp-del" data-id="'+escAttr(d.id)+'">🗑️ Edzésnap törlése</button>';
@@ -2200,13 +2218,24 @@ function renderCPEdit(){
   return '<div class="overlay cp-ov"><div class="fi-sheet cp-sheet"><button class="fi-x" data-act="cp-cancel" aria-label="Bezárás">✕</button><div class="fm-head">'+(cp.isNew?"➕ Új edzésnap":"✏️ Edzésnap szerkesztése")+'</div><div class="fm-bd">'+body+'</div></div></div>'+picker;
 }
 
-function renderCPPick(){
+function renderCPCustom(){
+  var cn=cp.customNew, types=[["vpull","Húzás"],["vpush","Tolás"],["squat","Láb"],["core","Core / has"],["",'Egyéb']], i;
+  var fb='<label class="cp-lbl">Gyakorlat neve</label><input type="text" id="cp-custom-name" class="cp-name" placeholder="pl. Kötélmászás" value="'+escAttr(cn.name||"")+'" maxlength="40">';
+  fb+='<label class="cp-lbl" style="margin-top:16px">Mozgás típusa (a kalóriához)</label><div class="cp-type-grid">';
+  for(i=0;i<types.length;i++){ fb+='<button class="cp-type'+(cn.cat===types[i][0]?" on":"")+'" data-act="cp-custom-cat" data-cat="'+types[i][0]+'">'+types[i][1]+'</button>'; }
+  fb+='</div>';
+  fb+='<button class="cp-save" data-act="cp-custom-add">➕ Hozzáadás a naphoz</button><button class="btn-ghost" data-act="cp-custom-cancel">Vissza</button>';
+  fb+='<div class="set-note">Teljesen egyedi gyakorlat saját névvel. A mozgás típusa segít megbecsülni az elégetett kalóriát a testsúlyodhoz mérten.</div>';
+  return '<div class="overlay cp-ov2"><div class="fi-sheet cp-sheet"><button class="fi-x" data-act="cp-custom-cancel" aria-label="Vissza">✕</button><div class="fm-head">✏️ Saját gyakorlat</div><div class="fm-bd">'+fb+'</div></div></div>';
+}
+
+function renderCPPick(){ if(cp.customNew) return renderCPCustom();
   var q=(cp.pickQ||"").toLowerCase().trim(), lib=cpLib(), groups={}, i;
   for(i=0;i<lib.length;i++){ var it=lib[i]; if(q && it.name.toLowerCase().indexOf(q)<0) continue; var g=CPGROUP[it.cat]||"Egyéb"; (groups[g]=groups[g]||[]).push(it); }
-  var body='<input type="text" id="cp-pick-q" class="cp-name" placeholder="🔎 Gyakorlat keresése..." value="'+escAttr(cp.pickQ||"")+'">', any=false;
+  var body='<input type="text" id="cp-pick-q" class="cp-name" placeholder="🔎 Gyakorlat keresése..." value="'+escAttr(cp.pickQ||"")+'">'; body+='<button class="cp-add" data-act="cp-custom-open" style="margin-top:10px">✏️ Teljesen saját gyakorlat (egyedi név)</button>'; var any=false;
   for(var gi=0;gi<CPGROUP_ORDER.length;gi++){ var gn=CPGROUP_ORDER[gi], arr=groups[gn]; if(!arr||!arr.length) continue; any=true;
     body+='<div class="cp-pick-g">'+esc(gn)+'</div>';
-    for(var j=0;j<arr.length;j++){ body+='<button class="cp-pick-i" data-act="cp-pick" data-key="'+escAttr(arr[j].key)+'" data-name="'+escAttr(arr[j].name)+'"><span>'+esc(arr[j].name)+'</span><span class="cp-pick-plus">＋</span></button>'; }
+    for(var j=0;j<arr.length;j++){ body+='<button class="cp-pick-i" data-act="cp-pick" data-key="'+escAttr(arr[j].key)+'" data-name="'+escAttr(arr[j].name)+'" data-cat="'+escAttr(arr[j].cat||"")+'"><span>'+esc(arr[j].name)+'</span><span class="cp-pick-plus">＋</span></button>'; }
   }
   if(!any) body+='<div class="cp-empty">Nincs találat erre: „'+esc(cp.pickQ||"")+'".</div>';
   return '<div class="overlay cp-ov2"><div class="fi-sheet cp-sheet"><button class="fi-x" data-act="cp-pick-close" aria-label="Bezárás">✕</button><div class="fm-head">Gyakorlat választása</div><div class="fm-bd">'+body+'</div></div></div>';
@@ -2217,9 +2246,9 @@ function cpEntry(){ var n=cpTemplates().length; return '<button class="cp-entry"
 var CPWD=["Vasárnap","Hétfő","Kedd","Szerda","Csütörtök","Péntek","Szombat"];
 var CPWD_ORDER=[1,2,3,4,5,6,0];
 function workFrac(w,d){ if(!w||!w.ex) return 0; var td=0,tt=0,i; for(i=0;i<w.ex.length;i++){ var st=w.ex[i].s||1; tt+=st; td+=Math.min(st,(d&&d.w&&d.w[i]?d.w[i]:0)); } return tt?td/tt:0; }
-function customWorkoutFor(dow){ var cpn=state.customPlan||{}, v=(cpn.week||{})[dow]; if(v==="rest") return {rest:true,text:REST_TEXT}; var t=v?cpFind(v):null; if(!t) return {rest:true,text:"Erre a napra még nincs saját edzésnap beállítva. Nyisd meg lent a Saját edzésterv → Heti beosztás részt, és rendelj ide egy edzésnapot (vagy jelöld pihenőnek).",_cpUnset:true}; var ex=(t.ex||[]).map(function(e){ var rs=t.restCustom?(e.rest||0):(t.restDefault||0); return {n:e.name,reps:cpExReps(e),s:e.sets||1,note:"",_rest:rs,_key:e.key}; }); return {name:t.name||"Saját edzés",tag:"Saját terv",hint:(ex.length+" gyakorlat • a te terved"),ex:ex,_custom:t}; }
+function customWorkoutFor(dow){ var cpn=state.customPlan||{}, v=(cpn.week||{})[dow]; if(v==="rest") return {rest:true,text:REST_TEXT}; var t=v?cpFind(v):null; if(!t){ var _has=cpTemplates().length; return {rest:true,text:(_has?"Erre a napra nincs beállítva edzésnap. Görgess le a a „Saját edzésterv”  gombhoz → Heti beosztás, és rendelj ide egy napot (vagy jelöld pihenőnek).":"Még nincs saját edzésnapod. Görgess le a a „Saját edzésterv”  gombhoz, és hozz létre egyet — pár koppintás az egész."),_cpUnset:true}; } var ex=(t.ex||[]).map(function(e){ var rs=t.restCustom?(e.rest||0):(t.restDefault||0); return {n:e.name,reps:cpExReps(e),s:e.sets||1,note:"",prog:cpProg(e.cat),_rest:rs,_key:e.key}; }); return {name:t.name||"Saját edzés",tag:"Saját terv",hint:(ex.length+" gyakorlat • a te terved"),ex:ex,_custom:t}; }
 function cpWeekLabel(dow){ var cpn=state.customPlan||{}, v=(cpn.week||{})[dow]; if(v==="rest") return "🌿 Pihenőnap"; var t=v?cpFind(v):null; return t?t.name:"— nincs beállítva"; }
-function cpToggleBar(){ if(!cpTemplates().length) return ""; var on=!!(state.customPlan&&state.customPlan.enabled); return '<div class="cp-tgl-bar"><button class="cp-tgl'+(on?"":" on")+'" data-act="cp-mode" data-on="0">Előírt terv</button><button class="cp-tgl'+(on?" on":"")+'" data-act="cp-mode" data-on="1">Saját terv</button></div>'; }
+function cpToggleBar(){ var on=!!(state.customPlan&&state.customPlan.enabled); return '<div class="cp-tgl-bar"><button class="cp-tgl'+(on?"":" on")+'" data-act="cp-mode" data-on="0">Előírt terv</button><button class="cp-tgl'+(on?" on":"")+'" data-act="cp-mode" data-on="1">Saját terv</button></div>'; }
 function renderCPWeek(){
   var body='<div class="set-note" style="margin-top:0">Rendeld hozzá az edzésnapjaidat a hét napjaihoz. Ugyanaz az edzésnap több napra is beállítható (pl. hétfő és csütörtök) — így egyszerűen „átmásolható". A többit jelöld pihenőnek.</div>';
   for(var i=0;i<CPWD_ORDER.length;i++){ var dw=CPWD_ORDER[i];
@@ -3624,7 +3653,7 @@ function viewKaja(){
   var w=workoutFor(dow), factor=dayRoleFactors(dow);
   var _tefB=proteinTEFBonus(pl,(profile.kg)||75);
   var _db=dayBudget(dow), baseline=_db.baseline+_tefB, todayBurn=_db.bonus, isC=_db.cheat;
-  var _estBonus=0; if(w&&!w.rest&&w.ex){ for(var _x=0;_x<w.ex.length;_x++){ var _eb=exBurn(w.ex[_x],profile),_fr=Math.min(1,(d.w&&d.w[_x]?d.w[_x]:0)/(w.ex[_x].s||1)); _estBonus+=_eb*_fr; } } _estBonus=Math.round(_estBonus); if(w&&w._custom){ _estBonus=Math.round((w._custom.kcal||0)*workFrac(w,d)); }
+  var _estBonus=0; if(w&&!w.rest&&w.ex){ for(var _x=0;_x<w.ex.length;_x++){ var _eb=exBurn(w.ex[_x],profile),_fr=Math.min(1,(d.w&&d.w[_x]?d.w[_x]:0)/(w.ex[_x].s||1)); _estBonus+=_eb*_fr; } } _estBonus=Math.round(_estBonus);
   var _measured=(d.sessKcal!=null||d.sessDone), unlockedBonus=_estBonus;
   var fullBonus=Math.max(todayBurn,unlockedBonus), dT=Math.round((baseline+fullBonus)/10)*10; if(dT<1)dT=baseline||1;
   var _tc=(fullBonus>0)?topCarbs(dow,factor,2):"";
@@ -3689,8 +3718,9 @@ function viewBolt(){
 /* ---------- EVENTS ---------- */
 document.addEventListener("change",function(ev){ var t=ev.target; if(!t) return; if(t.id==="data-file"){ var _f2=t.files&&t.files[0]; if(_f2){ var _rd2=new FileReader(); _rd2.onload=function(){ _applyImport(_rd2.result); }; _rd2.onerror=function(){ _dataErr="Nem siker\u00fclt beolvasni a f\u00e1jlt."; render(); }; _rd2.readAsText(_f2); } return; } if(!foodModal) return; if(t.id==="fm-date"){ foodModal.logDate=t.value||iso(sel); return; } if(t.id!=="fm-file") return; var file=t.files&&t.files[0]; if(!file) return; var rd=new FileReader(); rd.onload=function(){ analyzeFoodPhoto(rd.result,file.type); }; rd.onerror=function(){ if(foodModal){ foodModal.err="Nem sikerült beolvasni a képet."; render(); } }; rd.readAsDataURL(file); });
 document.addEventListener("input",function(ev){ var t=ev.target; if(!t) return;
-  if(t.id==="vol-slider"){ if(!state.settings)state.settings={}; var _vv=Math.max(0,Math.min(100,parseInt(t.value,10)||0)); state.settings.volume=_vv; saveState(); var _vf=document.getElementById("vol-fill"); if(_vf)_vf.style.width=_vv+"%"; var _vn=document.getElementById("vol-val"); if(_vn)_vn.textContent=_vv; return; }
+  if(t.id==="vol-slider"){ if(!state.settings)state.settings={}; var _vv=Math.max(0,Math.min(100,parseInt(t.value,10)||0)); state.settings.volume=_vv; saveState(); t.style.background="linear-gradient(90deg,var(--acc) "+_vv+"%,var(--surface2) "+_vv+"%)"; var _vn=document.getElementById("vol-val"); if(_vn)_vn.textContent=_vv; return; }
   if(cp&&cp.draft&&t.id==="cp-name"){ cp.draft.name=t.value; return; }
+  if(cp&&cp.customNew&&t.id==="cp-custom-name"){ cp.customNew.name=t.value; return; }
   if(cp&&t.id==="cp-pick-q"){ cp.pickQ=t.value||""; var _cpp=t.selectionStart; render(); var _el=document.getElementById("cp-pick-q"); if(_el){ try{_el.focus(); _el.setSelectionRange(_cpp,_cpp);}catch(e){} } return; }
   if(t.id==="rsearch"&&foodModal){ foodModal.rsearch=t.value||""; var _cp=t.selectionStart; render(); var el=document.getElementById("rsearch"); if(el){ try{ el.focus(); el.setSelectionRange(_cp,_cp); }catch(e){} } return; }
   if(t.id==="ob-sport-search"&&onboarding){ obDraft.sportQuery=t.value||""; var _cp2=t.selectionStart; renderOnboarding(); var el2=document.getElementById("ob-sport-search"); if(el2){ try{ el2.focus(); el2.setSelectionRange(_cp2,_cp2); }catch(e){} } return; }
@@ -3771,9 +3801,9 @@ document.addEventListener("click",function(ev){
   if(act==="routine-skip"){ if(routine){ routine.idx++; if(routine.idx>=routine.steps.length){ routine.phase="done"; } else { routine.endTs=Date.now()+routine.steps[routine.idx].sec*1000; routine.paused=false; } render(); } return; }
   if(act==="sess-start"){ unlockAudio(); beep(); session={dow:sel.getDay(),startTs:Date.now(),phase:"active",cd:null}; saveSession(); render(); return; }
   if(act==="sess-pip"){ var i=+el.getAttribute("data-ex"),j=+el.getAttribute("data-set"),d=dd(),cur=d.w[i]||0; d.w[i]=(cur===j+1)?j:(j+1); saveState(); var card=el.parentNode; while(card&&!(card.className&&(""+card.className).indexOf("beast-ex")>=0)) card=card.parentNode; if(card){ var ps=card.getElementsByClassName("pip"),k; for(k=0;k<ps.length;k++){ if(k<d.w[i]) ps[k].classList.add("on"); else ps[k].classList.remove("on"); } var need=workoutFor(session.dow).ex[i].s; if(d.w[i]>=need) card.classList.add("bex-done"); else card.classList.remove("bex-done"); } sessProgressUpdate(); return; }
-  if(act==="sess-timer"){ if(!session) return; unlockAudio(); var i=+el.getAttribute("data-ex"),w=workoutFor(session.dow),sec=exTimerSec(w.ex[i]); if(sec>0){ session.cd={idx:i,total:sec,endTs:Date.now()+sec*1000,done:false}; saveSession(); var cd=document.getElementById("sess-cd"); if(cd){ cd.style.display=""; cd.classList.remove("cd-done"); var lb=document.getElementById("sess-cd-lbl"); if(lb)lb.textContent=w.ex[i].n; var nn=document.getElementById("sess-cd-num"); if(nn)nn.textContent=sec; } } return; }
+  if(act==="sess-timer"){ if(!session) return; unlockAudio(); var i=+el.getAttribute("data-ex"),w=workoutFor(session.dow),sec=exTimerSec(w.ex[i]); if(sec>0){ session.cd={idx:i,total:sec,endTs:Date.now()+sec*1000,done:false,rest:false,setNum:1}; saveSession(); var cd=document.getElementById("sess-cd"); if(cd){ cd.style.display=""; cd.classList.remove("cd-done"); var lb=document.getElementById("sess-cd-lbl"); if(lb)lb.textContent=w.ex[i].n; var nn=document.getElementById("sess-cd-num"); if(nn)nn.textContent=sec; } } return; }
   if(act==="sess-cd-close"){ if(session) session.cd=null; saveSession(); var cd=document.getElementById("sess-cd"); if(cd){ cd.style.display="none"; cd.classList.remove("cd-done"); } return; }
-  if(act==="sess-finish"){ if(!session) return; var w=workoutFor(session.dow),d=dd(),_ms=Math.max(0,Date.now()-session.startTs); d.sessMs=(d.sessMs||0)+_ms; var _wb=0,_wi; for(_wi=0;_wi<w.ex.length;_wi++){ var _eb=exBurn(w.ex[_wi],profile),_fr=Math.min(1,(d.w&&d.w[_wi]?d.w[_wi]:0)/(w.ex[_wi].s||1)); _wb+=_eb*_fr; } _wb=Math.round(_wb); if(w&&w._custom){ _wb=Math.round((w._custom.kcal||0)*workFrac(w,d)); } var sb=sessionBurn(w,d,d.sessMs,profile); session.sumMs=d.sessMs; session.sumKcal=_wb; session.sumBase=(w&&w._custom)?_wb:sb.base; session.sumFull=(w&&w._custom)?(w._custom.kcal||0):workoutBurn(session.dow); session.sumPace=(w&&w._custom)?1:sb.pace; session.sumIntensity=sb.intensity; d.sessKcal=_wb; d.sessDone=true; saveState(); session.phase="summary"; session.cd=null; saveSession(); render(); return; }
+  if(act==="sess-finish"){ if(!session) return; var w=workoutFor(session.dow),d=dd(),_ms=Math.max(0,Date.now()-session.startTs); d.sessMs=(d.sessMs||0)+_ms; var _wb=0,_wi; for(_wi=0;_wi<w.ex.length;_wi++){ var _eb=exBurn(w.ex[_wi],profile),_fr=Math.min(1,(d.w&&d.w[_wi]?d.w[_wi]:0)/(w.ex[_wi].s||1)); _wb+=_eb*_fr; } _wb=Math.round(_wb); var sb=sessionBurn(w,d,d.sessMs,profile); session.sumMs=d.sessMs; session.sumKcal=_wb; session.sumBase=sb.base; session.sumFull=workoutBurn(session.dow); session.sumPace=sb.pace; session.sumIntensity=sb.intensity; d.sessKcal=_wb; d.sessDone=true; saveState(); session.phase="summary"; session.cd=null; saveSession(); render(); return; }
   if(act==="sess-close"||act==="sess-cancel"){ session=null; saveSession(); tab="edzes"; render(); return; }
   if(act==="rest"){ var dr=dd(); dr.r=!dr.r; saveState(); render(); return; }
   if(act==="diffadj"){ var dir=+el.getAttribute("data-dir"),nd=Math.min(10,Math.max(1,diffOf(profile)+dir)); profile.diff=nd; profile.diffAdjustedAt=iso(new Date()); profile._plan=computePlan(profile); saveProfile(); render(); return; }
@@ -3822,17 +3852,23 @@ document.addEventListener("click",function(ev){
   if(act==="data-import"){ dataModal="import"; _dataErr=""; render(); return; }
   if(act==="data-close"){ dataModal=null; _dataErr=""; render(); return; }
   if(act==="theme-set"){ var _th=el.getAttribute("data-theme"); if(!state.settings)state.settings={}; state.settings.theme=_th; applyTheme(_th); saveState(); render(); return; }
-  if(act==="vol-test"){ unlockAudio(); beep(); return; }
+  if(act==="vol-test"){ unlockAudio(); beep(); vibrate(); toast="🔔 Teszthang lejátszva"; render(); setTimeout(function(){ toast=""; render(); },1800); return; }
   if(act==="cp-open"){ cp={mode:"list"}; render(); return; }
   if(act==="cp-close"){ cp=null; render(); return; }
   if(act==="cp-new"){ cp={mode:"edit",draft:{id:cpNewId(),name:"",ex:[],restDefault:60,restCustom:false,kcal:200,durationMin:40},isNew:true,pick:false,pickQ:""}; render(); return; }
   if(act==="cp-edit"){ var _t=cpFind(el.getAttribute("data-id")); if(_t){ cp={mode:"edit",draft:JSON.parse(JSON.stringify(_t)),isNew:false,pick:false,pickQ:""}; if(!cp.draft.ex)cp.draft.ex=[]; } render(); return; }
   if(act==="cp-cancel"){ cp={mode:"list"}; render(); return; }
-  if(act==="cp-del"){ var _id=el.getAttribute("data-id"); if(state.customPlan){ state.customPlan.templates=(state.customPlan.templates||[]).filter(function(x){return x.id!==_id;}); var _wk=state.customPlan.week||{}; for(var _k in _wk){ if(_wk[_k]===_id) _wk[_k]=null; } saveState(); } toast="Edzésnap törölve"; cp={mode:"list"}; render(); setTimeout(function(){toast="";render();},1600); return; }
-  if(act==="cp-save"){ var _d=cp.draft; if(!_d.name||!_d.name.trim()){ toast="Adj nevet az edzésnapnak"; render(); setTimeout(function(){toast="";render();},1700); return; } if(!_d.ex||!_d.ex.length){ toast="Adj hozzá legalább 1 gyakorlatot"; render(); setTimeout(function(){toast="";render();},1700); return; } _d.name=_d.name.trim(); if(!state.customPlan) state.customPlan={enabled:false,templates:[],week:{}}; var _arr=state.customPlan.templates||(state.customPlan.templates=[]),_found=false,_i; for(_i=0;_i<_arr.length;_i++){ if(_arr[_i].id===_d.id){ _arr[_i]=_d; _found=true; break; } } if(!_found) _arr.push(_d); saveState(); toast="Edzésnap mentve ✓"; cp={mode:"list"}; render(); setTimeout(function(){toast="";render();},1600); return; }
+  if(act==="cp-del"){ if(cp){ cp.confirmDel=el.getAttribute("data-id"); } render(); return; }
+  if(act==="cp-del-no"){ if(cp){ cp.confirmDel=null; } render(); return; }
+  if(act==="cp-del-yes"){ var _id=cp&&cp.confirmDel; if(_id&&state.customPlan){ state.customPlan.templates=(state.customPlan.templates||[]).filter(function(x){return x.id!==_id;}); var _wk=state.customPlan.week||{}; for(var _k in _wk){ if(_wk[_k]===_id) _wk[_k]=null; } saveState(); } toast="Edzésnap törölve"; cp={mode:"list"}; render(); setTimeout(function(){toast="";render();},1600); return; }
+  if(act==="cp-save"){ var _d=cp.draft; if(!_d.name||!_d.name.trim()){ toast="Adj nevet az edzésnapnak"; render(); setTimeout(function(){toast="";render();},1700); return; } if(!_d.ex||!_d.ex.length){ toast="Adj hozzá legalább 1 gyakorlatot"; render(); setTimeout(function(){toast="";render();},1700); return; } _d.name=_d.name.trim(); _d.kcal=cpEstBurn(_d,profile); _d.durationMin=cpDurEst(_d); if(!state.customPlan) state.customPlan={enabled:false,templates:[],week:{}}; var _arr=state.customPlan.templates||(state.customPlan.templates=[]),_found=false,_i; for(_i=0;_i<_arr.length;_i++){ if(_arr[_i].id===_d.id){ _arr[_i]=_d; _found=true; break; } } if(!_found) _arr.push(_d); saveState(); toast="Edzésnap mentve ✓"; cp={mode:"list"}; render(); setTimeout(function(){toast="";render();},1600); return; }
   if(act==="cp-ex-add-open"){ if(cp&&cp.draft){ cp.pick=true; cp.pickQ=""; } render(); return; }
   if(act==="cp-pick-close"){ if(cp){ cp.pick=false; } render(); return; }
-  if(act==="cp-pick"){ if(cp&&cp.draft){ cp.draft.ex.push({key:el.getAttribute("data-key"),name:el.getAttribute("data-name"),sets:3,unit:"reps",amount:10,rest:(cp.draft.restCustom?(cp.draft.restDefault||0):null)}); cp.pick=false; cp.pickQ=""; } render(); return; }
+  if(act==="cp-pick"){ if(cp&&cp.draft){ cp.draft.ex.push({key:el.getAttribute("data-key"),name:el.getAttribute("data-name"),cat:el.getAttribute("data-cat")||"",sets:3,unit:"reps",amount:10,rest:(cp.draft.restCustom?(cp.draft.restDefault||0):null)}); cp.pick=false; cp.pickQ=""; } render(); return; }
+  if(act==="cp-custom-open"){ if(cp&&cp.draft){ cp.customNew={name:"",cat:"vpull"}; } render(); return; }
+  if(act==="cp-custom-cancel"){ if(cp){ cp.customNew=null; } render(); return; }
+  if(act==="cp-custom-cat"){ if(cp&&cp.customNew){ cp.customNew.cat=el.getAttribute("data-cat")||""; } render(); return; }
+  if(act==="cp-custom-add"){ if(cp&&cp.draft&&cp.customNew){ var _nm=(cp.customNew.name||"").trim(); if(!_nm){ toast="Adj nevet a gyakorlatnak"; render(); setTimeout(function(){toast="";render();},1500); return; } cp.draft.ex.push({key:"custom",name:_nm,cat:cp.customNew.cat||"",custom:true,sets:3,unit:"reps",amount:10,rest:(cp.draft.restCustom?(cp.draft.restDefault||0):null)}); cp.customNew=null; cp.pick=false; cp.pickQ=""; } render(); return; }
   if(act==="cp-ex-del"){ if(cp&&cp.draft){ var _ix=parseInt(el.getAttribute("data-i"),10); cp.draft.ex.splice(_ix,1); } render(); return; }
   if(act==="cp-sets"){ if(cp&&cp.draft){ var _ix=parseInt(el.getAttribute("data-i"),10),_dd=parseInt(el.getAttribute("data-d"),10),_e=cp.draft.ex[_ix]; _e.sets=Math.max(1,Math.min(10,(_e.sets||1)+_dd)); } render(); return; }
   if(act==="cp-amt"){ if(cp&&cp.draft){ var _ix=parseInt(el.getAttribute("data-i"),10),_dd=parseInt(el.getAttribute("data-d"),10),_e=cp.draft.ex[_ix]; if(_e.unit==="sec"){ _e.amount=Math.max(5,Math.min(600,(_e.amount||0)+_dd*5)); } else if(_e.unit==="min"){ _e.amount=Math.max(1,Math.min(90,(_e.amount||0)+_dd)); } else { _e.amount=Math.max(1,Math.min(50,(_e.amount||0)+_dd)); } } render(); return; }
