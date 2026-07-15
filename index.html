@@ -1108,7 +1108,10 @@ function focusScaleHTML(f){ var b="",i; for(i=1;i<=5;i++) b+='<button class="fsc
 function skillWeightHTML(skills,wts){ if(!skills||skills.length<2) return ""; var r="",i; for(i=0;i<skills.length;i++){ var k=skills[i]; if(!SKILLDEF[k]) continue; var w=Math.max(1,Math.min(3,(wts&&wts[k])||1)),wl=({1:"normál",2:"kiemelt",3:"fő fókusz"})[w]; r+='<div class="wt-row"><div class="sp-name">'+SKILLDEF[k].emoji+' '+esc(SKILLDEF[k].lbl)+'</div><button class="wt-chip" data-act="skill-weight" data-k="'+k+'">'+w+'× · '+wl+'</button></div>'; } return '<div class="ob-sub" style="margin-top:16px">Melyikre gyúrj rá jobban? Azonos szám = egyenlő elosztás.</div><div class="sp-list">'+r+'</div>'; }
 function skillFocusControl(){ if(!(profile.skills||[]).length) return ""; var f=Math.max(1,Math.min(5,profile.skillFocus||3)); return '<div class="card focus-card"><div class="focus-h">🎯 Skill-fókusz</div>'+focusScaleHTML(f)+skillWeightHTML(profile.skills,profile.skillWeights)+'</div>'; }
 function skillRow(p){ if(!p||!p.skills||!p.skills.length) return ""; var names=[]; for(var i=0;i<p.skills.length;i++){ if(SKILLDEF[p.skills[i]]) names.push(SKILLDEF[p.skills[i]].lbl); } if(!names.length) return ""; var f=Math.max(1,Math.min(5,p.skillFocus||3)); return '<div class="line-row"><span class="k">Skill-fókusz</span><span class="v">'+esc(names.join(", "))+' · '+FOCUSLBL[f]+'</span></div>'; }
-function workoutFor(dow){ if(state.customPlan&&state.customPlan.enabled) return customWorkoutFor(dow); var p=profile||{}; if(p.mods&&p.mods.length>1) return multiFor(dow); if(p.type==="sport") return sportFor(dow); var ty=SESS[p.type]?p.type:"street",sc=schedFor(),key=sc[dow];
+function workoutFor(dow){ if(state.customPlan&&state.customPlan.enabled) return customWorkoutFor(dow); return prescribedWorkoutFor(dow); }
+function cpWeekHasTraining(){ var wk=(state.customPlan&&state.customPlan.week)||{},d; for(d=0;d<7;d++){ var v=wk[d]; if(v&&v!=="rest"&&cpFind(v)) return true; } return false; }
+function nutriWorkoutFor(dow){ if(state.customPlan&&state.customPlan.enabled&&cpWeekHasTraining()) return customWorkoutFor(dow); return prescribedWorkoutFor(dow); }
+function prescribedWorkoutFor(dow){ var p=profile||{}; if(p.mods&&p.mods.length>1) return multiFor(dow); if(p.type==="sport") return sportFor(dow); var ty=SESS[p.type]?p.type:"street",sc=schedFor(),key=sc[dow];
   if(!key||key==="rest") return {rest:true,text:REST_TEXT};
   var base=SESS[ty][key]; if(!base) return {rest:true,text:REST_TEXT};
   var gdiff=diffOf(p),mxs=(p&&p.maxes)||{},_lv=levelsNoDup(base.ex,function(e){return moveTier(p,e.n,gdiff);}),ex=base.ex.map(function(e,ei){ var mdiff=_lv[ei],v=pickEx(e,mdiff),mult=(DIFF[mdiff]||DIFF[5]).mult,s2=v.s<=1?v.s:Math.min(6,Math.max(1,Math.round(v.s*mult))),note=v.note;
@@ -1342,22 +1345,22 @@ function computePlan(p){
   var protein=Math.round((lbm||macroKg)*(goal==="cut"||goal==="rekomp"?2.3:goal==="leanbulk"||goal==="bulk"?2.0:1.8));
   var fat=Math.max(45,Math.round(macroKg*(goal==="bulk"?0.9:0.8)));
   if(goal==="cut"){
-    var recRate=0.006*kg,maxRate=0.010*kg,reqRate=hasTarget?p.targetKg/p.weeks:recRate; weeklyRate=(hasTarget&&reqRate>maxRate)?recRate:reqRate;
-    if(hasTarget&&reqRate>maxRate){ feasible=false; etaWeeks=Math.ceil(p.targetKg/recRate); verdict="A megadott szálkásítási cél túl gyors lenne. A terv heti kb. "+fmtKg(weeklyRate)+" fogyással védi az izomtömeget; a teljes célhoz körülbelül "+etaWeeks+" hét reális."; }
+    var recRate=0.006*kg,maxRate=0.010*kg,reqRate=hasTarget?p.targetKg/p.weeks:recRate; weeklyRate=hasTarget?Math.min(reqRate,maxRate):recRate;
+    if(hasTarget&&reqRate>maxRate){ feasible=false; etaWeeks=Math.ceil(p.targetKg/maxRate); verdict="A megadott szálkásítási cél túl gyors lenne. A terv a biztonságos maximumot, heti kb. "+fmtKg(weeklyRate)+" fogyást használ (ez védi az izomtömeget); a teljes célhoz körülbelül "+etaWeeks+" hét reális."; }
     else if(hasTarget){ verdict="Szálkásítás: a megadott "+fmtKg(p.targetKg)+" cél reális, heti körülbelül "+fmtKg(weeklyRate)+" ütemmel, magas fehérjebevitel mellett."; }
     else { verdict="Szálkásítás: a terv mérsékelt kalóriadeficittel csökkenti a testzsírt, miközben a magas fehérje és az erőedzés segít megtartani az izmot. Konkrét célsúly nélkül is működik."; }
     var dailyDef=weeklyRate*7700/7,maxDef=Math.max(0,Math.min(T-B,0.25*T)); if(dailyDef>maxDef){dailyDef=maxDef;weeklyRate=dailyDef*7/7700;} target=T-dailyDef;
   } else if(goal==="leanbulk"){
-    var recLean=0.0015*kg,maxLean=0.003*kg,reqLean=hasTarget?p.targetKg/p.weeks:recLean; weeklyRate=(hasTarget&&reqLean>maxLean)?recLean:reqLean; var leanSurplus=Math.max(140,Math.min(280,weeklyRate*7700/7)); target=T+leanSurplus;
-    if(hasTarget&&reqLean>maxLean){feasible=false;etaWeeks=Math.ceil(p.targetKg/recLean);verdict="A megadott súlygyarapodás túl gyors lenne tiszta tömegeléshez. Lassabb, heti kb. "+fmtKg(weeklyRate)+" emelkedést állítottam be, hogy minél kevesebb zsír rakódjon fel.";}
+    var recLean=0.0015*kg,maxLean=0.003*kg,reqLean=hasTarget?p.targetKg/p.weeks:recLean; weeklyRate=hasTarget?Math.min(reqLean,maxLean):recLean; var leanSurplus=Math.max(140,Math.min(280,weeklyRate*7700/7)); target=T+leanSurplus;
+    if(hasTarget&&reqLean>maxLean){feasible=false;etaWeeks=Math.ceil(p.targetKg/maxLean);verdict="A megadott súlygyarapodás túl gyors lenne tiszta tömegeléshez. A terv a kontrollált maximumot, heti kb. "+fmtKg(weeklyRate)+" emelkedést használ, hogy minél kevesebb zsír rakódjon fel.";}
     else verdict=hasTarget?"Tiszta tömegelés: lassú, kontrollált súlynövekedés, kis kalóriatöbblettel és izomépítő edzéssel.":"Tiszta tömegelés: kis kalóriatöbblet, lassú izom- és erőnövekedés, minimális felesleges zsírral. Nem kötelező célsúlyt megadni.";
   } else if(goal==="bulk"){
-    var recBulk=0.0035*kg,maxBulk=0.006*kg,reqBulk=hasTarget?p.targetKg/p.weeks:recBulk; weeklyRate=(hasTarget&&reqBulk>maxBulk)?recBulk:reqBulk; var bulkSurplus=Math.max(280,Math.min(520,weeklyRate*7700/7)); target=T+bulkSurplus;
-    if(hasTarget&&reqBulk>maxBulk){feasible=false;etaWeeks=Math.ceil(p.targetKg/recBulk);verdict="A megadott bulk-cél túl gyors lenne, és aránytalanul sok zsírral járna. A terv egy gyorsabb, de még kontrollált tömegelési ütemet használ.";}
+    var recBulk=0.0035*kg,maxBulk=0.006*kg,reqBulk=hasTarget?p.targetKg/p.weeks:recBulk; weeklyRate=hasTarget?Math.min(reqBulk,maxBulk):recBulk; var bulkSurplus=Math.max(280,Math.min(520,weeklyRate*7700/7)); target=T+bulkSurplus;
+    if(hasTarget&&reqBulk>maxBulk){feasible=false;etaWeeks=Math.ceil(p.targetKg/maxBulk);verdict="A megadott bulk-cél túl gyors lenne, és aránytalanul sok zsírral járna. A terv a leggyorsabb, még kontrollált tömegelési ütemet használja.";}
     else verdict=hasTarget?"Bulk: nagyobb kalóriatöbblet és erőfókusz a gyorsabb súly- és izomnövekedéshez. Némi zsírfelhalmozás természetes.":"Bulk: nagyobb kalóriatöbblet a gyorsabb súly-, erő- és izomnövekedéshez. Célsúly megadása opcionális.";
   } else if(goal==="rekomp"){
-    protein=Math.round((lbm||macroKg)*2.3); var recR=0.0025*kg,maxR=0.0045*kg,reqR=hasTarget?p.targetKg/p.weeks:recR; weeklyRate=(hasTarget&&reqR>maxR)?recR:reqR; var ddr=hasTarget?weeklyRate*7700/7:Math.min(0.08*T,Math.max(0,T-B)),maxdr=Math.max(0,Math.min(T-B,0.12*T)); if(ddr>maxdr)ddr=maxdr; target=T-ddr;
-    if(hasTarget&&reqR>maxR){feasible=false;etaWeeks=Math.ceil(p.targetKg/recR);verdict="A megadott zsírvesztési cél gyors lenne rekompozícióhoz. A terv lassabb ütemet használ, hogy közben izmot is tudj építeni.";}
+    protein=Math.round((lbm||macroKg)*2.3); var recR=0.0025*kg,maxR=0.0045*kg,reqR=hasTarget?p.targetKg/p.weeks:recR; weeklyRate=hasTarget?Math.min(reqR,maxR):recR; var ddr=hasTarget?weeklyRate*7700/7:Math.min(0.08*T,Math.max(0,T-B)),maxdr=Math.max(0,Math.min(T-B,0.12*T)); if(ddr>maxdr)ddr=maxdr; target=T-ddr;
+    if(hasTarget&&reqR>maxR){feasible=false;etaWeeks=Math.ceil(p.targetKg/maxR);verdict="A megadott zsírvesztési cél gyors lenne rekompozícióhoz. A terv a még biztonságos maximum ütemet használja, hogy közben izmot is tudj építeni.";}
     else verdict="Szálkás izomépítés / rekompozíció: testzsír csökken, miközben az erő és az izomtömeg nőhet. A testsúly akár alig változik, ezért a kilogrammcél opcionális; a derékbőség, a fotók és az erőszint jobb visszajelzés.";
   } else { target=T; verdict="Karbantartás: a súlyod stabil marad, a hangsúly az erőn, a teljesítményen és a fenntartható szokásokon van."; }
   target=Math.round(target/10)*10;
@@ -1783,7 +1786,7 @@ function exBurn(ex,p){ if(!ex) return 0; var kg=(p&&p.kg)||75,n=(ex.n||"").toLow
   else if(pk==="pull"||pk==="dip"||pk==="push"||pk==="row"||pk==="overhead"||/húzódzk|tolódzk|fekvőtámasz|fekvenyomás|evezés|rézsútos|vállból nyomás|ferde pad|muscle up|lever|planche|flag|hspu|kézállás/.test(n)) per=14; else per=9;
   var reps=exRepNum(ex.reps),rs=exIsHold(ex.reps)?Math.max(0.7,Math.min(2.0,reps/25)):Math.max(0.7,Math.min(1.8,reps/10));
   return Math.round(per*(kg/70)*rs*sets); }
-function workoutBurn(dow){ if(_burnCache[dow]!=null) return _burnCache[dow]; var w=workoutFor(dow),s=0,i; if(w&&!w.rest&&w.ex){ for(i=0;i<w.ex.length;i++) s+=exBurn(w.ex[i],profile); } return _burnCache[dow]=s; }
+function workoutBurn(dow){ if(_burnCache[dow]!=null) return _burnCache[dow]; var w=nutriWorkoutFor(dow),s=0,i; if(w&&!w.rest&&w.ex){ for(i=0;i<w.ex.length;i++) s+=exBurn(w.ex[i],profile); } return _burnCache[dow]=s; }
 function sessionBurn(w,d,elapsedMs,p){ p=p||profile||{}; var workDone=0,workFull=0,setsDone=0,doneAny=false,i;
   for(i=0;i<w.ex.length;i++){ var full=exBurn(w.ex[i],p),sfull=w.ex[i].s||1,dn=(d.w&&d.w[i]?d.w[i]:0),fr=Math.min(1,dn/sfull); if(fr>0)doneAny=true; workFull+=full; workDone+=full*fr; setsDone+=Math.min(dn,sfull); }
   var base=Math.round(workDone);
@@ -2491,7 +2494,7 @@ var CUSTOMIMG_RULES = [
   [/^(?!.*(?:támasz\s*tartás|támasztartás|support)).*(?:tolódzkodás|\bdip\b)/, "kep/dip.webp"],
   [/^(?!.*(?:kézállás|hspu|pike|planche)).*(?:fekvőtámasz|push[- ]?up)/, "kep/fekvotamasz.webp"]
 ];
-var KEP_HAVE={"kep/agilitas.webp":1,"kep/bicepsz.webp":1,"kep/bringa.webp":1,"kep/comb-adduktor.webp":1,"kep/evezes.webp":1,"kep/falnal-nyomas.webp":1,"kep/ferde-padnyomas.webp":1,"kep/futas.webp":1,"kep/grip.webp":1,"kep/hid.webp":1,"kep/joga.webp":1,"kep/korcsolya.webp":1,"kep/lapockazaras.webp":1,"kep/medveallas.webp":1,"kep/nordic.webp":1,"kep/oldalemeles.webp":1,"kep/pike.webp":1,"kep/skill-backlever.webp":1,"kep/skill-fekvenyomas.webp":1,"kep/skill-frontlever.webp":1,"kep/skill-hspu.webp":1,"kep/skill-lsit.webp":1,"kep/skill-muscleup.webp":1,"kep/skill-oapullup.webp":1,"kep/skill-pistol.webp":1,"kep/superman.webp":1,"kep/terdemeles.webp":1,"kep/tricepsz.webp":1,"kep/uszas.webp":1,"kep/vadli.webp":1,"kep/vallnyomas.webp":1};
+var KEP_HAVE={"kep/agilitas.webp":1,"kep/bicepsz.webp":1,"kep/bringa.webp":1,"kep/comb-adduktor.webp":1,"kep/evezes.webp":1,"kep/falnal-nyomas.webp":1,"kep/ferde-padnyomas.webp":1,"kep/futas.webp":1,"kep/grip.webp":1,"kep/hid.webp":1,"kep/joga.webp":1,"kep/korcsolya.webp":1,"kep/lapockazaras.webp":1,"kep/medveallas.webp":1,"kep/nordic.webp":1,"kep/oldalemeles.webp":1,"kep/pike.webp":1,"kep/skill-backlever.webp":1,"kep/skill-fekvenyomas.webp":1,"kep/skill-frontlever.webp":1,"kep/skill-hspu.webp":1,"kep/skill-lsit.webp":1,"kep/skill-muscleup.webp":1,"kep/skill-oapullup.webp":1,"kep/skill-pistol.webp":1,"kep/superman.webp":1,"kep/terdemeles.webp":1,"kep/tricepsz.webp":1,"kep/uszas.webp":1,"kep/vadli.webp":1,"kep/vallnyomas.webp":1,"kep/benchdip.webp":1,"kep/bolgar-kitores.webp":1,"kep/chinup.webp":1,"kep/dip.webp":1,"kep/facepull.webp":1,"kep/fekvotamasz.webp":1,"kep/felules.webp":1,"kep/guggolas.webp":1,"kep/hollow.webp":1,"kep/holtemeles.webp":1,"kep/hundred.webp":1,"kep/huzodzkodas.webp":1,"kep/inverted-row.webp":1,"kep/kitores.webp":1,"kep/labemeles.webp":1,"kep/labtolas.webp":1,"kep/neutral-pullup.webp":1,"kep/oldalplank.webp":1,"kep/plank.webp":1,"kep/rollup.webp":1,"kep/sbdip.webp":1,"kep/skill-dragonflag.webp":1,"kep/skill-handstand.webp":1,"kep/skill-humanflag.webp":1,"kep/skill-planche.webp":1,"kep/support-tartas.webp":1};
 function visualInfo(name){
   if(typeof CUSTOMIMG!=="undefined" && CUSTOMIMG[name]) return {img:CUSTOMIMG[name]};
   var full=(name||"").toLowerCase(),n=full,colon=n.indexOf(":"),i=-1; if(colon>=0)n=n.slice(colon+1).trim();
@@ -3546,10 +3549,10 @@ function hasSupp(id){ return suppList().indexOf(id)>=0; }
 function waterBonusMl(){ var s=suppList(),b=0,i; for(i=0;i<s.length;i++){ var sp=SUPP_BY[s[i]]; if(sp&&sp.water) b+=sp.water; } return b; }
 function waterTargetFor(dow){ var kg=(profile&&profile.kg)||75, act=(profile&&profile.activity)||"konnyu";
   var actBonus=act==="ulo"?0:(act==="konnyu"?250:(act==="mozgas"?400:600));
-  var w=workoutFor(dow), train=(w&&!w.rest)?500:0;
+  var w=nutriWorkoutFor(dow), train=(w&&!w.rest)?500:0;
   var ml=35*kg+actBonus+train+waterBonusMl(); return Math.round(ml/100)*100; }
 function waterCard(dow){ var d=dd(); if(d.water==null)d.water=0; var tgt=waterTargetFor(dow),cur=d.water,pct=Math.min(100,Math.round(cur/tgt*100));
-  var cb=["súlyod","aktivitásod"]; var w=workoutFor(dow); if(w&&!w.rest)cb.push("edzésnap +"); if(hasSupp("kreatin"))cb.push("kreatin +");
+  var cb=["súlyod","aktivitásod"]; var w=nutriWorkoutFor(dow); if(w&&!w.rest)cb.push("edzésnap +"); if(hasSupp("kreatin"))cb.push("kreatin +");
   return '<div class="eyebrow">Vízbevitel</div><div class="card water-card"><div class="wc-top"><div class="wc-title">💧 '+(cur>=tgt?'Napi vízcél kész 💪':'Ma megittad')+'</div><div class="wc-val"><b>'+cur+'</b> / '+tgt+' ml</div></div><div class="bar wc-bar"><i style="width:'+pct+'%"></i></div><div class="wc-btns"><button class="wc-b" data-act="water-add" data-ml="200">+2 dl</button><button class="wc-b" data-act="water-add" data-ml="300">+3 dl</button><button class="wc-b" data-act="water-add" data-ml="500">+5 dl</button><button class="wc-b wc-minus" data-act="water-add" data-ml="-250">−</button></div><div class="wc-note">Ajánlott ma: ~<b>'+tgt+' ml</b> ('+cb.join(", ")+') — kb. '+Math.round(tgt/250)+' pohár.</div></div>';
 }
 function suppCard(dow){ var d=dd(); if(!d.supps)d.supps={}; var s=suppList(),rows="",i;
@@ -3656,7 +3659,7 @@ function dtypeGuide(){ var t=(profile&&profile.dietType)||"balanced",g=DTGUIDE[t
 
 function viewKaja(){
   var dow=sel.getDay(), arr=mealsFor(dow), d=dd(), pl=profile._plan||computePlan(profile);
-  var w=workoutFor(dow), factor=dayRoleFactors(dow);
+  var w=nutriWorkoutFor(dow), factor=dayRoleFactors(dow);
   var _tefB=proteinTEFBonus(pl,(profile.kg)||75);
   var _db=dayBudget(dow), baseline=_db.baseline+_tefB, todayBurn=_db.bonus, isC=_db.cheat;
   var _estBonus=0; if(w&&!w.rest&&w.ex){ for(var _x=0;_x<w.ex.length;_x++){ var _eb=exBurn(w.ex[_x],profile),_fr=Math.min(1,(d.w&&d.w[_x]?d.w[_x]:0)/(w.ex[_x].s||1)); _estBonus+=_eb*_fr; } } _estBonus=Math.round(_estBonus);
