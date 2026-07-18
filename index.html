@@ -57,7 +57,7 @@
   .backtoday{padding:8px 16px;border-radius:20px;transition:transform .12s;}
   .backtoday:active{transform:scale(.95);}
 
-  .content{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;padding:15px 14px calc(120px + env(safe-area-inset-bottom));max-width:560px;margin:0 auto;width:100%;box-sizing:border-box;}
+  .content{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;padding:15px 14px calc(92px + env(safe-area-inset-bottom));max-width:560px;margin:0 auto;width:100%;box-sizing:border-box;}
   .eyebrow{font-size:11px;letter-spacing:1.6px;text-transform:uppercase;font-weight:700;color:var(--acc);margin:2px 2px 9px;}
   .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:11px;box-shadow:0 1px 2px rgba(20,33,29,.04);}
   .card{box-shadow:0 8px 28px rgba(20,45,36,.055);}
@@ -348,10 +348,9 @@
   .ob-next:active{transform:scale(.98);}
   .ob-back{padding:16px 20px;background:var(--surface2);border:1px solid var(--line);border-radius:14px;font-size:15px;font-weight:600;color:var(--muted);}
 
-  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;background:#fff;border-top:1px solid var(--line);padding-bottom:calc(env(safe-area-inset-bottom) + 6px);box-shadow:0 -4px 16px rgba(18,63,51,.05);}
-  body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:env(safe-area-inset-bottom);background:#fff;z-index:19;pointer-events:none;}
+  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;background:#fff;border-top:1px solid var(--line);padding-bottom:max(6px, calc(env(safe-area-inset-bottom) - 12px));box-shadow:0 -4px 16px rgba(18,63,51,.05);}
   .tabs::after{content:"";position:absolute;left:0;right:0;top:100%;height:calc(env(safe-area-inset-bottom) + 2px);background:#fff;}
-  .tab{flex:1;padding:8px 0 4px;display:flex;flex-direction:column;align-items:center;gap:3px;color:#8b978f;font-size:10.5px;font-weight:600;transition:color .15s;}
+  .tab{flex:1;padding:6px 0 3px;display:flex;flex-direction:column;align-items:center;gap:3px;color:#8b978f;font-size:10.5px;font-weight:600;transition:color .15s;}
   .tab svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
   .tab.on{color:var(--acc);}
   .tab:active{transform:scale(.94);}
@@ -987,6 +986,11 @@ html[data-mode="dark"] .tabs{background:color-mix(in srgb,#0a1210 78%, transpare
   html:not([data-mode="dark"]) .card.sess .s-hint{ background:rgba(255,255,255,.14); }
   /* iOS backdrop-filter + border-radius: clip the frosted blur to the rounded shape (fixes square corners), light & dark */
   .card,.beast-ex,.nav,.reset,.btn-ghost,.ob-back,.set-row,.supp-manage,.fm-add.ghost,.wc-b,.cp-week-btn,.ob-opt{ overflow:hidden; }
+  .ob-restore{margin-top:22px;padding-top:18px;border-top:1px solid var(--line);text-align:center;}
+  .ob-restore-t{font-size:13px;color:var(--muted);font-weight:600;margin-bottom:9px;}
+  .ob-restore-btn{width:100%;padding:13px;border-radius:12px;border:1.5px solid var(--acc);background:var(--acc-soft);color:var(--acc-d);font-weight:700;font-size:14.5px;}
+  .ob-restore-btn:active{transform:scale(.98);}
+  .ob-restore-n{font-size:11.5px;color:var(--muted);line-height:1.4;margin-top:8px;}
 </style>
 </head>
 <body>
@@ -1872,7 +1876,8 @@ function renderOnboarding(){
   var body="";
   if(_curStep==="focus"){
     body='<div class="ob-hi">Miben segítsek?</div><div class="ob-sub">Válaszd ki, mi érdekel — ehhez igazítom a kérdéseket és az appot. Később a profilodnál módosíthatod.</div>'+
-      '<div class="ob-opts">'+obOpt("focus","both","Edzés + étrend — a teljes program ⭐ ajánlott (összhangban a legjobb)","🎯")+obOpt("focus","training","Csak edzés — mozgásterv, étrend nélkül","🏋️")+obOpt("focus","diet","Csak étrend — kalória és makrók, edzés nélkül","🍽️")+'</div>';
+      '<div class="ob-opts">'+obOpt("focus","both","Edzés + étrend — a teljes program ⭐ ajánlott (összhangban a legjobb)","🎯")+obOpt("focus","training","Csak edzés — mozgásterv, étrend nélkül","🏋️")+obOpt("focus","diet","Csak étrend — kalória és makrók, edzés nélkül","🍽️")+'</div>'+
+      '<div class="ob-restore"><div class="ob-restore-t">Volt már fiókod itt?</div><button class="ob-restore-btn" data-act="ob-restore">📂 Biztonsági mentés visszaállítása</button><input id="ob-restore-file" type="file" accept="application/json,.json" style="display:none"><div class="ob-restore-n">Ha korábban lementetted az adataidat (Beállítások → Adatok mentése), itt visszatöltheted — mindent visszakapsz.</div>'+(_dataErr?('<div class="fm-err" style="margin-top:8px">'+esc(_dataErr)+'</div>'):'')+'</div>';
   } else if(_curStep==="sex"){
     body='<div class="ob-hi">Kezdjük veled!</div><div class="ob-sub">Pár kérdés, és összeállítom a személyre szabott tervedet. Először: melyik jellemző rád?</div>'+
       '<div class="ob-opts two">'+obOpt("sex","ferfi","Férfi","💪")+obOpt("sex","no","Nő","🌸")+'</div>';
@@ -2498,7 +2503,7 @@ function viewBeall(){
   var _upl=(_swCheck==="checking")?'⏳ Keresés…':((_swUpdate||_swCheck==="ready")?'⬇️ Frissítés elérhető — koppints a telepítéshez':((_swCheck==="none")?'✓ Naprakész — jelenleg nincs elérhető frissítés':'🔄 Frissítés keresése'));
   var _upa=(_swUpdate||_swCheck==="ready")?"sw-apply":"sw-check";
   h+='<div class="eyebrow" style="margin-top:22px">Alkalmazás</div><div class="card settings-card"><button class="set-row" data-act="'+_upa+'"'+(_swCheck==="checking"?" disabled":"")+'><span>'+_upl+'</span><span class="set-arrow">›</span></button><div class="set-note">Frissítéskor magától letölti az újat — nem kell törölni és újra hozzáadni. (A telepített appban működik.)</div></div>';
-  h+='<div class="set-note" style="text-align:center;margin-top:18px">Életmódváltás Pro · build 2026.07.18 · v8</div>';
+  h+='<div class="set-note" style="text-align:center;margin-top:18px">Életmódváltás Pro · build 2026.07.18 · v9</div>';
   return h;
 }
 
@@ -3765,11 +3770,12 @@ function renderConsentGate(){ var ok=_consentChk;
 function renderLegalModal(){ if(!legalModal) return ""; var d=LEGAL[legalModal]||LEGAL.disclaimer;
   return '<div class="overlay"><div class="fi-sheet food-sheet"><button class="fi-x" data-act="legal-close" aria-label="Bezárás">✕</button><div class="fm-head">'+d.t+'</div><div class="fm-bd legal-bd">'+d.body+'</div></div></div>'; }
 
-function _fullBackup(){ try{ return JSON.stringify({app:"Eletmodvaltas Pro",v:1,exportedAt:iso(new Date()),profile:profile,state:state},null,2); }catch(e){ return "{}"; } }
+function _fullBackup(){ try{ var _ak=""; try{ _ak=localStorage.getItem(AIKEY)||""; }catch(e){} return JSON.stringify({app:"Eletmodvaltas Pro",v:1,exportedAt:iso(new Date()),profile:profile,state:state,aikey:_ak},null,2); }catch(e){ return "{}"; } }
 function _downloadJSON(txt,fname){ try{ var b=new Blob([txt],{type:"application/json"}),u=URL.createObjectURL(b),a=document.createElement("a"); a.href=u; a.download=fname; document.body.appendChild(a); a.click(); setTimeout(function(){ try{document.body.removeChild(a);}catch(e){} URL.revokeObjectURL(u); },120); }catch(e){} }
 function _applyImport(txt){ var o; try{ o=JSON.parse(txt); }catch(e){ _dataErr="Érvénytelen JSON — ellenőrizd a beillesztett szöveget vagy a fájlt."; render(); return; }
   if(!o||typeof o!=="object"||(!o.profile&&!o.state)){ _dataErr="Ez nem egy érvényes Életmódváltás-mentés (hiányzik a profil/adat)."; render(); return; }
-  try{ if(o.profile){ localStorage.setItem(PKEY,JSON.stringify(o.profile)); profile=o.profile; } if(o.state){ var _ns=o.state; if(!_ns.days)_ns.days={}; if(!_ns.shop)_ns.shop={}; state=_ns; localStorage.setItem(DKEY,JSON.stringify(state)); } }catch(e){ _dataErr="Nem sikerült elmenteni az adatokat (tárhely?)."; render(); return; }
+  try{ if(o.profile){ localStorage.setItem(PKEY,JSON.stringify(o.profile)); profile=o.profile; } if(o.state){ var _ns=o.state; if(!_ns.days)_ns.days={}; if(!_ns.shop)_ns.shop={}; state=_ns; localStorage.setItem(DKEY,JSON.stringify(state)); } if(o.aikey){ try{ localStorage.setItem(AIKEY,o.aikey); }catch(e){} } }catch(e){ _dataErr="Nem sikerült elmenteni az adatokat (tárhely?)."; render(); return; }
+  if(profile){ profile.goal=normalizedGoal(profile.goal); if(!profile.activity)profile.activity="konnyu"; if(!profile.tendency)profile.tendency="unknown"; if(!profile.sessionMinutes)profile.sessionMinutes=60; if(!profile.exerciseLevels)profile.exerciseLevels={}; if(!profile.cheatDays)profile.cheatDays=[]; if(profile.skillFocus==null)profile.skillFocus=3; if(!profile.skillWeights)profile.skillWeights={}; if(!profile.focus)profile.focus="both"; if(!profile.baseline)profile.baseline={kg:profile.kg,bf:profile.bf}; }
   onboarding=!profile; if(profile){ try{ profile._plan=computePlan(profile); }catch(e){} } dataModal=null; _dataErr=""; openMeal=-1; toast="Adatok visszaállítva ✓"; render(); setTimeout(function(){ toast=""; render(); },1900); }
 function renderDataModal(){ if(!dataModal) return "";
   var err=_dataErr?'<div class="fm-err">'+esc(_dataErr)+'</div>':"",body;
@@ -4097,7 +4103,7 @@ function viewBolt(){
 }
 
 /* ---------- EVENTS ---------- */
-document.addEventListener("change",function(ev){ var t=ev.target; if(!t) return; if(t.id==="data-file"){ var _f2=t.files&&t.files[0]; if(_f2){ var _rd2=new FileReader(); _rd2.onload=function(){ _applyImport(_rd2.result); }; _rd2.onerror=function(){ _dataErr="Nem siker\u00fclt beolvasni a f\u00e1jlt."; render(); }; _rd2.readAsText(_f2); } return; } if(!foodModal) return; if(t.id==="fm-date"){ foodModal.logDate=t.value||iso(sel); return; } if(t.id!=="fm-file") return; var file=t.files&&t.files[0]; if(!file) return; var rd=new FileReader(); rd.onload=function(){ analyzeFoodPhoto(rd.result,file.type); }; rd.onerror=function(){ if(foodModal){ foodModal.err="Nem sikerült beolvasni a képet."; render(); } }; rd.readAsDataURL(file); });
+document.addEventListener("change",function(ev){ var t=ev.target; if(!t) return; if(t.id==="data-file"||t.id==="ob-restore-file"){ var _f2=t.files&&t.files[0]; if(_f2){ var _rd2=new FileReader(); _rd2.onload=function(){ _applyImport(_rd2.result); }; _rd2.onerror=function(){ _dataErr="Nem siker\u00fclt beolvasni a f\u00e1jlt."; render(); }; _rd2.readAsText(_f2); } return; } if(!foodModal) return; if(t.id==="fm-date"){ foodModal.logDate=t.value||iso(sel); return; } if(t.id!=="fm-file") return; var file=t.files&&t.files[0]; if(!file) return; var rd=new FileReader(); rd.onload=function(){ analyzeFoodPhoto(rd.result,file.type); }; rd.onerror=function(){ if(foodModal){ foodModal.err="Nem sikerült beolvasni a képet."; render(); } }; rd.readAsDataURL(file); });
 document.addEventListener("input",function(ev){ var t=ev.target; if(!t) return;
   if(t.id==="vol-slider"){ if(!state.settings)state.settings={}; var _vv=Math.max(0,Math.min(100,parseInt(t.value,10)||0)); state.settings.volume=_vv; saveState(); t.style.background="linear-gradient(90deg,var(--acc) "+_vv+"%,var(--surface2) "+_vv+"%)"; var _vn=document.getElementById("vol-val"); if(_vn)_vn.textContent=_vv; return; }
   if(cp&&cp.draft&&t.id==="cp-name"){ cp.draft.name=t.value; return; }
@@ -4278,6 +4284,7 @@ document.addEventListener("click",function(ev){
   if(act==="data-copy"){ var _bk=_fullBackup(); if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(_bk).then(function(){ toast="Kim\u00e1solva \u2713"; render(); setTimeout(function(){ toast=""; render(); },1500); }).catch(function(){}); } return; }
   if(act==="data-download"){ _downloadJSON(_fullBackup(),"eletmodvaltas-mentes-"+iso(new Date())+".json"); toast="F\u00e1jl let\u00f6ltve \u2713"; render(); setTimeout(function(){ toast=""; render(); },1500); return; }
   if(act==="data-file-pick"){ var _dfp=document.getElementById("data-file"); if(_dfp) _dfp.click(); return; }
+  if(act==="ob-restore"){ _dataErr=""; var _orf=document.getElementById("ob-restore-file"); if(_orf) _orf.click(); return; }
   if(act==="data-import-run"){ var _din=document.getElementById("data-in"),_dt=_din?(_din.value||"").trim():""; if(!_dt){ _dataErr="Illessz be egy ment\u00e9st, vagy v\u00e1lassz f\u00e1jlt."; render(); return; } _applyImport(_dt); return; }
   if(act==="exinfo"){ infoEx=el.getAttribute("data-n"); render(); return; }
   if(act==="closeinfo"){ infoEx=""; render(); return; }
