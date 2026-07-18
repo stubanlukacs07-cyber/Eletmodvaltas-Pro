@@ -983,6 +983,10 @@ html[data-mode="dark"] .tabs{background:color-mix(in srgb,#0a1210 78%, transpare
   html:not([data-mode="dark"]) .cheat-note,
   html:not([data-mode="dark"]) .verdict-h.warn{ color:#8a5512 !important; }
   html:not([data-mode="dark"]) .slip-note{ color:#a8402f !important; }
+  html:not([data-mode="dark"]) .card.sess{ background:var(--acc-d); }
+  html:not([data-mode="dark"]) .card.sess .s-hint{ background:rgba(255,255,255,.14); }
+  /* iOS backdrop-filter + border-radius: clip the frosted blur to the rounded shape (fixes square corners), light & dark */
+  .card,.beast-ex,.nav,.reset,.btn-ghost,.ob-back,.set-row,.supp-manage,.fm-add.ghost,.wc-b,.cp-week-btn,.ob-opt{ overflow:hidden; }
 </style>
 </head>
 <body>
@@ -1847,7 +1851,7 @@ var session=null,_tick=null,_actx=null,routine=null,_rtick=null;
 try{ var _sr=localStorage.getItem(SKEY); if(_sr){ session=JSON.parse(_sr); if(session&&(!session.startTs||Date.now()-session.startTs>21600000)) session=null; } }catch(e){ session=null; }
 function saveSession(){ try{ if(session) localStorage.setItem(SKEY,JSON.stringify(session)); else localStorage.removeItem(SKEY); }catch(e){} }
 
-var tab="terv", sel=new Date(), openMeal=-1, modal=false, toast="", exportModal="", infoEx="", swapCtx=null, foodModal=null, _scanStream=null, bodyModal=null, bodyMetric="kg", deferredPrompt=null, installDismissed=false, _swUpdate=false, shareModal=null, suppModal=false, dietModal=false, dtypeModal=false, legalModal=null, dataModal=null, _dataErr="", cp=null, progressOverlay=false;
+var tab="terv", sel=new Date(), openMeal=-1, modal=false, toast="", exportModal="", infoEx="", swapCtx=null, foodModal=null, _scanStream=null, bodyModal=null, bodyMetric="kg", deferredPrompt=null, installDismissed=false, _swUpdate=false, shareModal=null, suppModal=false, dietModal=false, dtypeModal=false, legalModal=null, dataModal=null, _dataErr="", cp=null, progressOverlay=false, _swReg=null, _swCheck="";
 var onboarding=!profile, obStep=0, obDraft={}, obErr="";
 if(profile) applyTheme(profile.sex);
 
@@ -1868,7 +1872,7 @@ function renderOnboarding(){
   var body="";
   if(_curStep==="focus"){
     body='<div class="ob-hi">Miben segítsek?</div><div class="ob-sub">Válaszd ki, mi érdekel — ehhez igazítom a kérdéseket és az appot. Később a profilodnál módosíthatod.</div>'+
-      '<div class="ob-opts">'+obOpt("focus","both","Edzés + étrend — a teljes program","🎯")+obOpt("focus","training","Csak edzés — mozgásterv, étrend nélkül","🏋️")+obOpt("focus","diet","Csak étrend — kalória és makrók, edzés nélkül","🍽️")+'</div>';
+      '<div class="ob-opts">'+obOpt("focus","both","Edzés + étrend — a teljes program ⭐ ajánlott (összhangban a legjobb)","🎯")+obOpt("focus","training","Csak edzés — mozgásterv, étrend nélkül","🏋️")+obOpt("focus","diet","Csak étrend — kalória és makrók, edzés nélkül","🍽️")+'</div>';
   } else if(_curStep==="sex"){
     body='<div class="ob-hi">Kezdjük veled!</div><div class="ob-sub">Pár kérdés, és összeállítom a személyre szabott tervedet. Először: melyik jellemző rád?</div>'+
       '<div class="ob-opts two">'+obOpt("sex","ferfi","Férfi","💪")+obOpt("sex","no","Nő","🌸")+'</div>';
@@ -2491,7 +2495,10 @@ function viewBeall(){
   h+='<div class="eyebrow" style="margin-top:22px">Jelzések hangereje</div><div class="card"><div class="vol-row"><span class="vol-ic">🔊</span><input type="range" min="0" max="100" value="'+vol+'" id="vol-slider" class="vol-native" aria-label="Hangerő" style="background:linear-gradient(90deg,var(--acc) '+vol+'%,var(--surface2) '+vol+'%)"><span class="vol-val" id="vol-val">'+vol+'</span></div><button class="btn-ghost" data-act="vol-test" style="margin-top:14px">🔔 Hangerő tesztelése</button><div class="set-note">Az edzés-időzítők és jelzések ezen a hangerőn szólnak (0 = néma).<br><b>iPhone-on:</b> ha nem hallod, kapcsold ki az oldalsó néma kapcsolót és told fel a telefon hangerejét — a beépített hangot a telefon némítása is elnémítja.</div></div>';
   h+='<div class="eyebrow" style="margin-top:22px">Jogi tudnivalók</div><div class="card settings-card"><button class="set-row" data-act="legal-disclaimer"><span>⚕️ Egészségügyi tájékoztató</span><span class="set-arrow">›</span></button><button class="set-row" data-act="legal-privacy"><span>🔒 Adatvédelmi tájékoztató</span><span class="set-arrow">›</span></button><button class="set-row" data-act="legal-aszf"><span>📄 Felhasználási feltételek</span><span class="set-arrow">›</span></button><button class="set-row" data-act="legal-impresszum"><span>ℹ️ Impresszum</span><span class="set-arrow">›</span></button></div>';
   h+='<div class="eyebrow" style="margin-top:22px">Biztonsági mentés</div><div class="card settings-card"><button class="set-row" data-act="data-export"><span>💾 Adatok mentése</span><span class="set-arrow">›</span></button><button class="set-row" data-act="data-import"><span>📥 Adatok visszaállítása</span><span class="set-arrow">›</span></button><button class="set-row" data-act="feedback-open"><span>💬 Visszajelzés / kérdőív</span><span class="set-arrow">›</span></button></div>';
-  h+='<div class="set-note" style="text-align:center;margin-top:18px">Életmódváltás Pro · build 2026.07.18 · v7 (light/dark)</div>';
+  var _upl=(_swCheck==="checking")?'⏳ Keresés…':((_swUpdate||_swCheck==="ready")?'⬇️ Frissítés elérhető — koppints a telepítéshez':((_swCheck==="none")?'✓ Naprakész — jelenleg nincs elérhető frissítés':'🔄 Frissítés keresése'));
+  var _upa=(_swUpdate||_swCheck==="ready")?"sw-apply":"sw-check";
+  h+='<div class="eyebrow" style="margin-top:22px">Alkalmazás</div><div class="card settings-card"><button class="set-row" data-act="'+_upa+'"'+(_swCheck==="checking"?" disabled":"")+'><span>'+_upl+'</span><span class="set-arrow">›</span></button><div class="set-note">Frissítéskor magától letölti az újat — nem kell törölni és újra hozzáadni. (A telepített appban működik.)</div></div>';
+  h+='<div class="set-note" style="text-align:center;margin-top:18px">Életmódváltás Pro · build 2026.07.18 · v8</div>';
   return h;
 }
 
@@ -3113,19 +3120,19 @@ var _CHAINS={
   kfc_m_twister:{name:"Twister menü (közepes)",cat:"kfc",fixed:true,g:0,kcal:1000,p:28,c:138,f:36},
   kfc_m_wings:{name:"Hot Wings menü (6 db)",cat:"kfc",fixed:true,g:0,kcal:990,p:32,c:115,f:44},
   // ===== Burger King =====
-  bk_whopper:{name:"Whopper",cat:"bk",fixed:true,g:270,kcal:660,p:28,c:49,f:40},
-  bk_dwhopper:{name:"Dupla Whopper",cat:"bk",fixed:true,g:350,kcal:900,p:48,c:50,f:58},
-  bk_whopperjr:{name:"Whopper Jr.",cat:"bk",fixed:true,g:150,kcal:310,p:17,c:27,f:17},
-  bk_cheese:{name:"Cheeseburger",cat:"bk",fixed:true,g:130,kcal:300,p:15,c:28,f:14},
-  bk_dcheese:{name:"Dupla sajtburger",cat:"bk",fixed:true,g:180,kcal:400,p:22,c:27,f:21},
-  bk_ham:{name:"Hamburger",cat:"bk",fixed:true,g:110,kcal:250,p:13,c:28,f:9},
+  bk_whopper:{name:"Whopper",cat:"bk",fixed:true,g:332,kcal:726,p:36,c:50,f:41},
+  bk_dwhopper:{name:"Dupla Whopper",cat:"bk",fixed:true,g:445,kcal:1058,p:63,c:50,f:66},
+  bk_whopperjr:{name:"Whopper Jr.",cat:"bk",fixed:true,g:167,kcal:368,p:17,c:30,f:19},
+  bk_cheese:{name:"Sajtburger",cat:"bk",fixed:true,g:130,kcal:340,p:19,c:30,f:16},
+  bk_dcheese:{name:"Dupla sajtburger",cat:"bk",fixed:true,g:190,kcal:525,p:33,c:30,f:30},
+  bk_ham:{name:"Hamburger",cat:"bk",fixed:true,g:117,kcal:297,p:16,c:29,f:12},
   bk_bigking:{name:"Big King",cat:"bk",fixed:true,g:250,kcal:630,p:32,c:47,f:38},
-  bk_chickenroyale:{name:"Chicken Royale",cat:"bk",fixed:true,g:220,kcal:460,p:18,c:49,f:21},
-  bk_crispy:{name:"Crispy Chicken",cat:"bk",fixed:true,g:200,kcal:430,p:19,c:45,f:20},
-  bk_nuggets:{name:"Chicken Nuggets",cat:"bk",fixed:true,g:100,kcal:270,p:13,c:16,f:16,units:[{lbl:"6 db",mult:1},{lbl:"9 db",mult:1.5}]},
-  bk_fries:{name:"Hasábburgonya",cat:"bk",fixed:true,g:117,kcal:330,p:4,c:42,f:15,units:[{lbl:"kicsi",mult:0.7},{lbl:"közepes",mult:1},{lbl:"nagy",mult:1.3}]},
-  bk_onion:{name:"Hagymakarika",cat:"bk",fixed:true,g:100,kcal:400,p:5,c:45,f:22,units:[{lbl:"közepes",mult:1},{lbl:"nagy",mult:1.4}]},
-  bk_m_whopper:{name:"Whopper menü (közepes)",cat:"bk",fixed:true,g:0,kcal:1200,p:32,c:139,f:55},
+  bk_chickenroyale:{name:"Chicken Royal",cat:"bk",fixed:true,g:272,kcal:598,p:23,c:50,f:33},
+  bk_crispy:{name:"Crispy Chicken",cat:"bk",fixed:true,g:156,kcal:413,p:11,c:39,f:24},
+  bk_nuggets:{name:"King Nuggets",cat:"bk",fixed:true,g:102,kcal:247,p:12,c:21,f:12,units:[{lbl:"6 db",mult:1},{lbl:"9 db",mult:1.5}]},
+  bk_fries:{name:"Hasábburgonya",cat:"bk",fixed:true,g:116,kcal:314,p:6,c:39,f:15,units:[{lbl:"kicsi",mult:0.7},{lbl:"közepes",mult:1},{lbl:"nagy",mult:1.3}]},
+  bk_onion:{name:"Hagymakarika",cat:"bk",fixed:true,g:100,kcal:383,p:5,c:47,f:18,units:[{lbl:"közepes",mult:1},{lbl:"nagy",mult:1.4}]},
+  bk_m_whopper:{name:"Whopper menü (közepes)",cat:"bk",fixed:true,g:0,kcal:1220,p:42,c:133,f:56},
   bk_m_bigking:{name:"Big King menü (közepes)",cat:"bk",fixed:true,g:0,kcal:1170,p:36,c:137,f:53},
   // ===== Subway (15 cm / 30 cm) =====
   sub_ham:{name:"Sonka sub",cat:"subway",fixed:true,g:220,kcal:280,p:18,c:44,f:5,units:[{lbl:"15 cm",mult:1},{lbl:"30 cm",mult:2}]},
@@ -3186,13 +3193,13 @@ var _MORE={
   mcd_mcplant:{name:"McPlant",cat:"mcd",fixed:true,g:210,kcal:430,p:17,c:44,f:20},
   // ===== Burger King – signature + menük =====
   bk_steakhouse:{name:"Steakhouse burger",cat:"bk",fixed:true,g:280,kcal:750,p:34,c:48,f:45},
-  bk_baconking:{name:"Bacon King",cat:"bk",fixed:true,g:380,kcal:1150,p:57,c:49,f:79},
+  bk_baconking:{name:"Bacon King",cat:"bk",fixed:true,g:423,kcal:1288,p:79,c:52,f:83},
   bk_longchicken:{name:"Long Chicken",cat:"bk",fixed:true,g:220,kcal:460,p:17,c:49,f:22},
-  bk_chillicheese:{name:"Chilli Cheese burger",cat:"bk",fixed:true,g:210,kcal:500,p:20,c:42,f:27},
-  bk_chillicheese_nuggets:{name:"Chilli Cheese Nuggets",cat:"bk",fixed:true,g:120,kcal:350,p:9,c:28,f:22,units:[{lbl:"6 db",mult:1},{lbl:"9 db",mult:1.5}]},
-  bk_plantwhopper:{name:"Plant-based Whopper",cat:"bk",fixed:true,g:270,kcal:620,p:22,c:50,f:36},
-  bk_kingbox:{name:"King Box",cat:"bk",fixed:true,g:0,kcal:1100,p:40,c:110,f:50},
-  bk_m_crispy:{name:"Crispy Chicken menü (közepes)",cat:"bk",fixed:true,g:0,kcal:970,p:23,c:135,f:35},
+  bk_chillicheese:{name:"Chili cheese burger",cat:"bk",fixed:true,g:129,kcal:356,p:16,c:29,f:19},
+  bk_chillicheese_nuggets:{name:"Chili Cheese Nuggets",cat:"bk",fixed:true,g:115,kcal:294,p:12,c:26,f:16,units:[{lbl:"6 db",mult:1},{lbl:"9 db",mult:1.5}]},
+  bk_plantwhopper:{name:"Plant-based Whopper",cat:"bk",fixed:true,g:329,kcal:640,p:25,c:55,f:34},
+  bk_kingbox:{name:"Solo kosár",cat:"bk",fixed:true,g:344,kcal:996,p:26,c:111,f:49},
+  bk_m_crispy:{name:"Crispy Chicken menü (közepes)",cat:"bk",fixed:true,g:0,kcal:907,p:17,c:123,f:39},
   // ===== HÚS (általános, +több) =====
   rantott_pulyka:{name:"Rántott pulykamell",cat:"hus",per100:{kcal:240,p:19,c:13,f:12},portions:[{lbl:"1 kis szelet",g:90},{lbl:"1 közepes",g:130},{lbl:"1 nagy",g:180}],methods:RMETH.fried},
   cordonbleu:{name:"Cordon bleu",cat:"hus",per100:{kcal:280,p:18,c:12,f:18},portions:[{lbl:"1 szelet",g:150},{lbl:"nagy",g:200}],methods:RMETH.fried},
@@ -3804,7 +3811,7 @@ var FSYN=[
  ["dominos","domino s"]
 ];
 function _foodTerms(rq){ var terms=[rq]; var ns=rq.replace(/ /g,""); if(ns&&ns!==rq) terms.push(ns); for(var g=0;g<FSYN.length;g++){ var grp=FSYN[g],hit=false,k; for(k=0;k<grp.length;k++){ var t=grp[k]; if(rq===t || (rq.length>=3 && (rq.indexOf(t)>=0 || t.indexOf(rq)>=0))){ hit=true; break; } } if(hit){ for(k=0;k<grp.length;k++){ if(terms.indexOf(grp[k])<0) terms.push(grp[k]); } } } return terms; }
-function _foodScore(name,catLabel,rq,terms){ var nm=_norm(name), hay=nm+" "+_norm(catLabel||""), hns=hay.replace(/ /g,""); if(nm.indexOf(rq)>=0) return 3; var i; for(i=0;i<terms.length;i++){ var t=terms[i]; if(!t) continue; if(hay.indexOf(t)>=0 || hns.indexOf(t.replace(/ /g,""))>=0) return 2; } var toks=rq.split(" "); if(toks.length>1){ var all=true; for(i=0;i<toks.length;i++){ if(toks[i]&&hay.indexOf(toks[i])<0){ all=false; break; } } if(all) return 1; } return 0; }
+function _foodScore(name,catLabel,rq,terms){ var nm=_norm(name), cl=_norm(catLabel||""), hns=(nm+" "+cl).replace(/ /g,""); if(nm.indexOf(rq)>=0) return 4; var i,t; if(cl){ if(rq.length>=2 && cl.indexOf(rq)>=0) return 3; for(i=0;i<terms.length;i++){ t=terms[i]; if(t && cl.indexOf(t)>=0) return 3; } } for(i=0;i<terms.length;i++){ t=terms[i]; if(t){ if(nm.indexOf(t)>=0) return 2; if(hns.indexOf(t.replace(/ /g,""))>=0) return 2; } } var toks=rq.split(" "); if(toks.length>1){ var all=true; for(i=0;i<toks.length;i++){ if(toks[i]&&nm.indexOf(toks[i])<0&&cl.indexOf(toks[i])<0){ all=false; break; } } if(all) return 1; } return 0; }
 function foodKcalHint(fd){ if(!fd) return ""; if(fd.fixed){ var u=(fd.units&&fd.units.length&&fd.units[0].lbl)?(" · "+fd.units[0].lbl):(fd.g?(" · "+fd.g+" g"):""); return Math.round(fd.kcal||0)+" kcal"+u; } if(fd.per100){ return Math.round(fd.per100.kcal||0)+" kcal/100g"; } return ""; }
 function renderSavedFoods(){ var lib=savedFoods();
   var h='<div class="fm-hint">A mentett \u00e9teleid — koppints egyre, \u00e9s beker\u00fcl a napl\u00f3ba (a fenti d\u00e1tumra). T\u00f6bbet is hozz\u00e1adhatsz egym\u00e1s ut\u00e1n.</div>';
@@ -4227,6 +4234,8 @@ document.addEventListener("click",function(ev){
   if(act==="data-close"){ dataModal=null; _dataErr=""; render(); return; }
   if(act==="theme-set"){ var _th=el.getAttribute("data-theme"); if(!state.settings)state.settings={}; state.settings.theme=_th; applyTheme(_th); saveState(); render(); return; }
   if(act==="mode-set"){ var _md=el.getAttribute("data-mode")==="dark"?"dark":"light"; if(!state.settings)state.settings={}; state.settings.mode=_md; applyMode(); saveState(); render(); return; }
+  if(act==="sw-check"){ _swCheck="checking"; render(); try{ if(_swReg&&_swReg.update){ _swReg.update().then(function(){ setTimeout(function(){ _swCheck=(_swUpdate?"ready":"none"); render(); },900); }).catch(function(){ _swCheck="none"; render(); }); } else { setTimeout(function(){ _swCheck="none"; render(); },700); } }catch(e){ _swCheck="none"; render(); } return; }
+  if(act==="sw-apply"){ try{ if(_swReg&&_swReg.waiting){ _swReg.waiting.postMessage("skipWaiting"); } }catch(e){} toast="Frissítés telepítése…"; render(); setTimeout(function(){ try{location.reload();}catch(e){} },400); return; }
   if(act==="vol-test"){ unlockAudio(); beep(); vibrate(); toast="🔔 Teszthang lejátszva"; render(); setTimeout(function(){ toast=""; render(); },1800); return; }
   if(act==="cp-open"){ cp={mode:"list"}; render(); return; }
   if(act==="cp-close"){ cp=null; render(); return; }
@@ -4292,7 +4301,7 @@ document.addEventListener("touchcancel",function(e){ if(_cpLP){ clearTimeout(_cp
 render();
 window.addEventListener("beforeinstallprompt",function(e){ e.preventDefault(); deferredPrompt=e; if(!onboarding&&!session) render(); });
 window.addEventListener("appinstalled",function(){ deferredPrompt=null; installDismissed=true; toast="Telep\u00edtve \u2713"; if(!onboarding&&!session) render(); setTimeout(function(){ toast=""; if(!onboarding&&!session) render(); },1800); });
-if("serviceWorker" in navigator&&location.protocol.indexOf("http")===0){ window.addEventListener("load",function(){ navigator.serviceWorker.register("sw.js").then(function(reg){ if(!reg) return; reg.addEventListener("updatefound",function(){ var nw=reg.installing; if(!nw) return; nw.addEventListener("statechange",function(){ if(nw.state==="installed"&&navigator.serviceWorker.controller){ _swUpdate=true; if(!onboarding&&!session) render(); } }); }); }).catch(function(){}); }); }
+if("serviceWorker" in navigator&&location.protocol.indexOf("http")===0){ window.addEventListener("load",function(){ navigator.serviceWorker.register("sw.js").then(function(reg){ if(!reg) return; _swReg=reg; reg.addEventListener("updatefound",function(){ var nw=reg.installing; if(!nw) return; nw.addEventListener("statechange",function(){ if(nw.state==="installed"&&navigator.serviceWorker.controller){ _swUpdate=true; _swCheck="ready"; if(!onboarding&&!session) render(); } }); }); }).catch(function(){}); }); }
 })();
 </script>
 </body>
