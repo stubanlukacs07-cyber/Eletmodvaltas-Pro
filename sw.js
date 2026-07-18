@@ -1,4 +1,4 @@
-const CACHE="eletmodvaltas-pro-v9";
+const CACHE="eletmodvaltas-pro-v10";
 const CORE=["./","index.html","exercise-atlas.webp","strength-atlas.webp","skill-atlas.webp","icon-180.png","icon-512.png","manifest.webmanifest"];
 self.addEventListener("install",event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE)).then(()=>self.skipWaiting())));
 self.addEventListener("activate",event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
@@ -8,8 +8,9 @@ self.addEventListener("fetch",event=>{
   if(req.method!=="GET"||new URL(req.url).origin!==location.origin)return;
   const isHTML = req.mode==="navigate" || (req.headers.get("accept")||"").indexOf("text/html")>=0;
   if(isHTML){
+    // Always load the freshest app shell from the network (bypass the HTTP cache); use cache only when offline
     event.respondWith(
-      fetch(req).then(res=>{ const copy=res.clone(); caches.open(CACHE).then(c=>c.put("index.html",copy)); return res; })
+      fetch(req,{cache:"no-store"}).then(res=>{ const copy=res.clone(); caches.open(CACHE).then(c=>c.put("index.html",copy)); return res; })
         .catch(()=>caches.match(req).then(hit=>hit||caches.match("index.html")))
     );
     return;

@@ -2503,7 +2503,7 @@ function viewBeall(){
   var _upl=(_swCheck==="checking")?'⏳ Keresés…':((_swUpdate||_swCheck==="ready")?'⬇️ Frissítés elérhető — koppints a telepítéshez':((_swCheck==="none")?'✓ Naprakész — jelenleg nincs elérhető frissítés':'🔄 Frissítés keresése'));
   var _upa=(_swUpdate||_swCheck==="ready")?"sw-apply":"sw-check";
   h+='<div class="eyebrow" style="margin-top:22px">Alkalmazás</div><div class="card settings-card"><button class="set-row" data-act="'+_upa+'"'+(_swCheck==="checking"?" disabled":"")+'><span>'+_upl+'</span><span class="set-arrow">›</span></button><div class="set-note">Frissítéskor magától letölti az újat — nem kell törölni és újra hozzáadni. (A telepített appban működik.)</div></div>';
-  h+='<div class="set-note" style="text-align:center;margin-top:18px">Életmódváltás Pro · build 2026.07.18 · v9</div>';
+  h+='<div class="set-note" style="text-align:center;margin-top:18px">Életmódváltás Pro · build 2026.07.18 · v10</div>';
   return h;
 }
 
@@ -4240,7 +4240,7 @@ document.addEventListener("click",function(ev){
   if(act==="data-close"){ dataModal=null; _dataErr=""; render(); return; }
   if(act==="theme-set"){ var _th=el.getAttribute("data-theme"); if(!state.settings)state.settings={}; state.settings.theme=_th; applyTheme(_th); saveState(); render(); return; }
   if(act==="mode-set"){ var _md=el.getAttribute("data-mode")==="dark"?"dark":"light"; if(!state.settings)state.settings={}; state.settings.mode=_md; applyMode(); saveState(); render(); return; }
-  if(act==="sw-check"){ _swCheck="checking"; render(); try{ if(_swReg&&_swReg.update){ _swReg.update().then(function(){ setTimeout(function(){ _swCheck=(_swUpdate?"ready":"none"); render(); },900); }).catch(function(){ _swCheck="none"; render(); }); } else { setTimeout(function(){ _swCheck="none"; render(); },700); } }catch(e){ _swCheck="none"; render(); } return; }
+  if(act==="sw-check"){ _swCheck="checking"; render(); try{ if(_swReg&&_swReg.update){ _swReg.update().then(function(){ setTimeout(function(){ _swCheck=(((_swReg&&_swReg.waiting)||_swUpdate)?"ready":"none"); if(_swCheck==="ready")_swUpdate=true; render(); },1600); }).catch(function(){ _swCheck="none"; render(); }); } else { setTimeout(function(){ _swCheck="none"; render(); },800); } }catch(e){ _swCheck="none"; render(); } return; }
   if(act==="sw-apply"){ try{ if(_swReg&&_swReg.waiting){ _swReg.waiting.postMessage("skipWaiting"); } }catch(e){} toast="Frissítés telepítése…"; render(); setTimeout(function(){ try{location.reload();}catch(e){} },400); return; }
   if(act==="vol-test"){ unlockAudio(); beep(); vibrate(); toast="🔔 Teszthang lejátszva"; render(); setTimeout(function(){ toast=""; render(); },1800); return; }
   if(act==="cp-open"){ cp={mode:"list"}; render(); return; }
@@ -4308,7 +4308,15 @@ document.addEventListener("touchcancel",function(e){ if(_cpLP){ clearTimeout(_cp
 render();
 window.addEventListener("beforeinstallprompt",function(e){ e.preventDefault(); deferredPrompt=e; if(!onboarding&&!session) render(); });
 window.addEventListener("appinstalled",function(){ deferredPrompt=null; installDismissed=true; toast="Telep\u00edtve \u2713"; if(!onboarding&&!session) render(); setTimeout(function(){ toast=""; if(!onboarding&&!session) render(); },1800); });
-if("serviceWorker" in navigator&&location.protocol.indexOf("http")===0){ window.addEventListener("load",function(){ navigator.serviceWorker.register("sw.js").then(function(reg){ if(!reg) return; _swReg=reg; reg.addEventListener("updatefound",function(){ var nw=reg.installing; if(!nw) return; nw.addEventListener("statechange",function(){ if(nw.state==="installed"&&navigator.serviceWorker.controller){ _swUpdate=true; _swCheck="ready"; if(!onboarding&&!session) render(); } }); }); }).catch(function(){}); }); }
+var _swHadCtrl=false, _swReloaded=false;
+if("serviceWorker" in navigator&&location.protocol.indexOf("http")===0){
+  try{ _swHadCtrl=!!navigator.serviceWorker.controller; }catch(e){}
+  navigator.serviceWorker.addEventListener("controllerchange",function(){ if(_swReloaded) return; if(!_swHadCtrl){ _swHadCtrl=true; return; } _swReloaded=true; try{ location.reload(); }catch(e){} });
+  window.addEventListener("load",function(){
+    navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(function(reg){ if(!reg) return; _swReg=reg; try{ reg.update(); }catch(e){} reg.addEventListener("updatefound",function(){ var nw=reg.installing; if(!nw) return; nw.addEventListener("statechange",function(){ if(nw.state==="installed"&&navigator.serviceWorker.controller){ _swUpdate=true; _swCheck="ready"; if(!onboarding&&!session) render(); } }); }); }).catch(function(){});
+    document.addEventListener("visibilitychange",function(){ if(!document.hidden&&_swReg){ try{ _swReg.update(); }catch(e){} } });
+  });
+}
 })();
 </script>
 </body>
