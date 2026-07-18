@@ -622,6 +622,10 @@
   .theme-sw{display:flex;flex-direction:column;align-items:center;gap:7px;padding:12px 6px;background:var(--surface2);border:2px solid var(--line);border-radius:14px;cursor:pointer;transition:border-color .15s,transform .12s;}
   .theme-sw.on{border-color:var(--sw);}
   .theme-sw:active{transform:scale(.96);}
+  .mode-seg{display:flex;gap:8px;}
+  .mode-opt{flex:1;padding:13px;border-radius:12px;border:2px solid var(--line);background:var(--surface2);color:var(--ink);font-weight:700;font-size:14.5px;}
+  .mode-opt.on{border-color:var(--acc);background:var(--acc-soft);color:var(--acc-d);}
+  .mode-opt:active{transform:scale(.97);}
   .theme-dot{width:30px;height:30px;border-radius:50%;background:var(--sw);box-shadow:0 2px 8px rgba(0,0,0,.15);}
   .theme-name{font-size:11.5px;font-weight:600;color:var(--ink);}
   .settings-card .set-row:last-child{border-bottom:none;}
@@ -741,8 +745,6 @@
    FUTURISTIC RESKIN LAYER — visual only, all classes/vars kept
    ============================================================ */
 :root{
-  --bg:#05080a; --surface:#0e1614; --surface2:#141d1b;
-  --ink:#eaf3ee; --muted:#8fa39c; --line:rgba(180,220,205,.12);
   --honey:#f0bc57; --danger:#ff6a58; --r:18px;
   --display:'Space Grotesk','Sora',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
   --glass:color-mix(in srgb, var(--surface) 74%, transparent);
@@ -750,8 +752,12 @@
   --accGlow:color-mix(in srgb, var(--acc) 55%, transparent);
   --hair:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,0) 60%);
 }
+html[data-mode="dark"]{
+  --bg:#05080a; --surface:#0e1614; --surface2:#141d1b;
+  --ink:#eaf3ee; --muted:#8fa39c; --line:rgba(180,220,205,.12);
+}
 /* remap the two theme tints so all 12 accents read on dark (inline vars beaten via !important) */
-html{
+html[data-mode="dark"]{
   --acc-soft:color-mix(in srgb, var(--acc) 22%, transparent) !important;
   --acc-d:color-mix(in srgb, var(--acc-lite) 86%, #ffffff) !important;
 }
@@ -812,7 +818,7 @@ body::after{background:var(--bg) !important;}
   background:var(--hair);mix-blend-mode:overlay;opacity:.5;}
 .card.is-done,.track.is-full{background:color-mix(in srgb, var(--acc) 15%, var(--glass));border-color:var(--accGlow);
   box-shadow:0 18px 44px -22px color-mix(in srgb,var(--acc) 70%,#000), inset 0 0 0 1px color-mix(in srgb,var(--acc) 30%,transparent);}
-.sess{background:linear-gradient(135deg, color-mix(in srgb,var(--acc) 30%, #0a1512), #0a1210);
+html[data-mode="dark"] .sess{background:linear-gradient(135deg, color-mix(in srgb,var(--acc) 30%, #0a1512), #0a1210);
   border:1px solid var(--accGlow);box-shadow:0 16px 40px -20px color-mix(in srgb,var(--acc) 70%,#000);}
 .sess .s-hint{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);}
 
@@ -826,7 +832,7 @@ body::after{background:var(--bg) !important;}
   box-shadow:0 4px 14px rgba(240,188,87,.3);}
 
 /* ---- TAB BAR: dark glass + glowing active ---- */
-.tabs{background:color-mix(in srgb,#0a1210 78%, transparent);
+html[data-mode="dark"] .tabs{background:color-mix(in srgb,#0a1210 78%, transparent);
   -webkit-backdrop-filter:blur(22px) saturate(1.3);backdrop-filter:blur(22px) saturate(1.3);
   border-top:1px solid var(--line);box-shadow:0 -8px 30px -12px #000;}
 .tabs::after{background:transparent !important;}
@@ -965,6 +971,18 @@ body::after{background:var(--bg) !important;}
 .content::-webkit-scrollbar,.fi-sheet::-webkit-scrollbar,.sw-sheet::-webkit-scrollbar,.rlist::-webkit-scrollbar,.cp-sheet::-webkit-scrollbar{width:8px;height:8px;}
 .content::-webkit-scrollbar-thumb,.fi-sheet::-webkit-scrollbar-thumb,.sw-sheet::-webkit-scrollbar-thumb,.rlist::-webkit-scrollbar-thumb,.cp-sheet::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--acc) 46%, transparent);border-radius:20px;border:2px solid transparent;background-clip:padding-box;}
 .content::-webkit-scrollbar-track,.fi-sheet::-webkit-scrollbar-track,.sw-sheet::-webkit-scrollbar-track,.rlist::-webkit-scrollbar-track,.cp-sheet::-webkit-scrollbar-track{background:transparent;}
+  /* ===== LIGHT MODE (default) — readability fixes over the dark reskin ===== */
+  html:not([data-mode="dark"]) .eyebrow,
+  html:not([data-mode="dark"]) .cat-h,
+  html:not([data-mode="dark"]) .tab.on,
+  html:not([data-mode="dark"]) .ob-brand{ color:var(--acc-d); text-shadow:none; }
+  html:not([data-mode="dark"]) .tab.on svg{ filter:none; }
+  html:not([data-mode="dark"]) .beast-ex{ background:var(--surface); }
+  html:not([data-mode="dark"]) .fi-safe,
+  html:not([data-mode="dark"]) .dtg-warn,
+  html:not([data-mode="dark"]) .cheat-note,
+  html:not([data-mode="dark"]) .verdict-h.warn{ color:#8a5512 !important; }
+  html:not([data-mode="dark"]) .slip-note{ color:#a8402f !important; }
 </style>
 </head>
 <body>
@@ -2187,7 +2205,7 @@ function _mountHTML(html){ var _sp=null; try{ var _e=document.querySelector(".fi
   if(_sp){ try{ var _e2=document.querySelector(".fi-sheet, .sw-sheet, .beast"); if(_e2) _e2.scrollTop=_sp; }catch(_){} }
   try{ var _c2=document.querySelector(".content"); if(_c2) _c2.scrollTop=_sameTab?_mountScroll:0; }catch(_){}
   if(typeof tab!=="undefined") _mountTab=tab; }
-function render(){ _burnCache={}; try{applyTheme((state.settings&&state.settings.theme)||"forest");}catch(e){} if(_tick){clearInterval(_tick);_tick=null;} if(_rtick){clearInterval(_rtick);_rtick=null;} normalizeDiet();
+function render(){ _burnCache={}; try{applyTheme((state.settings&&state.settings.theme)||"forest");}catch(e){} try{applyMode();}catch(e){} if(_tick){clearInterval(_tick);_tick=null;} if(_rtick){clearInterval(_rtick);_rtick=null;} normalizeDiet();
   if(!state.legalAccepted){ _mountHTML(renderConsentGate()+renderLegalModal()); return; }
   if(onboarding){ renderOnboarding(); return; }
   if(session){ renderSession(); if(session&&session.phase==="active") _tick=setInterval(sessionTick,250); return; }
@@ -2460,9 +2478,12 @@ var THEMES={
   coffee:{name:"Kávé",sw:"#7a5230",vars:{"--acc":"#7a5230","--acc-d":"#48301b","--acc-soft":"#efe6dc","--acc-lite":"#9c6f45","--g1":"#5f3f24","--g2":"#422b18"}}
 };
 function applyTheme(key){ var t=THEMES[key]||THEMES.forest; try{ var de=document.documentElement; for(var k in t.vars){ de.style.setProperty(k,t.vars[k]); } }catch(e){} }
+function applyMode(){ try{ var m=(state.settings&&state.settings.mode)||"light"; document.documentElement.setAttribute("data-mode", m==="dark"?"dark":"light"); }catch(e){} }
 function viewBeall(){
   var st=(state.settings||{}), vol=(typeof st.volume==="number")?st.volume:60, th=st.theme||"forest", h="";
   h+='<div class="eyebrow">Profil és cél</div><div class="card settings-card"><button class="set-row" data-act="edit-profile"><span>👤 Profil / cél szerkesztése</span><span class="set-arrow">›</span></button></div>';
+  var md=(st.mode==="dark")?"dark":"light";
+  h+='<div class="eyebrow" style="margin-top:22px">Megjelenés · mód</div><div class="card"><div class="mode-seg"><button class="mode-opt'+(md==="light"?" on":"")+'" data-act="mode-set" data-mode="light">☀️ Világos</button><button class="mode-opt'+(md==="dark"?" on":"")+'" data-act="mode-set" data-mode="dark">🌙 Sötét</button></div><div class="set-note">Alapból világos. A sötét mód az egész appot elsötétíti.</div></div>';
   h+='<div class="eyebrow" style="margin-top:22px">Megjelenés · szín</div><div class="card"><div class="theme-grid">';
   for(var k in THEMES){ var tt=THEMES[k]; h+='<button class="theme-sw'+(k===th?" on":"")+'" data-act="theme-set" data-theme="'+k+'" style="--sw:'+tt.sw+'"><span class="theme-dot"></span><span class="theme-name">'+esc(tt.name)+'</span></button>'; }
   h+='</div><div class="set-note">A választott szín az egész appra érvényes, és mentődik.</div></div>';
@@ -2470,7 +2491,7 @@ function viewBeall(){
   h+='<div class="eyebrow" style="margin-top:22px">Jelzések hangereje</div><div class="card"><div class="vol-row"><span class="vol-ic">🔊</span><input type="range" min="0" max="100" value="'+vol+'" id="vol-slider" class="vol-native" aria-label="Hangerő" style="background:linear-gradient(90deg,var(--acc) '+vol+'%,var(--surface2) '+vol+'%)"><span class="vol-val" id="vol-val">'+vol+'</span></div><button class="btn-ghost" data-act="vol-test" style="margin-top:14px">🔔 Hangerő tesztelése</button><div class="set-note">Az edzés-időzítők és jelzések ezen a hangerőn szólnak (0 = néma).<br><b>iPhone-on:</b> ha nem hallod, kapcsold ki az oldalsó néma kapcsolót és told fel a telefon hangerejét — a beépített hangot a telefon némítása is elnémítja.</div></div>';
   h+='<div class="eyebrow" style="margin-top:22px">Jogi tudnivalók</div><div class="card settings-card"><button class="set-row" data-act="legal-disclaimer"><span>⚕️ Egészségügyi tájékoztató</span><span class="set-arrow">›</span></button><button class="set-row" data-act="legal-privacy"><span>🔒 Adatvédelmi tájékoztató</span><span class="set-arrow">›</span></button><button class="set-row" data-act="legal-aszf"><span>📄 Felhasználási feltételek</span><span class="set-arrow">›</span></button><button class="set-row" data-act="legal-impresszum"><span>ℹ️ Impresszum</span><span class="set-arrow">›</span></button></div>';
   h+='<div class="eyebrow" style="margin-top:22px">Biztonsági mentés</div><div class="card settings-card"><button class="set-row" data-act="data-export"><span>💾 Adatok mentése</span><span class="set-arrow">›</span></button><button class="set-row" data-act="data-import"><span>📥 Adatok visszaállítása</span><span class="set-arrow">›</span></button><button class="set-row" data-act="feedback-open"><span>💬 Visszajelzés / kérdőív</span><span class="set-arrow">›</span></button></div>';
-  h+='<div class="set-note" style="text-align:center;margin-top:18px">Életmódváltás Pro · build 2026.07.18 · v6</div>';
+  h+='<div class="set-note" style="text-align:center;margin-top:18px">Életmódváltás Pro · build 2026.07.18 · v7 (light/dark)</div>';
   return h;
 }
 
@@ -4205,6 +4226,7 @@ document.addEventListener("click",function(ev){
   if(act==="data-import"){ dataModal="import"; _dataErr=""; render(); return; }
   if(act==="data-close"){ dataModal=null; _dataErr=""; render(); return; }
   if(act==="theme-set"){ var _th=el.getAttribute("data-theme"); if(!state.settings)state.settings={}; state.settings.theme=_th; applyTheme(_th); saveState(); render(); return; }
+  if(act==="mode-set"){ var _md=el.getAttribute("data-mode")==="dark"?"dark":"light"; if(!state.settings)state.settings={}; state.settings.mode=_md; applyMode(); saveState(); render(); return; }
   if(act==="vol-test"){ unlockAudio(); beep(); vibrate(); toast="🔔 Teszthang lejátszva"; render(); setTimeout(function(){ toast=""; render(); },1800); return; }
   if(act==="cp-open"){ cp={mode:"list"}; render(); return; }
   if(act==="cp-close"){ cp=null; render(); return; }
