@@ -1021,7 +1021,7 @@ html[data-mode="dark"] .tabs{background:color-mix(in srgb,#0a1210 78%, transpare
 <script>
 (function(){
 "use strict";
-var APP_VERSION="2026.07.18.11", APP_BUILD_DATE="2026.07.18";
+var APP_VERSION="2026.07.20.1", APP_BUILD_DATE="2026.07.20";
 var DAYS=["Vasárnap","Hétfő","Kedd","Szerda","Csütörtök","Péntek","Szombat"];
 var MON=["jan.","feb.","márc.","ápr.","máj.","jún.","júl.","aug.","szep.","okt.","nov.","dec."];
 
@@ -2291,12 +2291,27 @@ function pwaCheckUpdate(manual){
 }
 function pwaReloadFresh(){ try{ var u=new URL(location.href); u.searchParams.set("appv",_swRemoteVersion||APP_VERSION); u.searchParams.set("refresh",Date.now()); location.replace(u.href); }catch(e){ try{location.reload();}catch(_){} } }
 function pwaActivateWaiting(){ try{ if(_swReg&&_swReg.waiting){ _swReg.waiting.postMessage({type:"SKIP_WAITING",version:_swRemoteVersion||APP_VERSION}); return true; } }catch(e){} return false; }
+function pwaPurgeCaches(){ // MINDEN gyorsítótár törlése (Cache Storage + SW), majd friss betöltés
+  return new Promise(function(resolve){
+    var done=false, fin=function(){ if(done)return; done=true; resolve(); };
+    try{ if("caches" in window){ caches.keys().then(function(ks){ return Promise.all(ks.map(function(k){ return caches.delete(k); })); }).then(fin,fin); } else fin(); }catch(e){ fin(); }
+    try{ if(_swReg&&_swReg.active) _swReg.active.postMessage({type:"PURGE_CACHES"}); }catch(e){}
+    setTimeout(fin,1500);
+  });
+}
+function pwaHardRefresh(){ // "törlés + újratelepítés" NÉLKÜL: cache ürítése és garantáltan friss újratöltés
+  if(_swApplying)return; _swApplying=true; _swCheck="checking"; pwaUiRender();
+  pwaPurgeCaches().then(function(){ try{ if(_swReg&&_swReg.update)_swReg.update(); }catch(e){} setTimeout(pwaReloadFresh,150); });
+}
 function pwaApplyUpdate(){
   if(_swApplying)return; _swApplying=true; _swCheck="checking"; pwaUiRender();
-  if(pwaActivateWaiting()){ setTimeout(function(){ if(!_swReloaded)pwaReloadFresh(); },4000); return; }
-  var done=false, finish=function(){ if(done)return; done=true; if(!pwaActivateWaiting())pwaReloadFresh(); };
+  // 1) ha van várakozó (waiting) worker → aktiváljuk, a controllerchange újratölt
+  if(pwaActivateWaiting()){ setTimeout(function(){ if(!_swReloaded)pwaPurgeCaches().then(pwaReloadFresh); },3500); return; }
+  // 2) különben frissítjük a regisztrációt, végül biztosra megyünk: cache-ürítés + friss újratöltés,
+  //    így soha nem ragad be a régi verzió (nem kell törölni és újra a főképernyőhöz adni)
+  var done=false, finish=function(){ if(done||_swReloaded)return; done=true; if(!pwaActivateWaiting()) pwaPurgeCaches().then(pwaReloadFresh); };
   try{ if(_swReg&&_swReg.update){ _swReg.update().then(function(){ setTimeout(finish,900); }).catch(finish); } else finish(); }catch(e){ finish(); }
-  setTimeout(finish,3500);
+  setTimeout(finish,3000);
 }
 var _mountTab=null, _mountScroll=0;
 function _mountHTML(html){ var _sp=null; try{ var _e=document.querySelector(".fi-sheet, .sw-sheet, .beast"); if(_e) _sp=_e.scrollTop; }catch(_){}
@@ -2600,7 +2615,7 @@ function viewBeall(){
   h+='<div class="eyebrow" style="margin-top:22px">Biztonsági mentés</div><div class="card settings-card"><button class="set-row" data-act="data-export"><span>💾 Adatok mentése</span><span class="set-arrow">›</span></button><button class="set-row" data-act="data-import"><span>📥 Adatok visszaállítása</span><span class="set-arrow">›</span></button><button class="set-row" data-act="feedback-open"><span>💬 Visszajelzés / kérdőív</span><span class="set-arrow">›</span></button></div>';
   var _upl=_swApplying?'⏳ Frissítés telepítése…':((_swCheck==="checking")?'⏳ Keresés…':((_swUpdate||_swCheck==="ready")?'⬇️ Frissítés elérhető'+(_swRemoteVersion?(' · v'+_swRemoteVersion.split(".").pop()):'')+' — telepítés':((_swCheck==="none")?'✓ Jelenleg nincs elérhető frissítés':((_swCheck==="offline")?'📴 Offline — az ellenőrzéshez internet kell':((_swCheck==="error")?'⚠️ Az ellenőrzés nem sikerült — próbáld újra':'🔄 Frissítés keresése')))));
   var _upa=(_swUpdate||_swCheck==="ready")?"sw-apply":"sw-check";
-  h+='<div class="eyebrow" style="margin-top:22px">Alkalmazás</div><div class="card settings-card"><button class="set-row" data-act="'+_upa+'"'+((_swCheck==="checking"||_swApplying)?" disabled":"")+'><span>'+_upl+'</span><span class="set-arrow">›</span></button><div class="set-note">Online megnyitáskor az app automatikusan ellenőrzi az új buildet. A telepítés nem törli a profilodat vagy a naplóidat.</div><div class="set-note"><b>Futó verzió:</b> '+APP_VERSION+' · build '+APP_BUILD_DATE+'</div></div>';
+  h+='<div class="eyebrow" style="margin-top:22px">Alkalmazás</div><div class="card settings-card"><button class="set-row" data-act="'+_upa+'"'+((_swCheck==="checking"||_swApplying)?" disabled":"")+'><span>'+_upl+'</span><span class="set-arrow">›</span></button><button class="set-row" data-act="sw-force"'+(_swApplying?" disabled":"")+'><span>🧹 Gyorsítótár ürítése és újratöltés</span><span class="set-arrow">›</span></button><div class="set-note">Online megnyitáskor az app automatikusan ellenőrzi az új buildet. A telepítés nem törli a profilodat vagy a naplóidat. Ha valamiért mégis a régi verziót látnád, a „Gyorsítótár ürítése" garantáltan a legfrissebbet tölti be — <b>törölni és újra a főképernyőhöz adni nem kell</b>.</div><div class="set-note"><b>Futó verzió:</b> '+APP_VERSION+' · build '+APP_BUILD_DATE+'</div></div>';
   return h;
 }
 
@@ -4352,6 +4367,7 @@ document.addEventListener("click",function(ev){
   if(act==="mode-set"){ var _md=el.getAttribute("data-mode")==="dark"?"dark":"light"; if(!state.settings)state.settings={}; state.settings.mode=_md; applyMode(); saveState(); render(); return; }
   if(act==="sw-check"){ pwaCheckUpdate(true); return; }
   if(act==="sw-apply"){ pwaApplyUpdate(); return; }
+  if(act==="sw-force"){ pwaHardRefresh(); return; }
   if(act==="vol-test"){ unlockAudio(); beep(); vibrate(); toast="🔔 Teszthang lejátszva"; render(); setTimeout(function(){ toast=""; render(); },1800); return; }
   if(act==="cp-open"){ cp={mode:"list"}; render(); return; }
   if(act==="cp-close"){ cp=null; render(); return; }
