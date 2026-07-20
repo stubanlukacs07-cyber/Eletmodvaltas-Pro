@@ -6,7 +6,7 @@
    - statikus fájlok (atlaszok, ikonok): STALE-WHILE-REVALIDATE → gyors indulás + háttérben frissül.
    Fontos: NEM a {cache:"no-store"} opcióra hagyatkozunk (iOS Safariban megbízhatatlan),
    hanem egyedi ?_sw= query paraméterrel kerüljük meg minden réteg gyorsítótárát. */
-const VERSION="2026.07.20.1";
+const VERSION="2026.07.20.2";
 const CACHE_PREFIX="eletmodvaltas-pro-";
 const CACHE=CACHE_PREFIX+VERSION;
 const CORE=[

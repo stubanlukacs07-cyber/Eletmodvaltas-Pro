@@ -319,7 +319,7 @@
   .btn-ghost:active{transform:scale(.98);}
 
   /* Onboarding */
-  .ob{max-width:520px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 20px) 20px calc(30px + env(safe-area-inset-bottom));min-height:100dvh;display:flex;flex-direction:column;}
+  .ob{max-width:520px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 20px) 20px calc(40px + env(safe-area-inset-bottom));height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;display:flex;flex-direction:column;}
   .ob-brand{font-size:12px;letter-spacing:2px;font-weight:800;color:var(--acc);text-align:center;margin-bottom:6px;}
   .ob-prog{height:6px;background:var(--surface2);border-radius:20px;overflow:hidden;margin-bottom:26px;}
   .ob-prog>i{display:block;height:100%;background:var(--acc);border-radius:20px;transition:width .3s ease;}
@@ -1014,6 +1014,10 @@ html[data-mode="dark"] .tabs{background:color-mix(in srgb,#0a1210 78%, transpare
   .ob-restore-btn{width:100%;padding:13px;border-radius:12px;border:1.5px solid var(--acc);background:var(--acc-soft);color:var(--acc-d);font-weight:700;font-size:14.5px;}
   .ob-restore-btn:active{transform:scale(.98);}
   .ob-restore-n{font-size:11.5px;color:var(--muted);line-height:1.4;margin-top:8px;}
+  /* ===== Fókusz-fix: a lekerekített beviteli mezőkben NE jelenjen meg szögletes keret/ring ===== */
+  input:focus,input:focus-visible,textarea:focus,textarea:focus-visible,select:focus,select:focus-visible{outline:none !important;box-shadow:none !important;}
+  .ob-inwrap:focus-within{border-color:var(--acc);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 20%,transparent);}
+  .fm-in:focus,.cp-name:focus,.rsearch:focus,.exp-area:focus,.fb-ta:focus,.fi-in:focus{border-color:var(--acc);}
 </style>
 </head>
 <body>
@@ -1021,7 +1025,7 @@ html[data-mode="dark"] .tabs{background:color-mix(in srgb,#0a1210 78%, transpare
 <script>
 (function(){
 "use strict";
-var APP_VERSION="2026.07.20.1", APP_BUILD_DATE="2026.07.20";
+var APP_VERSION="2026.07.20.2", APP_BUILD_DATE="2026.07.20";
 var DAYS=["Vasárnap","Hétfő","Kedd","Szerda","Csütörtök","Péntek","Szombat"];
 var MON=["jan.","feb.","márc.","ápr.","máj.","jún.","júl.","aug.","szep.","okt.","nov.","dec."];
 
